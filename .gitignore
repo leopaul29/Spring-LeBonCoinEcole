@@ -29,3 +29,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Project ###
+/src/main/java/com/leopaulmartin/spring/leboncoinecole/config/PersistenceConfiguration.java

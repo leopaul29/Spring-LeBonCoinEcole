@@ -8,7 +8,7 @@
 		<version>2.1.12.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.leopaul.martin.spring</groupId>
+	<groupId>com.leopaulmartin.spring</groupId>
 	<artifactId>leboncoin-ecole</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>leboncoin-ecole</name>
@@ -20,14 +20,49 @@
 
 	<dependencies>
 		<dependency>
+<!--			RESTful Web Services -->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
 		<dependency>
+<!--			Unit Test-->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+<!--			https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-devtools-->
+<!--			A common feature of developing web applications is coding a change, restarting your application, and refreshing the browser to view the change.-->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+<!--			web page template-->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+		<dependency>
+<!--			JPA-->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+<!--			Postgresql-->
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 

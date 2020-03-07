@@ -1,4 +1,4 @@
-package com.leopaul.martin.spring.leboncoinecole;
+package com.leopaulmartin.spring.leboncoinecole;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
