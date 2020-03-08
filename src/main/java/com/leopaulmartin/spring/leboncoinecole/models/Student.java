@@ -1,43 +1,138 @@
 package com.leopaulmartin.spring.leboncoinecole.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity(name = "students")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
-public class Student {
+public class Student extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long student_id;
+    @Column(name = "student_id")
+    private Long studentId;
 
-    private String first_name;
-    private String last_name;
+    @Column(name = "first_name", length = 30)
+    private String firstName;
+
+    @Column(name = "last_name", length = 30)
+    private String lastName;
+
+    @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
+    @Column(name = "photo")
+    private byte[] photo;
+
+    @OneToMany(cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    @JoinTable(
+            name = "student_phonenumbers",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "phonenumber_id"))
+    private List<PhoneNumber> phoneNumbers;
+
+    @OneToMany(cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    @JoinTable(
+            name = "student_emails",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "email_id"))
+    private List<Email> emails;
+
+    @ManyToOne
+    @JoinTable(
+            name = "school_students",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "school_id"))
+    private School school;
+
+    @OneToMany(cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    @JoinTable(
+            name = "student_announcements",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "announcement_id"))
+    private List<Announcement> announcements;
 
     public Student() {
     }
 
-    public Long getStudent_id() {
-        return student_id;
+    public Long getStudentId() {
+        return studentId;
     }
 
-    public void setStudent_id(Long student_id) {
-        this.student_id = student_id;
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    public List<PhoneNumber> getPhoneNumbers() {
+        return phoneNumbers;
+    }
+
+    public void setPhoneNumbers(List<PhoneNumber> phoneNumbers) {
+        this.phoneNumbers = phoneNumbers;
+    }
+
+    public List<Email> getEmails() {
+        return emails;
+    }
+
+    public void setEmails(List<Email> emails) {
+        this.emails = emails;
+    }
+
+    public School getSchool() {
+        return school;
+    }
+
+    public void setSchool(School school) {
+        this.school = school;
+    }
+
+    public List<Announcement> getAnnouncements() {
+        return announcements;
+    }
+
+    public void setAnnouncements(List<Announcement> announcements) {
+        this.announcements = announcements;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "studentId=" + studentId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", photo=" + Arrays.toString(photo) +
+                ", phoneNumbers=" + phoneNumbers +
+                ", emails=" + emails +
+                ", school=" + school +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
