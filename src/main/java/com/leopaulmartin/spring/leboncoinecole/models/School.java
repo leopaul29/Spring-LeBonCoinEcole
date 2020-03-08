@@ -33,10 +33,19 @@ public class School {
             inverseJoinColumns = @JoinColumn(name = "student_id"))
     private List<Student> students;
 
+    @OneToMany(cascade = {CascadeType.REMOVE})
+    @JoinTable(
+            name = "school_announcements",
+            joinColumns = @JoinColumn(name = "school_id"),
+            inverseJoinColumns = @JoinColumn(name = "announcement_id"))
+    private List<Announcement> announcements;
+
     public School() {
     }
 
-    public Long getSchoolId() { return schoolId; }
+    public Long getSchoolId() {
+        return schoolId;
+    }
 
     public void setSchoolId(Long schoolId) {
         this.schoolId = schoolId;
@@ -66,10 +75,20 @@ public class School {
         this.address = address;
     }
 
-    public List<Student> getStudents() { return students; }
+    public List<Student> getStudents() {
+        return students;
+    }
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public List<Announcement> getAnnouncements() {
+        return announcements;
+    }
+
+    public void setAnnouncements(List<Announcement> announcements) {
+        this.announcements = announcements;
     }
 
     @Override
@@ -80,6 +99,7 @@ public class School {
                 ", link='" + link + '\'' +
                 ", address=" + address +
                 ", students=" + students +
+                ", announcements=" + announcements +
                 '}';
     }
 }

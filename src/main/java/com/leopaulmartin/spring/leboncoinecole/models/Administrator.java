@@ -5,12 +5,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 
 @Entity(name = "administrators")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
-public class Administrator extends User {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Administrator {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "administrator_id")
     private int administratorId;
+
+    @Column(name = "username", length = 30)
+    public String username;
+
+    @Column(name = "password", length = 30)
+    public String password;
 
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -19,6 +25,22 @@ public class Administrator extends User {
     private String email;
 
     public Administrator() {
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getAdministratorId() {
@@ -49,10 +71,10 @@ public class Administrator extends User {
     public String toString() {
         return "Administrator{" +
                 "administratorId=" + administratorId +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

@@ -8,13 +8,16 @@ import java.util.Arrays;
 import java.util.List;
 
 @Entity(name = "students")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
-public class Student extends User {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Student {
+    @Column(name = "username", length = 30)
+    public String username;
+    @Column(name = "password", length = 30)
+    public String password;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id")
     private Long studentId;
-
     @Column(name = "first_name", length = 30)
     private String firstName;
 
@@ -63,6 +66,22 @@ public class Student extends User {
 
     public void setStudentId(Long studentId) {
         this.studentId = studentId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -125,14 +144,15 @@ public class Student extends User {
     public String toString() {
         return "Student{" +
                 "studentId=" + studentId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", photo=" + Arrays.toString(photo) +
                 ", phoneNumbers=" + phoneNumbers +
                 ", emails=" + emails +
                 ", school=" + school +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                ", announcements=" + announcements +
                 '}';
     }
 }
