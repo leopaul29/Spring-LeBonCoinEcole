@@ -1,4 +1,4 @@
-package com.leopaulmartin.spring.leboncoinecole.models;
+package com.leopaulmartin.spring.leboncoinecole.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
