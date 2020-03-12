@@ -29,9 +29,44 @@
         </dependency>
 
         <dependency>
-            <!--			web page template-->
+            <!--			JPA-->
+            <!--			references all the necessary dependencies such as hibernate-entitymanager-->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <!--            HATEOAS-->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-hateoas</artifactId>
+            <version>2.1.4.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <!--			WEB PAGE TEMPLATE-->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <dependency>
+            <!--            SECURITY-->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <!--            https://www.baeldung.com/spring-boot-actuators-->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <!--			https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-devtools-->
+            <!--			A common feature of developing web applications is coding a change, restarting your application, and refreshing the browser to view the change.-->
+            <!--                    https://www.baeldung.com/spring-boot-devtools-->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!--		-->
@@ -51,6 +86,14 @@
         </dependency>
 
         <dependency>
+            <!--            https://www.baeldung.com/spring-boot-testing-->
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+            <version>1.4.194</version>
+        </dependency>
+
+        <dependency>
             <!--			opensource community-driven library used for writing fluent and rich assertions in Java tests.-->
             <!--			https://www.baeldung.com/introduction-to-assertj-->
             <groupId>org.assertj</groupId>
@@ -60,35 +103,44 @@
         </dependency>
 
         <dependency>
-            <!--			https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-devtools-->
-            <!--			A common feature of developing web applications is coding a change, restarting your application, and refreshing the browser to view the change.-->
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
+            <!--            https://www.baeldung.com/rest-assured-tutorial-->
+            <!--            https://www.baeldung.com/rest-assured-authentication-->
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>3.0.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--        <dependency>-->
+        <!--            &lt;!&ndash;            https://www.baeldung.com/integration-testing-in-spring&ndash;&gt;-->
+        <!--            &lt;!&ndash;            https://www.baeldung.com/java-junit-hamcrest-guide&ndash;&gt;-->
+        <!--            <groupId>org.hamcrest</groupId>-->
+        <!--            <artifactId>hamcrest-library</artifactId>-->
+        <!--            <version>1.3</version>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
+
+        <dependency>
+            <!--            https://www.baeldung.com/guide-to-jayway-jsonpath-->
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>2.2.0</version>
+            <scope>test</scope>
         </dependency>
 
         <!--			-->
         <!--		Persistence-->
         <!--			-->
-        <dependency>
-            <!--			JPA-->
-            <!--			references all the necessary dependencies such as hibernate-entitymanager-->
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
 
         <!--        <dependency>-->
-        <!--&lt;!&ndash;			Hibernate&ndash;&gt;-->
-        <!--            <groupId>org.hibernate</groupId>-->
-        <!--            <artifactId>hibernate-entitymanager</artifactId>-->
-        <!--            <version>5.4.2.Final</version>-->
+        <!--            &lt;!&ndash;			Postgresql&ndash;&gt;-->
+        <!--            <groupId>org.postgresql</groupId>-->
+        <!--            <artifactId>postgresql</artifactId>-->
         <!--            <scope>runtime</scope>-->
         <!--        </dependency>-->
         <dependency>
-            <!--			Postgresql-->
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
         </dependency>
     </dependencies>
 
@@ -97,6 +149,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludeDevtools>false</excludeDevtools>
+                </configuration>
             </plugin>
         </plugins>
     </build>
