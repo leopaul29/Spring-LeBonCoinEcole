@@ -42,32 +42,31 @@ public class CategoryRepositoryIntegrationTest {
 	@Test
 	public void whenFindById_thenReturnCategory() {
 		// given
-		Category device = new Category();
-		device.setLabel("Device");
-		entityManager.persist(device);
+		Category deviceCategory = new Category("Device");
+		entityManager.persist(deviceCategory);
 		entityManager.flush();
 
 		// when
-		Optional<Category> existing = repository.findById(device.getCategoryId());
+		Optional<Category> existing = repository.findById(deviceCategory.getCategoryId());
 
 		// then
 		assertThat(existing.get()).isNotNull();
 		Category found = existing.get();
-		assertThat(found.getLabel()).isEqualTo(device.getLabel());
+		assertThat(found.getLabel()).isEqualTo(deviceCategory.getLabel());
 	}
 
 	@Test
 	public void whenFindByLabel_thenReturnCategory() {
 		// given
-		Category device = new Category();
-		device.setLabel("Device");
-		entityManager.persist(device);
+		Category deviceCategory = new Category("Device");
+		deviceCategory.setLabel("Device");
+		entityManager.persist(deviceCategory);
 		entityManager.flush();
 
 		// when
-		Category found = repository.findByLabel(device.getLabel());
+		Category found = repository.findByLabel(deviceCategory.getLabel());
 
 		// then
-		assertThat(found.getLabel()).isEqualTo(device.getLabel());
+		assertThat(found.getLabel()).isEqualTo(deviceCategory.getLabel());
 	}
 }

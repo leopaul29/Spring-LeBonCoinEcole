@@ -1,6 +1,6 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.repositories;
 
-import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Address;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,22 +13,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/*
-https://www.baeldung.com/spring-boot-testing
-https://www.baeldung.com/introduction-to-assertj
- */
-/*
-@RunWith(SpringRunner.class) is used to provide a bridge between Spring Boot test features and JUnit. Whenever we are using any Spring Boot testing features in our JUnit tests, this annotation will be required.
- */
 @RunWith(SpringRunner.class)
-/*
-@DataJpaTest provides some standard setup needed for testing the persistence layer:
-    configuring H2, an in-memory database
-    > The H2 DB is our in-memory database. It eliminates the need for configuring and starting an actual database for test purposes.
-    setting Hibernate, Spring Data, and the DataSource
-    performing an @EntityScan
-    turning on SQL logging
- */
 @DataJpaTest
 @AutoConfigureTestDatabase
 public class AddressRepositoryIntegrationTest {
@@ -36,38 +21,50 @@ public class AddressRepositoryIntegrationTest {
 	@Autowired
 	private EntityManager entityManager;
 	@Autowired
-	private CategoryRepository repository;
+	private AddressRepository repository;
 
 	// write test cases here
 	@Test
-	public void whenFindById_thenReturnCategory() {
+	public void whenFindById_thenReturnAddress() {
 		// given
-		Category device = new Category();
-		device.setLabel("Device");
-		entityManager.persist(device);
+		Address parisAddress = new Address("Rue du Faubourg Saint-Honoré", "75123", "Paris", "France");
+		parisAddress.setLongitude(48.869931f);
+		parisAddress.setLatitude(2.318397f);
+		entityManager.persist(parisAddress);
 		entityManager.flush();
 
 		// when
-		Optional<Category> existing = repository.findById(device.getCategoryId());
+		Optional<Address> existing = repository.findById(parisAddress.getAddressId());
 
 		// then
 		assertThat(existing.get()).isNotNull();
-		Category found = existing.get();
-		assertThat(found.getLabel()).isEqualTo(device.getLabel());
+		Address found = existing.get();
+		assertThat(found.getLabel()).isEqualTo(parisAddress.getLabel());
+		assertThat(found.getZipCode()).isEqualTo(parisAddress.getZipCode());
+		assertThat(found.getCity()).isEqualTo(parisAddress.getCity());
+		assertThat(found.getCountry()).isEqualTo(parisAddress.getCountry());
+		assertThat(found.getLongitude()).isEqualTo(parisAddress.getLongitude());
+		assertThat(found.getLatitude()).isEqualTo(parisAddress.getLatitude());
 	}
 
 	@Test
-	public void whenFindByLabel_thenReturnCategory() {
+	public void whenFindByCity_thenReturnAddress() {
 		// given
-		Category device = new Category();
-		device.setLabel("Device");
-		entityManager.persist(device);
+		Address parisAddress = new Address("Rue du Faubourg Saint-Honoré", "75123", "Paris", "France");
+		parisAddress.setLongitude(48.869931f);
+		parisAddress.setLatitude(2.318397f);
+		entityManager.persist(parisAddress);
 		entityManager.flush();
 
 		// when
-		Category found = repository.findByLabel(device.getLabel());
+		Address found = repository.findByCity(parisAddress.getCity());
 
 		// then
-		assertThat(found.getLabel()).isEqualTo(device.getLabel());
+		assertThat(found.getLabel()).isEqualTo(parisAddress.getLabel());
+		assertThat(found.getZipCode()).isEqualTo(parisAddress.getZipCode());
+		assertThat(found.getCity()).isEqualTo(parisAddress.getCity());
+		assertThat(found.getCountry()).isEqualTo(parisAddress.getCountry());
+		assertThat(found.getLongitude()).isEqualTo(parisAddress.getLongitude());
+		assertThat(found.getLatitude()).isEqualTo(parisAddress.getLatitude());
 	}
 }
