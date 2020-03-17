@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Categories</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <h1>Admin Categories</h1>
+    <table>
+        <tr th:each="category : ${allCategories}">
+            <td th:text="${category.id}">Id</td>
+            <td th:text="${category.label}">Title</td>
+        </tr>
+    </table>
+
+    <p><a href="/" th:href="@{/}">Back to home page</a></p>
+</div>
+</body>
+</html>

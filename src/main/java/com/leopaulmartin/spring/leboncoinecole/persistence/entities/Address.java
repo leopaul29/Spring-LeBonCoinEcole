@@ -24,24 +24,31 @@ public class Address {
     @Column(name = "country", length = 30)
     private String country;
 
-    @Column(name = "longitude")
-    private float longitude;
+	@Column(name = "longitude")
+	private float longitude;
 
-    @Column(name = "latitude")
-    private float latitude;
+	@Column(name = "latitude")
+	private float latitude;
 
-    public Address() {
-    }
+	public Address() {
+	}
 
-    public Long getAddressId() {
-        return addressId;
-    }
+	public Address(String label, String zipCode, String city, String country) {
+		this.label = label;
+		this.zipCode = zipCode;
+		this.city = city;
+		this.country = country;
+	}
 
-    public void setAddressId(Long addressId) {
-        this.addressId = addressId;
-    }
+	public Long getAddressId() {
+		return addressId;
+	}
 
-    public String getLabel() {
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
+
+	public String getLabel() {
         return label;
     }
 

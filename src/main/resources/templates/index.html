@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Index</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <h1 th:text="#{hello}">Hi !</h1>
+    <p th:text="${#locale.language}"> language</p>
+    <p th:text="${#locale.country}"> country</p>
+    <p>This is an unsecured page, but you can access the secured pages after authenticating.</p>
+    <ul>
+        <li>Go to the <a href="/user" th:href="@{/student}">secured pages</a></li>
+    </ul>
+</div>
+</body>
+</html>

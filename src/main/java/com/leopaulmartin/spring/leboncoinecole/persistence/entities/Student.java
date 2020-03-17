@@ -26,6 +26,7 @@ public class Student {
 
 	@Column(name = "last_name", length = 30)
 	private String lastName;
+
 	@Lob
 	@Type(type = "org.hibernate.type.BinaryType")
 	@Column(name = "photo")
@@ -60,6 +61,15 @@ public class Student {
 	private List<Announcement> announcements;
 
 	public Student() {
+	}
+
+	public Student(String username, String password, String firstName, String lastName, List<PhoneNumber> phoneNumbers, List<Email> emails) {
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.phoneNumbers = phoneNumbers;
+		this.emails = emails;
 	}
 
 	public Long getStudentId() {

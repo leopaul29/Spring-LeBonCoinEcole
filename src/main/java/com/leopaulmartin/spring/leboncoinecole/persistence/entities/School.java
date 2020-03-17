@@ -33,25 +33,30 @@ public class School {
             inverseJoinColumns = @JoinColumn(name = "student_id"))
     private List<Student> students;
 
-    @OneToMany(cascade = {CascadeType.REMOVE})
-    @JoinTable(
-            name = "school_announcements",
-            joinColumns = @JoinColumn(name = "school_id"),
-            inverseJoinColumns = @JoinColumn(name = "announcement_id"))
-    private List<Announcement> announcements;
+	@OneToMany(cascade = {CascadeType.REMOVE})
+	@JoinTable(
+			name = "school_announcements",
+			joinColumns = @JoinColumn(name = "school_id"),
+			inverseJoinColumns = @JoinColumn(name = "announcement_id"))
+	private List<Announcement> announcements;
 
-    public School() {
-    }
+	public School() {
+	}
 
-    public Long getSchoolId() {
-        return schoolId;
-    }
+	public School(String name, Address address) {
+		this.name = name;
+		this.address = address;
+	}
 
-    public void setSchoolId(Long schoolId) {
-        this.schoolId = schoolId;
-    }
+	public Long getSchoolId() {
+		return schoolId;
+	}
 
-    public String getName() {
+	public void setSchoolId(Long schoolId) {
+		this.schoolId = schoolId;
+	}
+
+	public String getName() {
         return name;
     }
 

@@ -15,10 +15,14 @@
     <description>Leboncoin-ecole project with Spring Boot</description>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
     </properties>
 
     <dependencies>
+        <!--        -->
+        <!--        SPRING STARTER-->
+        <!--        -->
         <dependency>
             <!--			REST Web Services -->
             <!--			This starter includes:
@@ -35,17 +39,26 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-data-rest</artifactId>-->
+        <!--        </dependency>-->
+
         <dependency>
             <!--            HATEOAS-->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-hateoas</artifactId>
-            <version>2.1.4.RELEASE</version>
         </dependency>
 
         <dependency>
-            <!--			WEB PAGE TEMPLATE-->
+            <!--			THYMELEAF-->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
         </dependency>
 
         <dependency>
@@ -54,12 +67,32 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <dependency>
-            <!--            https://www.baeldung.com/spring-boot-actuators-->
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            &lt;!&ndash;            https://www.baeldung.com/spring-boot-actuators&ndash;&gt;-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
+        <!--        </dependency>-->
 
+        <!--        -->
+        <!--        CLIENT UI LIB -->
+        <!--        -->
+        <!--        <dependency>-->
+        <!--            &lt;!&ndash;            bootstrap&ndash;&gt;-->
+        <!--            <groupId>org.webjars</groupId>-->
+        <!--            <artifactId>bootstrap</artifactId>-->
+        <!--            <version>3.3.7</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            &lt;!&ndash;            jquery&ndash;&gt;-->
+        <!--            <groupId>org.webjars</groupId>-->
+        <!--            <artifactId>jquery</artifactId>-->
+        <!--            <version>3.2.1</version>-->
+        <!--        </dependency>-->
+
+
+        <!--		-->
+        <!--	Development and Test purpose-->
+        <!--		-->
         <dependency>
             <!--			https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-devtools-->
             <!--			A common feature of developing web applications is coding a change, restarting your application, and refreshing the browser to view the change.-->
@@ -69,9 +102,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!--		-->
-        <!--	Development and Test purpose-->
-        <!--		-->
         <dependency>
             <!--			Unit Test-->
             <groupId>org.springframework.boot</groupId>
@@ -120,13 +150,13 @@
         <!--            <scope>test</scope>-->
         <!--        </dependency>-->
 
-        <dependency>
-            <!--            https://www.baeldung.com/guide-to-jayway-jsonpath-->
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path</artifactId>
-            <version>2.2.0</version>
-            <scope>test</scope>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            &lt;!&ndash;            https://www.baeldung.com/guide-to-jayway-jsonpath&ndash;&gt;-->
+        <!--            <groupId>com.jayway.jsonpath</groupId>-->
+        <!--            <artifactId>json-path</artifactId>-->
+        <!--            <version>2.2.0</version>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
 
         <!--			-->
         <!--		Persistence-->
@@ -141,6 +171,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
@@ -153,6 +184,43 @@
                     <excludeDevtools>false</excludeDevtools>
                 </configuration>
             </plugin>
+
+            <!--            <plugin>-->
+            <!--                &lt;!&ndash;                https://spring.io/guides/tutorials/react-and-spring-data-rest/Loading JavaScript Modules&ndash;&gt;-->
+            <!--                <groupId>com.github.eirslett</groupId>-->
+            <!--                <artifactId>frontend-maven-plugin</artifactId>-->
+            <!--                <version>1.6</version>-->
+            <!--                <configuration>-->
+            <!--                    <installDirectory>target</installDirectory>-->
+            <!--                </configuration>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <id>install node and npm</id>-->
+            <!--                        <goals>-->
+            <!--                            <goal>install-node-and-npm</goal>-->
+            <!--                        </goals>-->
+            <!--                        <configuration>-->
+            <!--                            <nodeVersion>v10.11.0</nodeVersion>-->
+            <!--                            <npmVersion>6.4.1</npmVersion>-->
+            <!--                        </configuration>-->
+            <!--                    </execution>-->
+            <!--                    <execution>-->
+            <!--                        <id>npm install</id>-->
+            <!--                        <goals>-->
+            <!--                            <goal>npm</goal>-->
+            <!--                        </goals>-->
+            <!--                        <configuration>-->
+            <!--                            <arguments>install</arguments>-->
+            <!--                        </configuration>-->
+            <!--                    </execution>-->
+            <!--                    <execution>-->
+            <!--                        <id>webpack build</id>-->
+            <!--                        <goals>-->
+            <!--                            <goal>webpack</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 

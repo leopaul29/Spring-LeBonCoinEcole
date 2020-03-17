@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="header">
+    <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" th:href="@{/}">
+                    <img alt="LBCE logo" th:src="@{/img/logo.png}"/>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a th:href="@{/}">Home</a>
+                    </li>
+                    <li><a th:href="@{/home}"/>Index</a></li>
+                    <li><a th:href="@{/admin/home}">Admin index</a></li>
+                    <li><a th:href="@{/admin/categories}">Categories</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</th:block>
+</body>
+</html>

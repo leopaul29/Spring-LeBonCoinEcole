@@ -8,9 +8,9 @@ import javax.persistence.*;
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class PhoneNumber {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "phonenumber_id")
-    private int phonenumberId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "phonenumber_id")
+	private Long phonenumberId;
 
     @Column(name = "number", length = 10)
     private String number;
@@ -22,13 +22,13 @@ public class PhoneNumber {
         this.number = number;
     }
 
-    public int getPhonenumberId() {
-        return phonenumberId;
-    }
+	public Long getPhonenumberId() {
+		return phonenumberId;
+	}
 
-    public void setPhonenumberId(int phonenumberId) {
-        this.phonenumberId = phonenumberId;
-    }
+	public void setPhonenumberId(Long phonenumberId) {
+		this.phonenumberId = phonenumberId;
+	}
 
     public String getNumber() {
         return number;

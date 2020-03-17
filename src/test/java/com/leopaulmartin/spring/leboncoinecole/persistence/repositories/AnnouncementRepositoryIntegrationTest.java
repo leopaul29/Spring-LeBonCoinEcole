@@ -31,7 +31,7 @@ https://www.baeldung.com/introduction-to-assertj
  */
 @DataJpaTest
 @AutoConfigureTestDatabase
-public class CategoryRepositoryIntegrationTest {
+public class AnnouncementRepositoryIntegrationTest {
 
 	@Autowired
 	private EntityManager entityManager;

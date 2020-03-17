@@ -6,6 +6,8 @@ import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.Recor
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.CategoryRepository;
 import com.leopaulmartin.spring.leboncoinecole.services.CategoryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import java.util.List;
 //https://docs.spring.io/spring-data/data-jpa/docs/current/reference/html/#transactions
 @Transactional
 public class CategoryServiceImpl implements CategoryService {
+	private static final Logger logger = LoggerFactory.getLogger(CategoryServiceImpl.class);
 
 	@Autowired
 	private CategoryRepository repository;
@@ -67,7 +70,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
 	public Category updateCategory(Long id, Category category) throws RecordIdMismatchException, RecordAlreadyExistException, RecordNotFoundException {
-		if (!category.getId().equals(id)) {
+		if (!category.getCategoryId().equals(id)) {
 			throw new RecordIdMismatchException();
 		}
 		if (repository.findByLabel(category.getLabel()) != null)
@@ -75,6 +78,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 		Category existingCategory = repository.findById(id)
 				.orElseThrow(() -> new RecordNotFoundException("id", id));
+		//copy : source, target, ignoreProperties
 		BeanUtils.copyProperties(category, existingCategory, "category_id");
 		return repository.saveAndFlush(existingCategory);
 
