@@ -1,6 +1,7 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.repositories;
 
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +34,22 @@ https://www.baeldung.com/introduction-to-assertj
 @AutoConfigureTestDatabase
 public class CategoryRepositoryIntegrationTest {
 
+	public Category deviceCategory;
+
 	@Autowired
 	private EntityManager entityManager;
 	@Autowired
 	private CategoryRepository repository;
 
+	@Before
+	public void SetUp() {
+		deviceCategory = new Category("Device");
+	}
+
 	// write test cases here
 	@Test
 	public void whenFindById_thenReturnCategory() {
 		// given
-		Category deviceCategory = new Category("Device");
 		entityManager.persist(deviceCategory);
 		entityManager.flush();
 

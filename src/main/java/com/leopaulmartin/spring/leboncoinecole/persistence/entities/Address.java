@@ -1,6 +1,8 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity(name = "addresses")
 //@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
@@ -10,16 +12,22 @@ public class Address {
 	@Column(name = "address_id")
 	private Long addressId;
 
-	@Column(name = "label", length = 200)
+	@Column(name = "label", length = 200, nullable = false)
+	@Size(min = 5, max = 50, message = "Address's label must be longer than 5 characters and shorter than 50 characters")
+	@NotNull(message = "Cannot be null")
 	private String label;
 
-	@Column(name = "zipcode", length = 5)
+	@Column(name = "zipcode", length = 5, nullable = false)
+	@Size(min = 5, max = 5, message = "Zipcode size musth be 5 characters")
+	@NotNull(message = "Cannot be null")
 	private String zipCode;
 
-	@Column(name = "city", length = 30)
+	@Column(name = "city", length = 30, nullable = false)
+	@NotNull(message = "Cannot be null")
 	private String city;
 
-	@Column(name = "country", length = 30)
+	@Column(name = "country", length = 30, nullable = false)
+	@NotNull(message = "Cannot be null")
 	private String country;
 
 	@Column(name = "longitude")

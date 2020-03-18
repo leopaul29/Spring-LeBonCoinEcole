@@ -4,6 +4,8 @@ import org.hibernate.annotations.Type;
 import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
@@ -19,12 +21,14 @@ public class Announcement extends ResourceSupport {
 	@Column(name = "is_announcement")
 	private boolean isAnnouncement;
 
-	@Column(name = "title", length = 200)
+	@Column(name = "title", length = 200, nullable = false)
+	@NotNull(message = "Cannot be null")
 	private String title;
 
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
-	@Column(name = "description", length = 2000)
+	@Column(name = "description", length = 2000, nullable = false)
+	@NotNull(message = "Cannot be null")
 	private String description;
 
 	@Lob
@@ -34,9 +38,11 @@ public class Announcement extends ResourceSupport {
 	private byte[] photo;
 
 	@Column(name = "price", length = 10)
+	@Min(value = 0, message = "Cannot be negatif")
 	private float price;
 
 	@Column(name = "creation_date")
+//	@NotNull
 	private Date creationDate;
 
 	@Column(name = "end_date")
@@ -45,19 +51,21 @@ public class Announcement extends ResourceSupport {
 	@Column(name = "is_closed")
 	private boolean isClosed;
 
-	@OneToMany(cascade = {CascadeType.REMOVE})
+	@OneToMany//(cascade = {CascadeType.REMOVE})
 //    @JoinTable(
 //            name = "announcement_categories",
 //            joinColumns = @JoinColumn(name = "announcement_id"),
 //            inverseJoinColumns = @JoinColumn(name = "category_id"))
+	@NotNull
 	private List<Category> categories;
 
-//	@ManyToOne
+	@ManyToOne
 ////    @JoinTable(
 ////            name = "student_announcements",
 ////            joinColumns = @JoinColumn(name = "announcement_id"),
 ////            inverseJoinColumns = @JoinColumn(name = "student_id"))
-//	private Student student;
+	@NotNull
+	private Student student;
 
 	public Announcement() {
 	}
@@ -68,6 +76,8 @@ public class Announcement extends ResourceSupport {
 		this.price = price;
 		this.categories = categories;
 //		this.student = student;
+
+//		this.creationDate = new Date();
 	}
 
 	public Long getAnnouncementId() {

@@ -1,6 +1,7 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.repositories;
 
-import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Administrator;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,61 +14,42 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/*
-https://www.baeldung.com/spring-boot-testing
-https://www.baeldung.com/introduction-to-assertj
- */
-/*
-@RunWith(SpringRunner.class) is used to provide a bridge between Spring Boot test features and JUnit. Whenever we are using any Spring Boot testing features in our JUnit tests, this annotation will be required.
- */
 @RunWith(SpringRunner.class)
-/*
-@DataJpaTest provides some standard setup needed for testing the persistence layer:
-    configuring H2, an in-memory database
-    > The H2 DB is our in-memory database. It eliminates the need for configuring and starting an actual database for test purposes.
-    setting Hibernate, Spring Data, and the DataSource
-    performing an @EntityScan
-    turning on SQL logging
- */
 @DataJpaTest
 @AutoConfigureTestDatabase
 public class AdministratorRepositoryIntegrationTest {
 
+	public Administrator adm1, adm2;
+
 	@Autowired
 	private EntityManager entityManager;
 	@Autowired
-	private CategoryRepository repository;
+	private AdministratorRepository repository;
+
+	@Before
+	public void setUp() {
+		// given
+		adm1 = new Administrator("user1", "pass1");
+		adm2 = new Administrator("user2", "pass2");
+		entityManager.persist(adm1);
+		entityManager.persist(adm2);
+		entityManager.flush();
+	}
 
 	// write test cases here
 	@Test
-	public void whenFindById_thenReturnCategory() {
-		// given
-		Category device = new Category();
-		device.setLabel("Device");
-		entityManager.persist(device);
-		entityManager.flush();
-
+	public void whenFindById_thenReturnAdministrator() {
 		// when
-		Optional<Category> existing = repository.findById(device.getCategoryId());
+		Optional<Administrator> existing1 = repository.findById(adm1.getAdministratorId());
+		Optional<Administrator> existing2 = repository.findById(adm2.getAdministratorId());
 
 		// then
-		assertThat(existing.get()).isNotNull();
-		Category found = existing.get();
-		assertThat(found.getLabel()).isEqualTo(device.getLabel());
-	}
+		assertThat(existing1.get()).isNotNull();
+		Administrator found1 = existing1.get();
+		assertThat(found1.getUsername()).isEqualTo(found1.getUsername());
 
-	@Test
-	public void whenFindByLabel_thenReturnCategory() {
-		// given
-		Category device = new Category();
-		device.setLabel("Device");
-		entityManager.persist(device);
-		entityManager.flush();
-
-		// when
-		Category found = repository.findByLabel(device.getLabel());
-
-		// then
-		assertThat(found.getLabel()).isEqualTo(device.getLabel());
+		assertThat(existing2.get()).isNotNull();
+		Administrator found2 = existing2.get();
+		assertThat(found2.getUsername()).isEqualTo(found2.getUsername());
 	}
 }

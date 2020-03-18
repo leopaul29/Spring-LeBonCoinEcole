@@ -1,21 +1,22 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "administrators")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Administrator {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "administrator_id")
 	private Long administratorId;
 
-	@Column(name = "username", length = 30)
+	@Column(name = "username", length = 30, nullable = false)
+	@NotNull
 	private String username;
 
-	@Column(name = "password", length = 30)
+	@Column(name = "password", length = 30, nullable = false)
+	@NotNull
 	private String password;
 
 	@Column(name = "phone_number")
@@ -25,6 +26,11 @@ public class Administrator {
 	private String email;
 
 	public Administrator() {
+	}
+
+	public Administrator(String username, String password) {
+		this.username = username;
+		this.password = password;
 	}
 
 	public String getUsername() {

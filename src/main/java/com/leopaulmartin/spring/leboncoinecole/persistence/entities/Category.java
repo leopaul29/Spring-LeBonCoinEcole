@@ -50,6 +50,14 @@ public class Category extends ResourceSupport {
 		this.label = label;
 	}
 
+	public Announcement getAnnouncement() {
+		return announcement;
+	}
+
+	public void setAnnouncement(Announcement announcement) {
+		this.announcement = announcement;
+	}
+
 	//
 
 	@Override

@@ -1,6 +1,8 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.repositories;
 
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,65 +11,47 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/*
-https://www.baeldung.com/spring-boot-testing
-https://www.baeldung.com/introduction-to-assertj
- */
-/*
-@RunWith(SpringRunner.class) is used to provide a bridge between Spring Boot test features and JUnit. Whenever we are using any Spring Boot testing features in our JUnit tests, this annotation will be required.
- */
 @RunWith(SpringRunner.class)
-/*
-@DataJpaTest provides some standard setup needed for testing the persistence layer:
-    configuring H2, an in-memory database
-    > The H2 DB is our in-memory database. It eliminates the need for configuring and starting an actual database for test purposes.
-    setting Hibernate, Spring Data, and the DataSource
-    performing an @EntityScan
-    turning on SQL logging
- */
 @DataJpaTest
 @AutoConfigureTestDatabase
 public class AnnouncementRepositoryIntegrationTest {
 
+	public Announcement ann1;
+	public Category deviceCategory;
+
 	@Autowired
 	private EntityManager entityManager;
 	@Autowired
-	private CategoryRepository repository;
+	private AnnouncementRepository repository;
+
+	@Before
+	public void setUp() {
+		deviceCategory = new Category("Device");
+		List<Category> categoryList = new ArrayList<>();
+		categoryList.add(deviceCategory);
+
+		ann1 = new Announcement("title1", "description1", 0, categoryList);
+
+		entityManager.persist(deviceCategory);
+		entityManager.persist(ann1);
+		entityManager.flush();
+	}
 
 	// write test cases here
 	@Test
-	public void whenFindById_thenReturnCategory() {
-		// given
-		Category device = new Category();
-		device.setLabel("Device");
-		entityManager.persist(device);
-		entityManager.flush();
-
+	public void whenFindById_thenReturnAnnouncement() {
 		// when
-		Optional<Category> existing = repository.findById(device.getCategoryId());
+		Optional<Announcement> existing = repository.findById(ann1.getAnnouncementId());
 
 		// then
 		assertThat(existing.get()).isNotNull();
-		Category found = existing.get();
-		assertThat(found.getLabel()).isEqualTo(device.getLabel());
-	}
-
-	@Test
-	public void whenFindByLabel_thenReturnCategory() {
-		// given
-		Category device = new Category();
-		device.setLabel("Device");
-		entityManager.persist(device);
-		entityManager.flush();
-
-		// when
-		Category found = repository.findByLabel(device.getLabel());
-
-		// then
-		assertThat(found.getLabel()).isEqualTo(device.getLabel());
+		Announcement found = existing.get();
+		assertThat(found.getTitle()).isEqualTo(found.getTitle());
 	}
 }
