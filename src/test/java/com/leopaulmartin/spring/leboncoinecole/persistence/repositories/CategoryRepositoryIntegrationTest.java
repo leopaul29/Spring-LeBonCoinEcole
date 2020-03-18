@@ -4,6 +4,8 @@ import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -33,43 +35,37 @@ https://www.baeldung.com/introduction-to-assertj
 @DataJpaTest
 @AutoConfigureTestDatabase
 public class CategoryRepositoryIntegrationTest {
+	private static final Logger logger = LoggerFactory.getLogger(CategoryRepositoryIntegrationTest.class);
 
 	public Category deviceCategory;
 
 	@Autowired
-	private EntityManager entityManager;
+	private EntityManager em;
 	@Autowired
 	private CategoryRepository repository;
 
 	@Before
 	public void SetUp() {
 		deviceCategory = new Category("Device");
+		em.persist(deviceCategory);
+		em.flush();
 	}
 
 	// write test cases here
 	@Test
 	public void whenFindById_thenReturnCategory() {
-		// given
-		entityManager.persist(deviceCategory);
-		entityManager.flush();
-
 		// when
 		Optional<Category> existing = repository.findById(deviceCategory.getCategoryId());
 
 		// then
-		assertThat(existing.get()).isNotNull();
+		assertThat(existing.isPresent()).isTrue();
+
 		Category found = existing.get();
 		assertThat(found.getLabel()).isEqualTo(deviceCategory.getLabel());
 	}
 
 	@Test
 	public void whenFindByLabel_thenReturnCategory() {
-		// given
-		Category deviceCategory = new Category("Device");
-		deviceCategory.setLabel("Device");
-		entityManager.persist(deviceCategory);
-		entityManager.flush();
-
 		// when
 		Category found = repository.findByLabel(deviceCategory.getLabel());
 

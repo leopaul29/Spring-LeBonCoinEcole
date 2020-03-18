@@ -22,9 +22,6 @@ public class Category extends ResourceSupport {
 	@Size(min = 3, max = 50, message = "Category's label must be longer than 3 characters and shorter than 50 characters")
 	private String label;
 
-	@ManyToOne
-	private Announcement announcement;
-
 	public Category() {
 	}
 
@@ -48,14 +45,6 @@ public class Category extends ResourceSupport {
 
 	public void setLabel(String label) {
 		this.label = label;
-	}
-
-	public Announcement getAnnouncement() {
-		return announcement;
-	}
-
-	public void setAnnouncement(Announcement announcement) {
-		this.announcement = announcement;
 	}
 
 	//

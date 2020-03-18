@@ -56,7 +56,9 @@ public class Student {
 //			inverseJoinColumns = @JoinColumn(name = "school_id"))
 	private School school;
 
-	@OneToMany(cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+	@OneToMany(targetEntity = com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement.class,
+			mappedBy = "student",
+			cascade = {CascadeType.REMOVE}, orphanRemoval = true)
 //	@JoinTable(
 //			name = "student_announcements",
 //			joinColumns = @JoinColumn(name = "student_id"),

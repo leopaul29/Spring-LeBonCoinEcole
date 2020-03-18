@@ -28,16 +28,16 @@ public class DatabaseLoader implements CommandLineRunner {
 	private AnnouncementRepository announcementRepository;
 
 	@Override
-	public void run(String... strings) throws Exception {
+	public void run(String... strings) {
 		// Student & Phonenumber & Email
 		PhoneNumber phn1 = new PhoneNumber("0123456789");
 		phoneNumberRepository.saveAndFlush(phn1);
-		List<PhoneNumber> listPhn1 = new ArrayList<PhoneNumber>();
+		List<PhoneNumber> listPhn1 = new ArrayList<>();
 		listPhn1.add(phn1);
 
 		Email email1 = new Email("contact@email.fr");
 		emailRepository.saveAndFlush(email1);
-		List<Email> listEmail = new ArrayList<Email>();
+		List<Email> listEmail = new ArrayList<>();
 		listEmail.add(email1);
 
 		Student stu1 = new Student("username", "password", "firstname", "lastname", listPhn1, listEmail);
@@ -50,7 +50,7 @@ public class DatabaseLoader implements CommandLineRunner {
 		schoolRepository.saveAndFlush(sch1);
 
 		// Add student in school
-		List<Student> listStudent = new ArrayList<Student>();
+		List<Student> listStudent = new ArrayList<>();
 		listStudent.add(stu1);
 		sch1.setStudents(listStudent);
 		schoolRepository.saveAndFlush(sch1);
@@ -60,13 +60,14 @@ public class DatabaseLoader implements CommandLineRunner {
 		Category cat1 = new Category("category 1");
 		categoryRepository.saveAndFlush(cat1);
 		// Announcement
-		List<Category> listCat = new ArrayList<Category>();
+		List<Category> listCat = new ArrayList<>();
 		listCat.add(cat1);
-		Announcement ann1 = new Announcement("title", "description", 10.0f, listCat);
+		Announcement ann1 = new Announcement("title", "description", 10.0f);
+		ann1.setCategories(listCat);
 		announcementRepository.saveAndFlush(ann1);
 
 		// Add announcement in student list
-		List<Announcement> listann = new ArrayList<Announcement>();
+		List<Announcement> listann = new ArrayList<>();
 		listann.add(ann1);
 		stu1.setAnnouncements(listann);
 		studentRepository.saveAndFlush(stu1);

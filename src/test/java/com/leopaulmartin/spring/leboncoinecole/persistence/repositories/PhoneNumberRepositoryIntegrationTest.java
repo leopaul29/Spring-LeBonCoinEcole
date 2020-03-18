@@ -4,6 +4,8 @@ import com.leopaulmartin.spring.leboncoinecole.persistence.entities.PhoneNumber;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -18,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @AutoConfigureTestDatabase
 public class PhoneNumberRepositoryIntegrationTest {
+	private static final Logger logger = LoggerFactory.getLogger(PhoneNumberRepositoryIntegrationTest.class);
 
 	public PhoneNumber phn1, phn2;
 

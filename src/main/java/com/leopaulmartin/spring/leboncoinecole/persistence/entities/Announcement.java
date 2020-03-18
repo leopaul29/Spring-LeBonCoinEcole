@@ -51,30 +51,32 @@ public class Announcement extends ResourceSupport {
 	@Column(name = "is_closed")
 	private boolean isClosed;
 
-	@OneToMany//(cascade = {CascadeType.REMOVE})
+	@ManyToMany//(cascade = {CascadeType.REMOVE})
 //    @JoinTable(
 //            name = "announcement_categories",
 //            joinColumns = @JoinColumn(name = "announcement_id"),
 //            inverseJoinColumns = @JoinColumn(name = "category_id"))
-	@NotNull
+//	@NotNull
 	private List<Category> categories;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "student_id", nullable = false)
+//	@JoinColumn(name="studentId", nullable=false)
 ////    @JoinTable(
 ////            name = "student_announcements",
 ////            joinColumns = @JoinColumn(name = "announcement_id"),
 ////            inverseJoinColumns = @JoinColumn(name = "student_id"))
-	@NotNull
+//	@NotNull
 	private Student student;
 
 	public Announcement() {
 	}
 
-	public Announcement(String title, String description, float price, List<Category> categories/*, Student student*/) {
+	public Announcement(String title, String description, float price) {
 		this.title = title;
 		this.description = description;
 		this.price = price;
-		this.categories = categories;
+//		this.categories = categories;
 //		this.student = student;
 
 //		this.creationDate = new Date();

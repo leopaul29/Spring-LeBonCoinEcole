@@ -3,6 +3,8 @@ package com.leopaulmartin.spring.leboncoinecole.persistence.repositories;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Address;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -17,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @AutoConfigureTestDatabase
 public class AddressRepositoryIntegrationTest {
+	private static final Logger logger = LoggerFactory.getLogger(AddressRepositoryIntegrationTest.class);
 
 	@Autowired
 	private EntityManager entityManager;
@@ -37,7 +40,8 @@ public class AddressRepositoryIntegrationTest {
 		Optional<Address> existing = repository.findById(parisAddress.getAddressId());
 
 		// then
-		assertThat(existing.get()).isNotNull();
+		assertThat(existing.isPresent()).isTrue();
+
 		Address found = existing.get();
 		assertThat(found.getLabel()).isEqualTo(parisAddress.getLabel());
 		assertThat(found.getZipCode()).isEqualTo(parisAddress.getZipCode());
