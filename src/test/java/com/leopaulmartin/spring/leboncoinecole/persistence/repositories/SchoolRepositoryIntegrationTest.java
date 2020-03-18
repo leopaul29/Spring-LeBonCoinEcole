@@ -1,73 +1,75 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.repositories;
 
-import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Address;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.School;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/*
-https://www.baeldung.com/spring-boot-testing
-https://www.baeldung.com/introduction-to-assertj
- */
-/*
-@RunWith(SpringRunner.class) is used to provide a bridge between Spring Boot test features and JUnit. Whenever we are using any Spring Boot testing features in our JUnit tests, this annotation will be required.
- */
 @RunWith(SpringRunner.class)
-/*
-@DataJpaTest provides some standard setup needed for testing the persistence layer:
-    configuring H2, an in-memory database
-    > The H2 DB is our in-memory database. It eliminates the need for configuring and starting an actual database for test purposes.
-    setting Hibernate, Spring Data, and the DataSource
-    performing an @EntityScan
-    turning on SQL logging
- */
 @DataJpaTest
 @AutoConfigureTestDatabase
 public class SchoolRepositoryIntegrationTest {
+	private static final Logger logger = LoggerFactory.getLogger(SchoolRepositoryIntegrationTest.class);
+
+	public School sch1;
 
 	@Autowired
-	private EntityManager entityManager;
+	private EntityManager em;
 	@Autowired
-	private CategoryRepository repository;
+	private SchoolRepository repository;
+
+	@Before
+	public void SetUp() {
+		// given
+		Address parisAddress = new Address("Rue du Faubourg Saint-Honoré", "75123", "Paris", "France");
+		sch1 = new School("School number one", parisAddress);
+		em.persist(parisAddress);
+		em.persist(sch1);
+		em.flush();
+	}
 
 	// write test cases here
 	@Test
-	public void whenFindById_thenReturnCategory() {
-		// given
-		Category device = new Category();
-		device.setLabel("Device");
-		entityManager.persist(device);
-		entityManager.flush();
-
+	public void whenFindById_thenReturnSchool() {
 		// when
-		Optional<Category> existing = repository.findById(device.getCategoryId());
+		Optional<School> existing = repository.findById(sch1.getSchoolId());
 
 		// then
-		assertThat(existing.get()).isNotNull();
-		Category found = existing.get();
-		assertThat(found.getLabel()).isEqualTo(device.getLabel());
+		assertThat(existing.isPresent()).isTrue();
+		School found = existing.get();
+		assertThat(found.getName()).isEqualTo(sch1.getName());
+		assertThat(found.getAddress().getLabel()).isEqualTo(sch1.getAddress().getLabel());
 	}
 
 	@Test
-	public void whenFindByLabel_thenReturnCategory() {
-		// given
-		Category device = new Category();
-		device.setLabel("Device");
-		entityManager.persist(device);
-		entityManager.flush();
+	public void whenFindByAddressCity_thenReturnSchoolList() {
+		List<School> schools = null;
+		assertThat(schools).isNull();
+
+		schools = new ArrayList<>();
+		assertThat(schools).isNotNull().isEmpty();
 
 		// when
-		Category found = repository.findByLabel(device.getLabel());
-
+		String city = "Paris";
+		schools = repository.findByAddressCity(city);
 		// then
-		assertThat(found.getLabel()).isEqualTo(device.getLabel());
+		assertThat(schools).isNotNull().isNotEmpty().hasSize(1);
+		School found = schools.get(0);
+		assertThat(found.getName()).isEqualTo(sch1.getName());
+		assertThat(found.getAddress().getCity()).isEqualTo(city);
 	}
 }
