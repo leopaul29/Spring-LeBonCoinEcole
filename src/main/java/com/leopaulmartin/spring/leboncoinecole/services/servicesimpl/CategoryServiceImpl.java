@@ -104,6 +104,6 @@ public class CategoryServiceImpl implements CategoryService {
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
 	public void deleteAllCategories() {
-		repository.deleteAllCategories();
+		repository.deleteAll();
 	}
 }
