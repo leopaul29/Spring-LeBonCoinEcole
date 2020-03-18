@@ -1,6 +1,7 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.repositories;
 
-import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.PhoneNumber;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,61 +14,45 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/*
-https://www.baeldung.com/spring-boot-testing
-https://www.baeldung.com/introduction-to-assertj
- */
-/*
-@RunWith(SpringRunner.class) is used to provide a bridge between Spring Boot test features and JUnit. Whenever we are using any Spring Boot testing features in our JUnit tests, this annotation will be required.
- */
 @RunWith(SpringRunner.class)
-/*
-@DataJpaTest provides some standard setup needed for testing the persistence layer:
-    configuring H2, an in-memory database
-    > The H2 DB is our in-memory database. It eliminates the need for configuring and starting an actual database for test purposes.
-    setting Hibernate, Spring Data, and the DataSource
-    performing an @EntityScan
-    turning on SQL logging
- */
 @DataJpaTest
 @AutoConfigureTestDatabase
 public class PhoneNumberRepositoryIntegrationTest {
 
+	public PhoneNumber phn1, phn2;
+
 	@Autowired
 	private EntityManager entityManager;
 	@Autowired
-	private CategoryRepository repository;
+	private PhoneNumberRepository repository;
+
+	@Before
+	public void SetUp() {
+		phn1 = new PhoneNumber("0123456789");
+		phn2 = new PhoneNumber("9876543210");
+		entityManager.persist(phn1);
+		entityManager.persist(phn2);
+		entityManager.flush();
+	}
 
 	// write test cases here
 	@Test
-	public void whenFindById_thenReturnCategory() {
-		// given
-		Category device = new Category();
-		device.setLabel("Device");
-		entityManager.persist(device);
-		entityManager.flush();
-
+	public void whenFindById_thenReturnPhoneNumber() {
 		// when
-		Optional<Category> existing = repository.findById(device.getCategoryId());
+		Optional<PhoneNumber> existing = repository.findById(phn1.getPhonenumberId());
 
 		// then
-		assertThat(existing.get()).isNotNull();
-		Category found = existing.get();
-		assertThat(found.getLabel()).isEqualTo(device.getLabel());
+		assertThat(existing.isPresent()).isTrue();
+		PhoneNumber found = existing.get();
+		assertThat(found.getNumber()).isEqualTo(phn1.getNumber());
 	}
 
 	@Test
-	public void whenFindByLabel_thenReturnCategory() {
-		// given
-		Category device = new Category();
-		device.setLabel("Device");
-		entityManager.persist(device);
-		entityManager.flush();
-
+	public void whenFindByNumber_thenReturnPhoneNumber() {
 		// when
-		Category found = repository.findByLabel(device.getLabel());
+		PhoneNumber found = repository.findByNumber(phn2.getNumber());
 
 		// then
-		assertThat(found.getLabel()).isEqualTo(device.getLabel());
+		assertThat(found.getNumber()).isEqualTo(phn2.getNumber());
 	}
 }

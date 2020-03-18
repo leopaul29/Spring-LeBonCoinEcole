@@ -1,26 +1,26 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "phonenumbers")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+//@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class PhoneNumber {
-    @Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "phonenumber_id")
 	private Long phonenumberId;
 
-    @Column(name = "number", length = 10)
-    private String number;
+	@Column(name = "number", length = 10, nullable = false, unique = true)
+	@NotNull
+	private String number;
 
-    public PhoneNumber() {
-    }
+	public PhoneNumber() {
+	}
 
-    public PhoneNumber(String number) {
-        this.number = number;
-    }
+	public PhoneNumber(String number) {
+		this.number = number;
+	}
 
 	public Long getPhonenumberId() {
 		return phonenumberId;
@@ -30,19 +30,19 @@ public class PhoneNumber {
 		this.phonenumberId = phonenumberId;
 	}
 
-    public String getNumber() {
-        return number;
-    }
+	public String getNumber() {
+		return number;
+	}
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
+	public void setNumber(String number) {
+		this.number = number;
+	}
 
-    @Override
-    public String toString() {
-        return "PhoneNumber{" +
-                "phonenumberId=" + phonenumberId +
-                ", number='" + number + '\'' +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "PhoneNumber{" +
+				"phonenumberId=" + phonenumberId +
+				", number='" + number + '\'' +
+				'}';
+	}
 }
