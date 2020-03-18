@@ -1,18 +1,20 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity(name = "emails")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Email {
-    @Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "email_id")
 	private Long emailId;
 
-	@Column(name = "email", length = 50)
+	@Column(name = "email", length = 50, nullable = false, unique = true)
+	@Size(min = 5, max = 50)
+	@NotNull
 	private String email;
 
 	public Email() {
@@ -34,15 +36,15 @@ public class Email {
 		return email;
 	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    @Override
-    public String toString() {
-        return "Email{" +
-                "emailId=" + emailId +
-                ", email='" + email + '\'' +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "Email{" +
+				"emailId=" + emailId +
+				", email='" + email + '\'' +
+				'}';
+	}
 }

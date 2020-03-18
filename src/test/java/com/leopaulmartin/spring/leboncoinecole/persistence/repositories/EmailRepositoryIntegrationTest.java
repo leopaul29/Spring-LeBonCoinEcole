@@ -1,6 +1,7 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.repositories;
 
-import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Email;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,61 +14,46 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/*
-https://www.baeldung.com/spring-boot-testing
-https://www.baeldung.com/introduction-to-assertj
- */
-/*
-@RunWith(SpringRunner.class) is used to provide a bridge between Spring Boot test features and JUnit. Whenever we are using any Spring Boot testing features in our JUnit tests, this annotation will be required.
- */
 @RunWith(SpringRunner.class)
-/*
-@DataJpaTest provides some standard setup needed for testing the persistence layer:
-    configuring H2, an in-memory database
-    > The H2 DB is our in-memory database. It eliminates the need for configuring and starting an actual database for test purposes.
-    setting Hibernate, Spring Data, and the DataSource
-    performing an @EntityScan
-    turning on SQL logging
- */
 @DataJpaTest
 @AutoConfigureTestDatabase
 public class EmailRepositoryIntegrationTest {
 
+	public Email email1, email2;
+
 	@Autowired
 	private EntityManager entityManager;
 	@Autowired
-	private CategoryRepository repository;
+	private EmailRepository repository;
+
+	@Before
+	public void SetUp() {
+		// given
+		email1 = new Email("contact@leboncoinecole.fr");
+		email2 = new Email("pro@leboncoinecole.fr");
+		entityManager.persist(email1);
+		entityManager.persist(email2);
+		entityManager.flush();
+	}
 
 	// write test cases here
 	@Test
-	public void whenFindById_thenReturnCategory() {
-		// given
-		Category device = new Category();
-		device.setLabel("Device");
-		entityManager.persist(device);
-		entityManager.flush();
-
+	public void whenFindById_thenReturnEmail() {
 		// when
-		Optional<Category> existing = repository.findById(device.getCategoryId());
+		Optional<Email> existing = repository.findById(email1.getEmailId());
 
 		// then
-		assertThat(existing.get()).isNotNull();
-		Category found = existing.get();
-		assertThat(found.getLabel()).isEqualTo(device.getLabel());
+		assertThat(existing.isPresent()).isTrue();
+		Email found = existing.get();
+		assertThat(found.getEmail()).isEqualTo(email1.getEmail());
 	}
 
 	@Test
-	public void whenFindByLabel_thenReturnCategory() {
-		// given
-		Category device = new Category();
-		device.setLabel("Device");
-		entityManager.persist(device);
-		entityManager.flush();
-
+	public void whenFindByEmail_thenReturnEmail() {
 		// when
-		Category found = repository.findByLabel(device.getLabel());
+		Email found = repository.findByEmail(email2.getEmail());
 
 		// then
-		assertThat(found.getLabel()).isEqualTo(device.getLabel());
+		assertThat(found.getEmail()).isEqualTo(email2.getEmail());
 	}
 }
