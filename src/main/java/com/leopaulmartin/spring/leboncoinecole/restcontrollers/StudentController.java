@@ -32,7 +32,7 @@ public class StudentController {
 
 	@PostMapping
 	public Student create(@RequestBody final Student student) {
-		List<PhoneNumber> phoneNumbers = student.getPhoneNumbers();
+		List<PhoneNumber> phoneNumbers = student.getPhonenumbers();
 		for (PhoneNumber phoneNumber :
 				phoneNumbers) {
 			phoneNumberRepository.saveAndFlush(phoneNumber);

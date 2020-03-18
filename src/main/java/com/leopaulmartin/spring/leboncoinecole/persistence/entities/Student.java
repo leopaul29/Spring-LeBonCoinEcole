@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,10 +16,12 @@ public class Student {
 	@Column(name = "student_id")
 	private Long studentId;
 
-	@Column(name = "username", length = 30)
+	@Column(name = "username", length = 30, nullable = false, unique = true)
+	@NotNull(message = "Cannot be null")
 	private String username;
 
-	@Column(name = "password", length = 30)
+	@Column(name = "password", length = 30, nullable = false)
+	@NotNull(message = "Cannot be null")
 	private String password;
 
 	@Column(name = "first_name", length = 30)
@@ -33,42 +36,49 @@ public class Student {
 	private byte[] photo;
 
 	@OneToMany(cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-	@JoinTable(
-			name = "student_phonenumbers",
-			joinColumns = @JoinColumn(name = "student_id"),
-			inverseJoinColumns = @JoinColumn(name = "phonenumber_id"))
-	private List<PhoneNumber> phoneNumbers;
+//	@JoinTable(
+//			name = "student_phonenumbers",
+//			joinColumns = @JoinColumn(name = "student_id"),
+//			inverseJoinColumns = @JoinColumn(name = "phonenumber_id"))
+	private List<PhoneNumber> phonenumbers;
 
 	@OneToMany(cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-	@JoinTable(
-			name = "student_emails",
-			joinColumns = @JoinColumn(name = "student_id"),
-			inverseJoinColumns = @JoinColumn(name = "email_id"))
+//	@JoinTable(
+//			name = "student_emails",
+//			joinColumns = @JoinColumn(name = "student_id"),
+//			inverseJoinColumns = @JoinColumn(name = "email_id"))
 	private List<Email> emails;
 
 	@ManyToOne
-	@JoinTable(
-			name = "school_students",
-			joinColumns = @JoinColumn(name = "student_id"),
-			inverseJoinColumns = @JoinColumn(name = "school_id"))
+//	@JoinTable(
+//			name = "school_students",
+//			joinColumns = @JoinColumn(name = "student_id"),
+//			inverseJoinColumns = @JoinColumn(name = "school_id"))
 	private School school;
 
 	@OneToMany(cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-	@JoinTable(
-			name = "student_announcements",
-			joinColumns = @JoinColumn(name = "student_id"),
-			inverseJoinColumns = @JoinColumn(name = "announcement_id"))
+//	@JoinTable(
+//			name = "student_announcements",
+//			joinColumns = @JoinColumn(name = "student_id"),
+//			inverseJoinColumns = @JoinColumn(name = "announcement_id"))
 	private List<Announcement> announcements;
 
 	public Student() {
 	}
 
-	public Student(String username, String password, String firstName, String lastName, List<PhoneNumber> phoneNumbers, List<Email> emails) {
+	public Student(@NotNull(message = "Cannot be null") String username, @NotNull(message = "Cannot be null") String password) {
+		this.username = username;
+		this.password = password;
+	}
+
+	public Student(@NotNull(message = "Cannot be null") String username, @NotNull(message = "Cannot be null") String password,
+				   String firstName, String lastName,
+				   List<PhoneNumber> phonenumbers, List<Email> emails) {
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.phoneNumbers = phoneNumbers;
+		this.phonenumbers = phonenumbers;
 		this.emails = emails;
 	}
 
@@ -120,12 +130,12 @@ public class Student {
 		this.photo = photo;
 	}
 
-	public List<PhoneNumber> getPhoneNumbers() {
-		return phoneNumbers;
+	public List<PhoneNumber> getPhonenumbers() {
+		return phonenumbers;
 	}
 
-	public void setPhoneNumbers(List<PhoneNumber> phoneNumbers) {
-		this.phoneNumbers = phoneNumbers;
+	public void setPhonenumbers(List<PhoneNumber> phonenumbers) {
+		this.phonenumbers = phonenumbers;
 	}
 
 	public List<Email> getEmails() {
@@ -161,7 +171,7 @@ public class Student {
 				", firstName='" + firstName + '\'' +
 				", lastName='" + lastName + '\'' +
 				", photo=" + Arrays.toString(photo) +
-				", phoneNumbers=" + phoneNumbers +
+				", phoneNumbers=" + phonenumbers +
 				", emails=" + emails +
 				", school=" + school +
 				", announcements=" + announcements +
