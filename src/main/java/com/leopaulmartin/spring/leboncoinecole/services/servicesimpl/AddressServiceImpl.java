@@ -5,7 +5,6 @@ import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.AddressR
 import com.leopaulmartin.spring.leboncoinecole.services.AddressService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -30,8 +29,7 @@ public class AddressServiceImpl implements AddressService {
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
 	public Address createAddress(Address address) {
-		if (!addressIsValid(address)) {
-			logger.error("validation failed");
+		if (!isAddressValid(address)) {
 			return null;
 		}
 
@@ -45,22 +43,14 @@ public class AddressServiceImpl implements AddressService {
 			logger.error("mistmatch id");
 			return null;
 		}
-		if (!addressIsValid(address)) {
-			logger.error("validation failed");
+		if (!isAddressValid(address)) {
 			return null;
 		}
-//		Address existingAddress = repository.findById(id)
-//				.orElseThrow(() -> new RecordNotFoundException("id", id));
-//		//copy : source, target, ignoreProperties
-//		BeanUtils.copyProperties(address, existingAddress, "category_id");
-//		return repository.saveAndFlush(existingAddress);
 
 		Optional<Address> existingAddress = repository.findById(id);
 		if (existingAddress.isPresent()) {
 			Address foundAddress = existingAddress.get();
 			foundAddress.setLabel(address.getLabel());
-			//copy : source, target, ignoreProperties
-			BeanUtils.copyProperties(foundAddress, existingAddress, "category_id");
 			return repository.saveAndFlush(foundAddress);
 		} else {
 			logger.error("not found");
@@ -75,9 +65,23 @@ public class AddressServiceImpl implements AddressService {
 		repository.deleteById(id);
 	}
 
-	private boolean addressIsValid(Address address) {
-		boolean isValid = address.getLabel() != null;
-		logger.error("isValid:" + isValid);
-		return isValid;
+	@Override
+	public boolean isAddressValid(Address address) {
+		Boolean[] isValidTab = new Boolean[4];
+		isValidTab[0] = address.getLabel() != null;
+		isValidTab[1] = address.getZipCode() != null;
+		isValidTab[2] = address.getCity() != null;
+		isValidTab[3] = address.getCountry() != null;
+
+		for (int i = 0; i < isValidTab.length; i++) {
+			boolean isValid = isValidTab[i];
+			if (!isValid) {
+				logger.error("validation failed");
+				return false;
+			}
+		}
+
+		logger.error("validation success");
+		return true;
 	}
 }

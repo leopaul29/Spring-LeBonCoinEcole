@@ -105,6 +105,7 @@ public class AddressServiceImplIntegrationTest {
 		parisAddress.setLabel(newLabel);
 		Address found = service.updateAddress(parisAddressId, parisAddress);
 
+		// then
 		assertThat(found)
 				.isNotNull();
 		assertThat(found.getAddressId())
@@ -155,6 +156,27 @@ public class AddressServiceImplIntegrationTest {
 		// when
 		Long wrongId = 14L;
 		service.deleteAddressById(wrongId);
+	}
+
+	/*
+	IsValid
+	 */
+	@Test
+	public void isAddressValid_thenReturnTrue() {
+		// when
+		boolean addressValid = service.isAddressValid(parisAddress);
+
+		// then
+		assertThat(addressValid).isTrue();
+	}
+
+	@Test
+	public void isAddressValid_thenReturnFalse() {
+		// when
+		boolean addressValid = service.isAddressValid(new Address());
+
+		// then
+		assertThat(addressValid).isFalse();
 	}
 
 	private void ParisAddressCompare(Address addressTested) {
