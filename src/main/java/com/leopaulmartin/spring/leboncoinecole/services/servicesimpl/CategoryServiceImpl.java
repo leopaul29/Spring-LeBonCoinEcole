@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 //Use @Transactional to cancel the transaction in case of any exception
@@ -39,16 +40,13 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	@Override
-	public Category getCategoryById(Long id) throws RecordNotFoundException {
-		return repository.findById(id)
-				.orElseThrow(() -> new RecordNotFoundException("", id));
+	public Category getCategoryById(Long id) {
+		return repository.getOne(id);
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	@Override
-	public Category getCategoryByLabel(String label) throws RecordNotFoundException {
-		if (repository.findByLabel(label) == null)
-			throw new RecordNotFoundException("label", label);
+	public Category getCategoryByLabel(String label) {
 		return repository.findByLabel(label);
 	}
 
@@ -60,9 +58,11 @@ public class CategoryServiceImpl implements CategoryService {
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
-	public Category createCategory(Category category) throws RecordAlreadyExistException {
-		if (repository.findByLabel(category.getLabel()) != null)
-			throw new RecordAlreadyExistException("label", category.getLabel());
+	public Category createCategory(Category category) {
+		if (!categoryIsValid(category)) {
+			logger.error("validation failed");
+			return null;
+		}
 
 		return repository.saveAndFlush(category);
 	}
@@ -71,33 +71,37 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public Category updateCategory(Long id, Category category) throws RecordIdMismatchException, RecordAlreadyExistException, RecordNotFoundException {
 		if (!category.getCategoryId().equals(id)) {
-			throw new RecordIdMismatchException();
+			logger.error("mistmatch id");
+			return null;
 		}
-		if (repository.findByLabel(category.getLabel()) != null)
-			throw new RecordAlreadyExistException("label", category.getLabel());
+		if (!categoryIsValid(category)) {
+			logger.error("validation failed");
+			return null;
+		}
+//		Category existingCategory = repository.findById(id)
+//				.orElseThrow(() -> new RecordNotFoundException("id", id));
+//		//copy : source, target, ignoreProperties
+//		BeanUtils.copyProperties(category, existingCategory, "category_id");
+//		return repository.saveAndFlush(existingCategory);
 
-		Category existingCategory = repository.findById(id)
-				.orElseThrow(() -> new RecordNotFoundException("id", id));
-		//copy : source, target, ignoreProperties
-		BeanUtils.copyProperties(category, existingCategory, "category_id");
-		return repository.saveAndFlush(existingCategory);
-
-//		Optional<Category> existingCategory = repository.findById(id);
-//		if (existingCategory.isPresent()) {
-//			Category newCategory = existingCategory.get();
-//			newCategory.setLabel(category.getLabel());
-//			BeanUtils.copyProperties(category, existingCategory, "category_id");
-//			return repository.saveAndFlush(newCategory);
-//		} else {
-//			throw new RecordNotFoundException("id", id);
-//		}
+		Optional<Category> existingCategory = repository.findById(id);
+		if (existingCategory.isPresent()) {
+			Category foundCategory = existingCategory.get();
+			foundCategory.setLabel(category.getLabel());
+			//copy : source, target, ignoreProperties
+			BeanUtils.copyProperties(foundCategory, existingCategory, "category_id");
+			return repository.saveAndFlush(foundCategory);
+		} else {
+			logger.error("not found");
+			return null;
+		}
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
-	public void deleteCategoryById(Long id) throws RecordNotFoundException {
-		repository.findById(id)
-				.orElseThrow(() -> new RecordNotFoundException("id", id));
+	public void deleteCategoryById(Long id) {
+//		repository.findById(id)
+//				.orElseThrow(() -> new RecordNotFoundException("id", id));
 		repository.deleteById(id);
 	}
 
@@ -105,5 +109,12 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public void deleteAllCategories() {
 		repository.deleteAll();
+	}
+
+	private boolean categoryIsValid(Category category) {
+		// not valid when label alread exist
+		boolean isValid = repository.findByLabel(category.getLabel()) == null;
+		logger.error("isValid:" + isValid);
+		return isValid;
 	}
 }

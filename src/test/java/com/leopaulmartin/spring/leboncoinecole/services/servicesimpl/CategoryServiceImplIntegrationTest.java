@@ -1,8 +1,5 @@
 package com.leopaulmartin.spring.leboncoinecole.services.servicesimpl;
 
-import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordAlreadyExistException;
-import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordIdMismatchException;
-import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.CategoryRepository;
 import com.leopaulmartin.spring.leboncoinecole.services.CategoryService;
@@ -22,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.reset;
 
 /*
 https://www.baeldung.com/spring-boot-testing
@@ -44,18 +42,25 @@ public class CategoryServiceImplIntegrationTest {
 
 	@Before
 	public void setUp() {
-		Mockito.when(repository.findAll())
-				.thenReturn(new ArrayList<>());
-
+		// create tested category object
 		deviceCategory = new Category(deviceCategoryLabel);
 		deviceCategory.setCategoryId(deviceCategoryId);
 
-		Mockito.when(repository.findByLabel(deviceCategoryLabel))
+		// mock findAll
+		List<Category> categories = new ArrayList<>();
+		categories.add(deviceCategory);
+		Mockito.when(repository.findAll())
+				.thenReturn(categories);
+		// mock getOne
+		Mockito.when(repository.getOne(deviceCategoryId))
 				.thenReturn(deviceCategory);
-
+		// mock findById
 		Mockito.when(repository.findById(deviceCategoryId))
 				.thenReturn(java.util.Optional.ofNullable(deviceCategory));
-
+		// mock findByLabel
+		Mockito.when(repository.findByLabel(deviceCategoryLabel))
+				.thenReturn(deviceCategory);
+		// mock save
 		Mockito.when(repository.saveAndFlush(deviceCategory))
 				.thenReturn(deviceCategory);
 	}
@@ -66,12 +71,27 @@ public class CategoryServiceImplIntegrationTest {
 	Find methods
 	 */
 	@Test
-	public void whenGetAllCategories_thenEmptyList() {
+	public void whenGetAllCategories_thenReturnList() {
 		// when
-		List<Category> categories = service.getAllCategories();
+		List<Category> serviceAllCategories = service.getAllCategories();
 
 		// then
-		assertThat(categories)
+		assertThat(serviceAllCategories)
+				.isNotNull()
+				.isNotEmpty()
+				.hasSize(1);
+	}
+
+	@Test
+	public void whenGetAllCategories_thenReturnEmptyList() {
+		// reset
+		reset(repository);
+
+		// when
+		List<Category> serviceAllCategories = service.getAllCategories();
+
+		// then
+		assertThat(serviceAllCategories)
 				.isNotNull()
 				.isEmpty();
 	}
@@ -82,17 +102,20 @@ public class CategoryServiceImplIntegrationTest {
 		Category found = service.getCategoryById(deviceCategoryId);
 
 		// then
+		assertThat(found.getCategoryId())
+				.isEqualTo(deviceCategoryId);
 		assertThat(found.getLabel())
 				.isEqualTo(deviceCategoryLabel);
 	}
 
-	@Test(expected = RecordNotFoundException.class)
-	public void whenGetCategoryById_thenRecordNotFoundException() {
+	@Test
+	public void whenGetCategoryById_thenReturnNull() {
 		// when
 		Long categoryId = 2L;
 		Category found = service.getCategoryById(categoryId);
 
-		// then throw RecordNotFoundException
+		// then
+		assertThat(found).isNull();
 	}
 
 	@Test
@@ -101,28 +124,53 @@ public class CategoryServiceImplIntegrationTest {
 		Category found = service.getCategoryByLabel(deviceCategoryLabel);
 
 		// then
+		assertThat(found.getCategoryId())
+				.isEqualTo(deviceCategoryId);
 		assertThat(found.getLabel())
 				.isEqualTo(deviceCategoryLabel);
 	}
 
-	@Test(expected = RecordNotFoundException.class)
-	public void whenGetCategoryByLabel_thenRecordNotFoundException() {
+	@Test
+	public void whenGetCategoryByLabel_thenReturnNull() {
 		// when
 		String label = "TV";
 		Category found = service.getCategoryByLabel(label);
 
-		// then throw RecordNotFoundException
+		// then
+		assertThat(found).isNull();
 	}
 
 	/*
 	Save methods
 	 */
-	@Test(expected = RecordAlreadyExistException.class)
-	public void whenCreateCategory_thenRecordAlreadyExistException() {
+	@Test
+	public void whenCreateCategory_thenReturnCategory() {
+		// reset findByLabel
+		reset(repository);
+		// mock save
+		Mockito.when(repository.saveAndFlush(deviceCategory))
+				.thenReturn(deviceCategory);
+
 		// when
 		Category found = service.createCategory(deviceCategory);
 
-		// then throw RecordAlreadyExistException
+		// then
+		assertThat(found)
+				.isNotNull();
+		assertThat(found.getLabel())
+				.isEqualTo(deviceCategory.getLabel());
+	}
+
+	@Test
+	public void whenCreateCategory_thenReturnNull() {
+		// reset
+		reset(repository);
+
+		// when
+		Category found = service.createCategory(deviceCategory);
+
+		// then
+		assertThat(found).isNull();
 	}
 
 	/*
@@ -137,46 +185,52 @@ public class CategoryServiceImplIntegrationTest {
 
 		assertThat(found)
 				.isNotNull();
+		assertThat(found.getCategoryId())
+				.isEqualTo(deviceCategoryId);
 		assertThat(found.getLabel())
 				.isEqualTo(newLabel);
 	}
 
-	@Test(expected = RecordIdMismatchException.class)
-	public void whenUpdateCategory_thenRecordIdMismatchException() {
+	@Test
+	public void whenUpdateCategory_thenWrongId() {
 		// when
-		Category found = service.updateCategory(2L, deviceCategory);
+		Long wrongId = 2L;
+		Category found = service.updateCategory(wrongId, deviceCategory);
 
-		// then throw RecordIdMismatchException
+		// then
+		assertThat(found).isNull();
 	}
 
-	@Test(expected = RecordAlreadyExistException.class)
-	public void whenUpdateCategory_thenRecordAlreadyExistException() {
+	@Test
+	public void whenUpdateCategory_thenAlreadyExist() {
 		// when
 		Category found = service.updateCategory(deviceCategoryId, deviceCategory);
 
-		// then throw RecordAlreadyExistException
+		// then
+		assertThat(found).isNull();
 	}
 
-	@Test(expected = RecordNotFoundException.class)
-	public void whenUpdateCategory_thenRecordNotFoundException() {
+	@Test
+	public void whenUpdateCategory_thenNullIdNotExist() {
 		// when
 		Category tvCategory = new Category("TV");
 		Long tvCategoryId = 18L;
 		tvCategory.setCategoryId(tvCategoryId);
 		Category found = service.updateCategory(tvCategoryId, tvCategory);
 
-		// then throw RecordAlreadyExistException
+		// then
+		assertThat(found).isNull();
 	}
 
 	/*
 	Delete methods
 	 */
-	@Test(expected = RecordNotFoundException.class)
-	public void whenDeleteCategory_thenRecordNotFoundException() {
+	@Test
+	public void whenDeleteCategory_thenNothingHappen() {
 		// when
-		service.deleteCategoryById(14L);
+		Long wrongId = 14L;
+		service.deleteCategoryById(wrongId);
 	}
-
 
 	/*
 	To check the Service class, we need to have an instance of Service class created and available as a @Bean so that we can @Autowire it in our test class. This configuration is achieved by using the @TestConfiguration annotation.
