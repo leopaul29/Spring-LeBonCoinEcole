@@ -8,7 +8,6 @@ import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.Category
 import com.leopaulmartin.spring.leboncoinecole.services.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -59,7 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
 	public Category createCategory(Category category) {
-		if (!categoryIsValid(category)) {
+		if (!isCategoryValid(category)) {
 			logger.error("validation failed");
 			return null;
 		}
@@ -74,22 +73,15 @@ public class CategoryServiceImpl implements CategoryService {
 			logger.error("mistmatch id");
 			return null;
 		}
-		if (!categoryIsValid(category)) {
+		if (!isCategoryValid(category)) {
 			logger.error("validation failed");
 			return null;
 		}
-//		Category existingCategory = repository.findById(id)
-//				.orElseThrow(() -> new RecordNotFoundException("id", id));
-//		//copy : source, target, ignoreProperties
-//		BeanUtils.copyProperties(category, existingCategory, "category_id");
-//		return repository.saveAndFlush(existingCategory);
 
 		Optional<Category> existingCategory = repository.findById(id);
 		if (existingCategory.isPresent()) {
 			Category foundCategory = existingCategory.get();
 			foundCategory.setLabel(category.getLabel());
-			//copy : source, target, ignoreProperties
-			BeanUtils.copyProperties(foundCategory, existingCategory, "category_id");
 			return repository.saveAndFlush(foundCategory);
 		} else {
 			logger.error("not found");
@@ -100,8 +92,6 @@ public class CategoryServiceImpl implements CategoryService {
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
 	public void deleteCategoryById(Long id) {
-//		repository.findById(id)
-//				.orElseThrow(() -> new RecordNotFoundException("id", id));
 		repository.deleteById(id);
 	}
 
@@ -111,10 +101,12 @@ public class CategoryServiceImpl implements CategoryService {
 		repository.deleteAll();
 	}
 
-	private boolean categoryIsValid(Category category) {
-		// not valid when label alread exist
+	@Override
+	public boolean isCategoryValid(Category category) {
 		boolean isValid = repository.findByLabel(category.getLabel()) == null;
-		logger.error("isValid:" + isValid);
+
+		if (isValid) logger.error("validation success");
+		else logger.error("validation failed");
 		return isValid;
 	}
 }

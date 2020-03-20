@@ -20,4 +20,6 @@ public interface CategoryService {
 	void deleteCategoryById(Long id);
 
 	void deleteAllCategories();
+
+	boolean isCategoryValid(Category category);
 }
