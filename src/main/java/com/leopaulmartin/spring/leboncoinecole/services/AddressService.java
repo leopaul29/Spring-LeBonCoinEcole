@@ -12,4 +12,6 @@ public interface AddressService {
 	Address updateAddress(Long id, Address address);
 
 	void deleteAddressById(Long id);
+
+	boolean isAddressValid(Address address);
 }
