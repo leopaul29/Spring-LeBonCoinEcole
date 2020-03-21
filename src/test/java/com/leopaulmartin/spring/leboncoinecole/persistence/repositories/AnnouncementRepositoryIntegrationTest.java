@@ -45,9 +45,12 @@ public class AnnouncementRepositoryIntegrationTest {
 		categories.add(deviceCategory);
 		iphoneAnnounce = new Announcement("IPhone", "Super téléphone portable", 500);
 		iphoneAnnounce.setCategories(categories);
+		iphoneAnnounce.setAnnouncement(true);
 		em.persist(iphoneAnnounce);
 		ipadAnnounce = new Announcement("IPad", "Super tablette", 650);
 		ipadAnnounce.setCategories(categories);
+		ipadAnnounce.makeItaSearch();
+		logger.error(ipadAnnounce.toString());
 		em.persist(ipadAnnounce);
 
 		List<Announcement> announcements = new ArrayList<>();
@@ -77,11 +80,38 @@ public class AnnouncementRepositoryIntegrationTest {
 	}
 
 	@Test
-	public void whenFindAnnouncementsByCategory_thenReturnAnnouncements() {
+	public void whenFindAnnouncementsByCategory_thenReturnTwoAnnouncements() {
 		// when
-		List<Announcement> existing = repository.findAnnouncementsByCategory("Devices");
+		List<Announcement> existing = repository.findAnnouncementsByCategory(deviceCategory.getCategoryId());
 
 		// then
 		assertThat(existing).isNotNull().isNotEmpty().hasSize(2);
+	}
+
+	@Test
+	public void whenFindAnnouncementsByCategory_thenReturnOneSearch() {
+		// when
+		List<Announcement> existing = repository.findSearchesByCategory(deviceCategory.getCategoryId());
+
+		// then
+		assertThat(existing).isNotNull()
+				.isNotEmpty()
+				.hasSize(1);
+		assertThat(existing.get(0).isAnnouncement())
+				.isFalse();
+	}
+
+	@Test
+	public void whenFindAnnouncementsByCategory_thenReturnOneSale() {
+		// when
+		List<Announcement> existing = repository.findSalesByCategory(deviceCategory.getCategoryId());
+
+		// then
+		assertThat(existing)
+				.isNotNull()
+				.isNotEmpty()
+				.hasSize(1);
+		assertThat(existing.get(0).isAnnouncement())
+				.isTrue();
 	}
 }

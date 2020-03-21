@@ -1,18 +1,17 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.entities;
 
 import org.hibernate.annotations.Type;
-import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
-import java.util.Arrays;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @Entity(name = "announcements")
 //@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
-public class Announcement extends ResourceSupport {
+public class Announcement {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "announcement_id")
@@ -42,7 +41,7 @@ public class Announcement extends ResourceSupport {
 	private float price;
 
 	@Column(name = "creation_date")
-//	@NotNull
+	//@NotNull
 	private Date creationDate;
 
 	@Column(name = "end_date")
@@ -52,36 +51,55 @@ public class Announcement extends ResourceSupport {
 	private boolean isClosed;
 
 	@ManyToMany//(cascade = {CascadeType.REMOVE})
-//    @JoinTable(
-//            name = "announcement_categories",
-//            joinColumns = @JoinColumn(name = "announcement_id"),
-//            inverseJoinColumns = @JoinColumn(name = "category_id"))
-//	@NotNull
+    /*@JoinTable(
+            name = "announcement_categories",
+            joinColumns = @JoinColumn(name = "announcement_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+	@NotNull*/
 	private List<Category> categories;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "student_id", nullable = false)
-//	@JoinColumn(name="studentId", nullable=false)
-////    @JoinTable(
-////            name = "student_announcements",
-////            joinColumns = @JoinColumn(name = "announcement_id"),
-////            inverseJoinColumns = @JoinColumn(name = "student_id"))
-//	@NotNull
+/*	@JoinColumn(name = "student_id", nullable = false)
+	@JoinColumn(name="studentId", nullable=false)
+//    @JoinTable(
+//            name = "student_announcements",
+//            joinColumns = @JoinColumn(name = "announcement_id"),
+//            inverseJoinColumns = @JoinColumn(name = "student_id"))
+	@NotNull*/
 	private Student student;
 
+	/*
+	Constructors
+	 */
 	public Announcement() {
+		// sale by default
+		this.isAnnouncement = true;
+		// server date when announcement created
+		this.creationDate = new Date(System.currentTimeMillis());
+		// life of the announcement set to 3 month maximum
+		GregorianCalendar gcalendar = new GregorianCalendar();
+		gcalendar.add(3, GregorianCalendar.MONTH);
+		this.endDate = gcalendar.getGregorianChange();
 	}
 
 	public Announcement(String title, String description, float price) {
+		this();
+
 		this.title = title;
 		this.description = description;
 		this.price = price;
-//		this.categories = categories;
-//		this.student = student;
-
-//		this.creationDate = new Date();
 	}
 
+	/*
+	 Methods
+	 */
+	public void makeItaSearch() {
+		this.setAnnouncement(false);
+	}
+
+	/*
+	 Getters & Setters
+	 */
 	public Long getAnnouncementId() {
 		return announcementId;
 	}
@@ -162,13 +180,13 @@ public class Announcement extends ResourceSupport {
 		this.categories = categories;
 	}
 
-//	public Student getStudent() {
-//		return student;
-//	}
-//
-//	public void setStudent(Student student) {
-//		this.student = student;
-//	}
+	public Student getStudent() {
+		return student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
 
 	@Override
 	public String toString() {
@@ -176,7 +194,7 @@ public class Announcement extends ResourceSupport {
 				"announcementId=" + announcementId +
 				", isAnnouncement=" + isAnnouncement +
 				", title='" + title + '\'' +
-				", photo=" + Arrays.toString(photo) +
+				", photo=" + (photo != null) +
 				", price=" + price +
 				", creationDate=" + creationDate +
 				", endDate=" + endDate +

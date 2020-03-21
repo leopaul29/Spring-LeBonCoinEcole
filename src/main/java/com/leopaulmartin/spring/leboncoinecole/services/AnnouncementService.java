@@ -1,8 +1,5 @@
 package com.leopaulmartin.spring.leboncoinecole.services;
 
-import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordAlreadyExistException;
-import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordIdMismatchException;
-import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
 import org.springframework.stereotype.Component;
 
@@ -12,15 +9,19 @@ import java.util.List;
 public interface AnnouncementService {
 	List<Announcement> getAllAnnouncements();
 
-	Announcement getAnnouncementById(Long id) throws RecordNotFoundException;
+	Announcement getAnnouncementById(Long id);
 
-	List<Announcement> getAnnouncementForCategory(Long categoryId) throws RecordNotFoundException;
+	List<Announcement> getAnnouncementForCategory(Long categoryId);
 
-	Announcement createAnnouncement(Announcement announcement) throws RecordAlreadyExistException;
+	List<Announcement> getSearchesByCategory(Long categoryId);
 
-	Announcement updateAnnouncement(Long id, Announcement announcement) throws RecordIdMismatchException, RecordAlreadyExistException, RecordNotFoundException;
+	List<Announcement> getSalesByCategory(Long categoryId);
 
-	void deleteAnnouncementById(Long id) throws RecordNotFoundException;
+	Announcement createAnnouncement(Announcement announcement);
 
-	void deleteAllAnnouncements();
+	Announcement updateAnnouncement(Long id, Announcement announcement);
+
+	void deleteAnnouncementById(Long id);
+
+	boolean isAnnouncementValid(Announcement announcement);
 }

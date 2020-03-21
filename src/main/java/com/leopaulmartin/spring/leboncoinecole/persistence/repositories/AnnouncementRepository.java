@@ -11,6 +11,21 @@ import java.util.List;
 @Repository
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
 
-	@Query("SELECT a FROM announcements a INNER JOIN a.categories c WHERE c.label = :label")
-	List<Announcement> findAnnouncementsByCategory(@Param("label") String label);
+	@Query("SELECT a " +
+			"FROM announcements a " +
+			"INNER JOIN a.categories c " +
+			"WHERE c.categoryId = :categoryId")
+	List<Announcement> findAnnouncementsByCategory(@Param("categoryId") Long categoryId);
+
+	@Query("SELECT a " +
+			"FROM announcements a " +
+			"INNER JOIN a.categories c " +
+			"WHERE c.categoryId = :categoryId AND a.isAnnouncement = false")
+	List<Announcement> findSearchesByCategory(@Param("categoryId") Long categoryId);
+
+	@Query("SELECT a " +
+			"FROM announcements a " +
+			"INNER JOIN a.categories c " +
+			"WHERE c.categoryId = :categoryId AND a.isAnnouncement = true")
+	List<Announcement> findSalesByCategory(@Param("categoryId") Long categoryId);
 }
