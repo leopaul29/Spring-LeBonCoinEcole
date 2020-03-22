@@ -10,7 +10,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
-import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EmailRepositoryIntegrationTest {
 
 	public Email email1, email2;
+	public String emailPro = "pro@leboncoinecole.fr", emailContact = "contact@leboncoinecole.fr";
 
 	@Autowired
 	private EntityManager entityManager;
@@ -29,31 +31,64 @@ public class EmailRepositoryIntegrationTest {
 	@Before
 	public void SetUp() {
 		// given
-		email1 = new Email("contact@leboncoinecole.fr");
-		email2 = new Email("pro@leboncoinecole.fr");
+		email1 = new Email(emailContact);
 		entityManager.persist(email1);
+		email2 = new Email(emailPro);
 		entityManager.persist(email2);
+
 		entityManager.flush();
 	}
 
 	// write test cases here
+	/*
+	Find methods
+	 */
 	@Test
 	public void whenFindById_thenReturnEmail() {
 		// when
-		Optional<Email> existing = repository.findById(email1.getEmailId());
+		Email found = repository.getOne(email1.getEmailId());
 
 		// then
-		assertThat(existing.isPresent()).isTrue();
-		Email found = existing.get();
-		assertThat(found.getEmail()).isEqualTo(email1.getEmail());
+		assertThat(found.getEmail()).isEqualTo(emailContact);
+	}
+
+	@Test(expected = EntityNotFoundException.class)
+	public void whenFindById_thenReturnNull() {
+		// when
+		Long wrongId = 101L;
+		Email found = repository.getOne(wrongId);
+
+		// then throw EntityNotFoundException
+		assertThat(found).isNull();
 	}
 
 	@Test
 	public void whenFindByEmail_thenReturnEmail() {
 		// when
-		Email found = repository.findByEmail(email2.getEmail());
+		Email found = repository.findByEmail(emailPro);
 
 		// then
-		assertThat(found.getEmail()).isEqualTo(email2.getEmail());
+		assertThat(found.getEmail()).isEqualTo(emailPro);
+	}
+
+	/*
+	Save methods
+	 */
+	@Test(expected = ConstraintViolationException.class)
+	public void whenAddressNoLabelSaved_thenDataIntegrityViolationException() {
+		// when
+		Email emptyAddress = new Email();
+		repository.saveAndFlush(emptyAddress);
+
+		// then throw DataIntegrityViolationException
+	}
+
+	@Test(expected = ConstraintViolationException.class)
+	public void whenAddressLabelUnderSizeMinSaved_thenConstraintViolationException() {
+		// when
+		Email address = new Email("a");
+		repository.saveAndFlush(address);
+
+		// then throw ConstraintViolationException
 	}
 }

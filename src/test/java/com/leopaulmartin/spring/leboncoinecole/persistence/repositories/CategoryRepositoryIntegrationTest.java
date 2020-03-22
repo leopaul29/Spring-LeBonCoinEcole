@@ -13,9 +13,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,9 +39,9 @@ https://www.baeldung.com/introduction-to-assertj
 @AutoConfigureTestDatabase
 public class CategoryRepositoryIntegrationTest {
 	private static final Logger logger = LoggerFactory.getLogger(CategoryRepositoryIntegrationTest.class);
-
+	public final String deviceCategoryLabel = "Device";
+	private final long wrongId = 101L;
 	public Category deviceCategory;
-
 	@Autowired
 	private EntityManager em;
 	@Autowired
@@ -49,9 +49,15 @@ public class CategoryRepositoryIntegrationTest {
 
 	@Before
 	public void SetUp() {
-		deviceCategory = new Category("Device");
+		deviceCategory = new Category(deviceCategoryLabel);
 		em.persist(deviceCategory);
+
 		em.flush();
+	}
+
+	private void DeviceCategoryCompare(Category categoryTested) {
+		assertThat(categoryTested).isNotNull();
+		assertThat(categoryTested.getLabel()).isEqualTo(deviceCategoryLabel);
 	}
 
 	// write test cases here
@@ -60,34 +66,37 @@ public class CategoryRepositoryIntegrationTest {
 	Find methods
 	 */
 	@Test
-	public void whenFindAll_thenReturnListCategory() {
+	public void whenFindAll_thenReturnCategoryList() {
 		// when
 		List<Category> categories = repository.findAll();
 
 		// then
-		assertThat(categories).isNotNull().isNotEmpty().hasSize(1);
+		assertThat(categories)
+				.isNotNull()
+				.isNotEmpty()
+				.hasSize(1);
+
+		// then
+		Category found = categories.get(0);
+		DeviceCategoryCompare(found);
 	}
 
 	@Test
 	public void whenFindById_thenReturnCategory() {
 		// when
-		Optional<Category> existing = repository.findById(deviceCategory.getCategoryId());
+		Category found = repository.getOne(deviceCategory.getCategoryId());
 
 		// then
-		assertThat(existing.isPresent()).isTrue();
-
-		Category found = existing.get();
-		assertThat(found.getLabel())
-				.isEqualTo(deviceCategory.getLabel());
+		DeviceCategoryCompare(found);
 	}
 
-	@Test
-	public void whenFindById_thenNoResult() {
+	@Test(expected = EntityNotFoundException.class)
+	public void whenFindById_thenEntityNotFoundException() {
 		// when
-		Optional<Category> existing = repository.findById(100L);
+		Category found = repository.getOne(wrongId);
 
 		// then
-		assertThat(existing.isPresent()).isFalse();
+		assertThat(found).isNull();
 	}
 
 	@Test
@@ -96,12 +105,11 @@ public class CategoryRepositoryIntegrationTest {
 		Category found = repository.findByLabel(deviceCategory.getLabel());
 
 		// then
-		assertThat(found.getLabel())
-				.isEqualTo(deviceCategory.getLabel());
+		DeviceCategoryCompare(found);
 	}
 
 	@Test
-	public void whenFindByLabel_thenNoResult() {
+	public void whenFindByLabel_thenReturnNull() {
 		// when
 		Category found = repository.findByLabel("Label not exist");
 
@@ -112,35 +120,8 @@ public class CategoryRepositoryIntegrationTest {
 	/*
 	Save methods
 	 */
-	@Test(expected = DataIntegrityViolationException.class)
-	public void whenCategoryNoLabelSaved_thenDataIntegrityViolationException() {
-		// when
-		Category emptyCategory = new Category();
-		repository.saveAndFlush(emptyCategory);
-
-		// then throw DataIntegrityViolationException
-	}
-
-	@Test(expected = ConstraintViolationException.class)
-	public void whenCategoryLabelUnderSizeMinSaved_thenConstraintViolationException() {
-		// when
-		Category emptyCategory = new Category("A");
-		repository.saveAndFlush(emptyCategory);
-
-		// then throw ConstraintViolationException
-	}
-
-	@Test(expected = ConstraintViolationException.class)
-	public void whenCategoryLabelUpperSizeMaxSaved_thenConstraintViolationException() {
-		// when
-		Category emptyCategory = new Category("aaaaaaaaaa bbbbbbbbbb cccccccccc dddddddddd eeeeeeeeee");
-		repository.saveAndFlush(emptyCategory);
-
-		// then throw ConstraintViolationException
-	}
-
 	@Test
-	public void whenCategoryLabelSaved_thenReturnCategory() {
+	public void whenCategorySaved_thenReturnCategory() {
 		// when
 		String label = "Books";
 		Category booksCategory = new Category(label);
@@ -154,11 +135,39 @@ public class CategoryRepositoryIntegrationTest {
 	}
 
 	@Test(expected = DataIntegrityViolationException.class)
-	public void whenCategoryLabelSavedTwice_thenDataIntegrityViolationException() {
+	public void whenCategorySaved_NoLabel_thenDataIntegrityViolationException() {
+		// when
+		Category newCategory = new Category();
+		repository.saveAndFlush(newCategory);
+
+		// then throw DataIntegrityViolationException
+	}
+
+	@Test(expected = ConstraintViolationException.class)
+	public void whenCategorySaved_LabelUnderSizeMin_thenConstraintViolationException() {
+		// when
+		Category newCategory = new Category("A");
+		repository.saveAndFlush(newCategory);
+
+		// then throw ConstraintViolationException
+	}
+
+	@Test(expected = ConstraintViolationException.class)
+	public void whenCategorySaved_LabelUpperSizeMax_thenConstraintViolationException() {
+		// when
+		Category newCategory = new Category("aaaaaaaaaa bbbbbbbbbb cccccccccc dddddddddd eeeeeeeeee");
+		repository.saveAndFlush(newCategory);
+
+		// then throw ConstraintViolationException
+	}
+
+	@Test(expected = DataIntegrityViolationException.class)
+	public void whenCategorySaved_LabelAlreadyExist_thenDataIntegrityViolationException() {
 		// when
 		String label = "Books";
 		Category booksCategory = new Category(label);
 		repository.saveAndFlush(booksCategory);
+		// save a second "Books" category
 		Category booksCategoryCopy = new Category(label);
 		repository.saveAndFlush(booksCategoryCopy);
 
@@ -186,29 +195,33 @@ public class CategoryRepositoryIntegrationTest {
 				.isEqualTo(updatedCategory.getCategoryId());
 	}
 
-	/*
-	Delete methods
-	 */
-	@Test
-	public void whenCategoryDeleted_thenShouldNotFindCategory() {
+	@Test(expected = DataIntegrityViolationException.class)
+	public void whenCategoryUpdate_NoLabel_thenDataIntegrityViolationException() {
 		// when
-		repository.delete(deviceCategory);
-		Optional<Category> found = repository.findById(deviceCategory.getCategoryId());
+		Category found = repository.getOne(deviceCategory.getCategoryId());
+		found.setLabel("");
+		repository.saveAndFlush(found);
 
-		// then
-		assertThat(found.isPresent())
-				.isFalse();
+		// then throw DataIntegrityViolationException
 	}
 
-	@Test
-	public void whenAllCategoriesDeleted_thenShouldNotFindCategory() {
+	@Test(expected = ConstraintViolationException.class)
+	public void whenCategoryUpdate_LabelUnderSizeMin_thenConstraintViolationException() {
 		// when
-		repository.deleteAll();
-		List<Category> categories = repository.findAll();
+		Category found = repository.getOne(deviceCategory.getCategoryId());
+		found.setLabel("A");
+		repository.saveAndFlush(found);
 
-		// then
-		assertThat(categories)
-				.isNotNull()
-				.isEmpty();
+		// then throw ConstraintViolationException
+	}
+
+	@Test(expected = ConstraintViolationException.class)
+	public void whenCategoryUpdate_LabelUpperSizeMax_thenConstraintViolationException() {
+		// when
+		Category found = repository.getOne(deviceCategory.getCategoryId());
+		found.setLabel("aaaaaaaaaa bbbbbbbbbb cccccccccc dddddddddd eeeeeeeeee");
+		repository.saveAndFlush(found);
+
+		// then throw ConstraintViolationException
 	}
 }

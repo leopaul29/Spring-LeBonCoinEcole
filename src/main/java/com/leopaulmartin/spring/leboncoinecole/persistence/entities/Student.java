@@ -5,7 +5,6 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Arrays;
 import java.util.List;
 
 @Entity(name = "students")
@@ -49,7 +48,8 @@ public class Student {
 //			inverseJoinColumns = @JoinColumn(name = "email_id"))
 	private List<Email> emails;
 
-	@ManyToOne
+	@ManyToOne(targetEntity = com.leopaulmartin.spring.leboncoinecole.persistence.entities.School.class,
+			fetch = FetchType.LAZY)
 //	@JoinTable(
 //			name = "school_students",
 //			joinColumns = @JoinColumn(name = "student_id"),
@@ -172,11 +172,7 @@ public class Student {
 				", password='" + password + '\'' +
 				", firstName='" + firstName + '\'' +
 				", lastName='" + lastName + '\'' +
-				", photo=" + Arrays.toString(photo) +
-				", phoneNumbers=" + phonenumbers +
-				", emails=" + emails +
-				", school=" + school +
-				", announcements=" + announcements +
+				", photo=" + (photo != null) +
 				'}';
 	}
 }

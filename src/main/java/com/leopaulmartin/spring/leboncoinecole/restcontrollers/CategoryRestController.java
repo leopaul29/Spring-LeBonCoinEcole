@@ -19,7 +19,6 @@ import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 /**
@@ -64,15 +63,16 @@ class CategoryRestController {
 
 	@GetMapping(path = "/{id}/announcements", produces = APPLICATION_JSON_AND_HATEOAS)
 	public Resources<Announcement> getAnnouncementForCategory(@PathVariable("id") final Long categoryId) {
-		List<Announcement> announcements = announcementService.getAnnouncementForCategory(categoryId);
-		for (final Announcement announcement : announcements) {
-			Link selfLink = linkTo(methodOn(CategoryRestController.class).getCategoryById(categoryId)).withSelfRel();
-			announcement.add(selfLink);
-		}
-
-		Link link = linkTo(methodOn(CategoryRestController.class).getAnnouncementForCategory(categoryId)).withSelfRel();
-		Resources<Announcement> result = new Resources<Announcement>(announcements, link);
-		return result;
+//		List<Announcement> announcements = announcementService.getAnnouncementForCategory(categoryId);
+//		for (final Announcement announcement : announcements) {
+//			Link selfLink = linkTo(methodOn(CategoryRestController.class).getCategoryById(categoryId)).withSelfRel();
+//			announcement.add(selfLink);
+//		}
+//
+//		Link link = linkTo(methodOn(CategoryRestController.class).getAnnouncementForCategory(categoryId)).withSelfRel();
+//		Resources<Announcement> result = new Resources<Announcement>(announcements, link);
+//		return result;
+		return null;
 	}
 
 	@GetMapping(path = "/{id}", produces = APPLICATION_JSON_UTF8_VALUE)

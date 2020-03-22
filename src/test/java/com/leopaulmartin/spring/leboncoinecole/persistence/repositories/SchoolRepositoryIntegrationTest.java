@@ -2,6 +2,7 @@ package com.leopaulmartin.spring.leboncoinecole.persistence.repositories;
 
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Address;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.School;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Student;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,9 +14,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,7 +24,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SchoolRepositoryIntegrationTest {
 	private static final Logger logger = LoggerFactory.getLogger(SchoolRepositoryIntegrationTest.class);
 
-	public School sch1;
+	public School school;
+	public String schoolName = "First school";
+	public Address parisAddress;
+	private String parisAddressLabel = "Rue du Faubourg Saint-Honoré";
+
+	private Student stu1;
+	private Student stu2;
 
 	@Autowired
 	private EntityManager em;
@@ -35,10 +40,18 @@ public class SchoolRepositoryIntegrationTest {
 	@Before
 	public void SetUp() {
 		// given
-		Address parisAddress = new Address("Rue du Faubourg Saint-Honoré", "75123", "Paris", "France");
-		sch1 = new School("School number one", parisAddress);
+		parisAddress = new Address(parisAddressLabel, "75123", "Paris", "France");
 		em.persist(parisAddress);
-		em.persist(sch1);
+		school = new School(schoolName, parisAddress);
+		em.persist(school);
+
+		stu1 = new Student("username1", "password1");
+		stu1.setSchool(school);
+		em.persist(stu1);
+		stu2 = new Student("username2", "password2");
+		stu2.setSchool(school);
+		em.persist(stu2);
+
 		em.flush();
 	}
 
@@ -46,30 +59,40 @@ public class SchoolRepositoryIntegrationTest {
 	@Test
 	public void whenFindById_thenReturnSchool() {
 		// when
-		Optional<School> existing = repository.findById(sch1.getSchoolId());
+		School found = repository.getOne(school.getSchoolId());
 
 		// then
-		assertThat(existing.isPresent()).isTrue();
-		School found = existing.get();
-		assertThat(found.getName()).isEqualTo(sch1.getName());
-		assertThat(found.getAddress().getLabel()).isEqualTo(sch1.getAddress().getLabel());
+		assertThat(found.getName()).isNotNull();
+		assertThat(found.getName()).isEqualTo(school.getName());
+		assertThat(found.getAddress().getLabel()).isEqualTo(school.getAddress().getLabel());
 	}
 
 	@Test
 	public void whenFindByAddressCity_thenReturnSchoolList() {
-		List<School> schools = null;
-		assertThat(schools).isNull();
-
-		schools = new ArrayList<>();
-		assertThat(schools).isNotNull().isEmpty();
-
 		// when
 		String city = "Paris";
-		schools = repository.findByAddressCity(city);
+		List<School> schools = repository.findByAddressCity(city);
+
 		// then
-		assertThat(schools).isNotNull().isNotEmpty().hasSize(1);
+		assertThat(schools)
+				.isNotNull()
+				.isNotEmpty()
+				.hasSize(1);
+
 		School found = schools.get(0);
-		assertThat(found.getName()).isEqualTo(sch1.getName());
+		assertThat(found.getName()).isEqualTo(school.getName());
 		assertThat(found.getAddress().getCity()).isEqualTo(city);
+	}
+
+	@Test
+	public void whenFindByAddressCity_thenReturnEmptySchoolList() {
+		// when
+		String city = "London";
+		List<School> schools = repository.findByAddressCity(city);
+
+		// then
+		assertThat(schools)
+				.isNotNull()
+				.isEmpty();
 	}
 }

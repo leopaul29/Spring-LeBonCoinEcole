@@ -26,6 +26,13 @@ public class StudentServiceImpl implements StudentService {
 		return repository.getOne(id);
 	}
 
+//	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+//	@Override
+//	public int getAnnouncementCount(Student student) {
+//		return student.getAnnouncements().size();
+//	}
+
+
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
 	public Student createStudent(Student student) {

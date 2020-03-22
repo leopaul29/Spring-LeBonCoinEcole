@@ -7,10 +7,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 @Transactional(readOnly = true)
 public interface AddressRepository extends JpaRepository<Address, Long> {
 
 	@Query("SELECT a FROM addresses a WHERE LOWER(a.city) = LOWER(:city)")
-	Address findByCity(@Param("city") String city);
+	List<Address> findByCity(@Param("city") String city);
 }

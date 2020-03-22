@@ -1,6 +1,8 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.repositories;
 
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Address;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.PhoneNumber;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.School;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Student;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,23 +27,45 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class StudentRepositoryIntegrationTest {
 	private static final Logger logger = LoggerFactory.getLogger(StudentRepositoryIntegrationTest.class);
 
-	public Student stu1;
 	@Autowired
 	private EntityManager em;
 	@Autowired
 	private StudentRepository repository;
 
+	private final String parisAddressLabel = "Rue du Faubourg Saint-Honoré";
+	private final String parisAddressZipcode = "75004";
+	private final String parisAddressCity = "Paris";
+	private final String parisAddressCountry = "France";
+	private final float parisAddressLongitude = 48.869931f;
+	private final float parisAddressLatitude = 2.318397f;
+	private final String schoolName = "First school";
+	private final String stu1number = "0123456789";
+	private final String stu1username = "username";
+	private final String stu1password = "password";
+	private Address parisAddress;
+	private School school;
+	private Student stu1;
+
 	@Before
 	public void SetUp() {
-		PhoneNumber phn1 = new PhoneNumber("0123456789");
+		// given
+		parisAddress = new Address(parisAddressLabel, parisAddressZipcode, parisAddressCity, parisAddressCountry);
+		parisAddress.setLongitude(parisAddressLongitude);
+		parisAddress.setLatitude(parisAddressLatitude);
+		em.persist(parisAddress);
+		school = new School(schoolName, parisAddress);
+		em.persist(school);
+
+		PhoneNumber phn1 = new PhoneNumber(stu1number);
 		em.persist(phn1);
 
-		stu1 = new Student("username", "password");
+		stu1 = new Student(stu1username, stu1password);
 		List<PhoneNumber> phoneNumberList = new ArrayList<>();
 		phoneNumberList.add(phn1);
 		stu1.setPhonenumbers(phoneNumberList);
-
+		stu1.setSchool(school);
 		em.persist(stu1);
+
 		em.flush();
 	}
 
@@ -61,18 +85,32 @@ public class StudentRepositoryIntegrationTest {
 	@Test
 	public void whenFindByUsername_thenReturnStudent() {
 		// when
-		Student found = repository.findByUsername(stu1.getUsername());
+		Student found = repository.findByUsername(stu1username);
+
+		// then
+		assertThat(found.getUsername()).isEqualTo(stu1username);
+	}
+
+	@Test
+	public void whenFindByPhonenumber_thenReturnStudent() {
+		// when
+		Student found = repository.findByPhonenumber(stu1number);
 
 		// then
 		assertThat(found.getUsername()).isEqualTo(stu1.getUsername());
 	}
 
 	@Test
-	public void whenFindByPhonenumber_thenReturnStudent() {
+	public void whenFindBySchool_thenReturnStudentList() {
 		// when
-		Student found = repository.findByPhonenumber("0123456789");
+		List<Student> students = repository.findBySchool(school.getSchoolId());
 
 		// then
-		assertThat(found.getUsername()).isEqualTo(stu1.getUsername());
+		assertThat(students)
+				.isNotNull()
+				.isNotEmpty()
+				.hasSize(1);
+
+		Student found = students.get(0);
 	}
 }

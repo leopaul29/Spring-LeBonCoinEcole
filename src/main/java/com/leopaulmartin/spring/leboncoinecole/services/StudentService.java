@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 public interface StudentService {
 	Student getStudentById(Long id);
 
+//	int getAnnouncementCount(Student student);
+
 	Student createStudent(Student student);
 
 	Student updateStudent(Long id, Student student);

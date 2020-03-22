@@ -1,7 +1,6 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.entities;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity(name = "addresses")
@@ -13,21 +12,19 @@ public class Address {
 	private Long addressId;
 
 	@Column(name = "label", length = 200, nullable = false)
-	@Size(min = 5, max = 50, message = "Address's label must be longer than 5 characters and shorter than 50 characters")
-	@NotNull(message = "Cannot be null")
+	@Size(min = 5, max = 100, message = "Address's Label must be longer than 5 characters (100 characters max)")
 	private String label;
 
 	@Column(name = "zipcode", length = 5, nullable = false)
-	@Size(min = 5, max = 5, message = "Zipcode size musth be 5 characters")
-	@NotNull(message = "Cannot be null")
+	@Size(min = 5, max = 5, message = "Address's Zipcode size must be 5 characters")
 	private String zipCode;
 
 	@Column(name = "city", length = 30, nullable = false)
-	@NotNull(message = "Cannot be null")
+	@Size(min = 3, max = 30, message = "Address's City must be longer than 3 characters (30 characters max)")
 	private String city;
 
 	@Column(name = "country", length = 30, nullable = false)
-	@NotNull(message = "Cannot be null")
+	@Size(min = 3, max = 30, message = "Address's Country must be longer than 3 characters (30 characters max)")
 	private String country;
 
 	@Column(name = "longitude")

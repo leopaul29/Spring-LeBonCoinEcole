@@ -19,7 +19,7 @@ public class Category extends ResourceSupport {
 
 	@Column(name = "category_label", length = 50, nullable = false, unique = true)
 	// Validation valid the parameter itself
-	@Size(min = 3, max = 50, message = "Category's label must be longer than 3 characters and shorter than 50 characters")
+	@Size(min = 3, max = 50, message = "Category's Label must be longer than 3 characters and shorter than 50 characters")
 	private String label;
 
 	public Category() {
