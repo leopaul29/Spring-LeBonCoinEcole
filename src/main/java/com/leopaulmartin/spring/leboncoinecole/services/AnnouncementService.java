@@ -11,13 +11,16 @@ public interface AnnouncementService {
 
 	Announcement getAnnouncementById(Long id);
 
-	List<Announcement> getAnnouncementForCategory(Long categoryId);
+//	List<Announcement> getAnnouncementForCategory(Long categoryId);
+//	int countAnnouncementForCategory(Long categoryId);
 
-	List<Announcement> getSearchesByCategory(Long categoryId);
+//	List<Announcement> getSearchesByCategory(Long categoryId);
 
-	List<Announcement> getSalesByCategory(Long categoryId);
+//	List<Announcement> getSalesByCategory(Long categoryId);
 
 	Announcement createAnnouncement(Announcement announcement);
+
+	Announcement createOrUpdateAnnouncement(Announcement announcement);
 
 	Announcement updateAnnouncement(Long id, Announcement announcement);
 

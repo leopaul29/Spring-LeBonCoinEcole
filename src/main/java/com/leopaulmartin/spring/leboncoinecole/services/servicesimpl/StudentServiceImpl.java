@@ -1,5 +1,6 @@
 package com.leopaulmartin.spring.leboncoinecole.services.servicesimpl;
 
+import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Student;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.StudentRepository;
 import com.leopaulmartin.spring.leboncoinecole.services.StudentService;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,55 +24,58 @@ public class StudentServiceImpl implements StudentService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	@Override
-	public Student getStudentById(Long id) {
-		return repository.getOne(id);
+	public List<Student> getAllStudents() {
+		return repository.findAll();
 	}
 
-//	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-//	@Override
-//	public int getAnnouncementCount(Student student) {
-//		return student.getAnnouncements().size();
-//	}
-
-
-	@Transactional(propagation = Propagation.SUPPORTS)
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	@Override
-	public Student createStudent(Student student) {
-		if (!isStudentValid(student)) {
-			return null;
-		}
+	public Student getStudentById(Long id) throws RecordNotFoundException {
+		Optional<Student> student = repository.findById(id);
 
-		return repository.saveAndFlush(student);
-	}
-
-	@Transactional(propagation = Propagation.SUPPORTS)
-	@Override
-	public Student updateStudent(Long id, Student student) {
-		if (!student.getStudentId().equals(id)) {
-			logger.error("mistmatch id");
-			return null;
-		}
-		if (!isStudentValid(student)) {
-			return null;
-		}
-
-		Optional<Student> existingStudent = repository.findById(id);
-		if (existingStudent.isPresent()) {
-			Student foundStudent = existingStudent.get();
-			foundStudent.setUsername(student.getUsername());
-			foundStudent.setPassword(student.getPassword());
-			return repository.saveAndFlush(foundStudent);
+		if (student.isPresent()) {
+			return student.get();
 		} else {
-			logger.error("not found");
-			return null;
+			throw new RecordNotFoundException("No student record exist for given id");
 		}
 	}
 
-	// should not be used
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
-	public void deleteStudentById(Long id) {
-		repository.deleteById(id);
+	public Student createOrUpdateStudent(Student student) {
+		if (student.getUserId() == null) {
+			return repository.save(student);
+		} else {
+			Optional<Student> found = repository.findById(student.getUserId());
+
+			if (found.isPresent()) {
+				Student newStudent = found.get();
+				newStudent.setUsername(student.getUsername());
+				newStudent.setPassword(student.getPassword());
+				newStudent.setFirstName(student.getFirstName());
+				newStudent.setLastName(student.getLastName());
+				newStudent.setEmail(student.getEmail());
+				newStudent.setPhoneNumber(student.getPhoneNumber());
+				newStudent.setPhoto(student.getPhoto());
+				newStudent.setSchool(student.getSchool());
+
+				return repository.save(newStudent);
+			} else {
+				return repository.save(student);
+			}
+		}
+	}
+
+	@Transactional(propagation = Propagation.SUPPORTS)
+	@Override
+	public void deleteStudentById(Long id) throws RecordNotFoundException {
+		Optional<Student> student = repository.findById(id);
+
+		if (student.isPresent()) {
+			repository.deleteById(id);
+		} else {
+			throw new RecordNotFoundException("No student record exist for given id");
+		}
 	}
 
 	@Override

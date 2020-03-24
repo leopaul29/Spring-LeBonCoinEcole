@@ -37,7 +37,7 @@ public class AnnouncementServiceImplIntegrationTest {
 	@Before
 	public void setUp() {
 		// create tested category object
-		announcement = new Announcement(announcementTitle, announcementDescription, announcementPrice);
+		announcement = new Announcement(announcementTitle, announcementDescription, null, announcementPrice);
 		announcement.setAnnouncementId(announcementId);
 
 		// mock getOne
@@ -165,7 +165,7 @@ public class AnnouncementServiceImplIntegrationTest {
 	@Test
 	public void whenUpdateCategory_thenNullIdNotExist() {
 		// when
-		Announcement secondAnnouncement = new Announcement();
+		Announcement secondAnnouncement = new Announcement("announcementOne", "announcementOne", null, 0);
 		secondAnnouncement.setTitle("announcementBis");
 		secondAnnouncement.setDescription("announcementBis");
 		Long secondAnnouncementId = 18L;
@@ -202,7 +202,7 @@ public class AnnouncementServiceImplIntegrationTest {
 	@Test
 	public void isAnnouncementValid_thenReturnFalse() {
 		// when
-		boolean AnnouncementValid = service.isAnnouncementValid(new Announcement());
+		boolean AnnouncementValid = service.isAnnouncementValid(new Announcement("announcementOne", "announcementOne", null, 0));
 
 		// then
 		assertThat(AnnouncementValid).isFalse();

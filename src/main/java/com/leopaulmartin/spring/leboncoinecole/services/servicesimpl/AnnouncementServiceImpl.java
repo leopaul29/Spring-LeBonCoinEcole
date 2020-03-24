@@ -1,5 +1,6 @@
 package com.leopaulmartin.spring.leboncoinecole.services.servicesimpl;
 
+import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.AnnouncementRepository;
 import com.leopaulmartin.spring.leboncoinecole.services.AnnouncementService;
@@ -33,23 +34,29 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 		return repository.getOne(id);
 	}
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	@Override
-	public List<Announcement> getAnnouncementForCategory(Long categoryId) {
-		return repository.findAnnouncementsByCategory(categoryId);
-	}
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	@Override
-	public List<Announcement> getSearchesByCategory(Long categoryId) {
-		return repository.findAnnouncementsByCategory(categoryId);
-	}
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	@Override
-	public List<Announcement> getSalesByCategory(Long categoryId) {
-		return repository.findAnnouncementsByCategory(categoryId);
-	}
+//	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+//	@Override
+//	public List<Announcement> getAnnouncementForCategory(Long categoryId) {
+//		return repository.findAnnouncementsByCategory(categoryId);
+//	}
+//
+////	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+////	@Override
+////	public int countAnnouncementForCategory(Long categoryId) {
+////		return repository.countAnnouncementsByCategory(categoryId);
+////	}
+//
+//	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+//	@Override
+//	public List<Announcement> getSearchesByCategory(Long categoryId) {
+//		return repository.findAnnouncementsByCategory(categoryId);
+//	}
+//
+//	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+//	@Override
+//	public List<Announcement> getSalesByCategory(Long categoryId) {
+//		return repository.findAnnouncementsByCategory(categoryId);
+//	}
 
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
@@ -87,16 +94,48 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
-	public void deleteAnnouncementById(Long id) {
-		repository.deleteById(id);
+	public Announcement createOrUpdateAnnouncement(Announcement announcement) {
+		if (announcement.getAnnouncementId() == null) {
+			return repository.save(announcement);
+		} else {
+			Optional<Announcement> found = repository.findById(announcement.getAnnouncementId());
+
+			if (found.isPresent()) {
+				Announcement newAnnouncement = found.get();
+				newAnnouncement.setTitle(announcement.getTitle());
+				newAnnouncement.setDescription(announcement.getDescription());
+				newAnnouncement.setPrice(announcement.getPrice());
+				newAnnouncement.setAnnouncement(announcement.isAnnouncement());
+				newAnnouncement.setCategory(announcement.getCategory());
+				newAnnouncement.setEndDate(announcement.getEndDate());
+				newAnnouncement.setPhoto(announcement.getPhoto());
+
+				return repository.save(newAnnouncement);
+			} else {
+				return repository.save(announcement);
+			}
+		}
+	}
+
+	@Transactional(propagation = Propagation.SUPPORTS)
+	@Override
+	public void deleteAnnouncementById(Long id) throws RecordNotFoundException {
+		Optional<Announcement> announcement = repository.findById(id);
+
+		if (announcement.isPresent()) {
+			repository.deleteById(id);
+		} else {
+			throw new RecordNotFoundException("No announcement record exist for given id");
+		}
 	}
 
 	@Override
 	public boolean isAnnouncementValid(Announcement announcement) {
-		Boolean[] isValidTab = new Boolean[3];
+		Boolean[] isValidTab = new Boolean[4];
 		isValidTab[0] = announcement.getTitle() != null;
 		isValidTab[1] = announcement.getDescription() != null;
-		isValidTab[2] = announcement.getPrice() >= 0;
+		isValidTab[2] = announcement.getCategory() != null;
+		isValidTab[3] = announcement.getPrice() >= 0;
 
 		for (int i = 0; i < isValidTab.length; i++) {
 			boolean isValid = isValidTab[i];

@@ -1,6 +1,5 @@
 package com.leopaulmartin.spring.leboncoinecole.restcontrollers;
 
-import com.leopaulmartin.spring.leboncoinecole.persistence.entities.PhoneNumber;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Student;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.PhoneNumberRepository;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.StudentRepository;
@@ -12,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/students")
-public class StudentController {
+public class StudentRestController {
 	@Autowired
 	private StudentRepository studentRepository;
 	@Autowired
@@ -32,11 +31,11 @@ public class StudentController {
 
 	@PostMapping
 	public Student create(@RequestBody final Student student) {
-		List<PhoneNumber> phoneNumbers = student.getPhonenumbers();
-		for (PhoneNumber phoneNumber :
-				phoneNumbers) {
-			phoneNumberRepository.saveAndFlush(phoneNumber);
-		}
+//		List<PhoneNumber> phoneNumbers = student.getPhoneNumber();
+//		for (PhoneNumber phoneNumber :
+//				phoneNumbers) {
+//			phoneNumberRepository.saveAndFlush(phoneNumber);
+//		}
 
 		return studentRepository.saveAndFlush(student);
 	}

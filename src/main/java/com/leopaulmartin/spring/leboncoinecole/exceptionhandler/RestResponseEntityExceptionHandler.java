@@ -54,7 +54,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 		List<String> details = new ArrayList<>();
 		details.add(ex.getLocalizedMessage());
 		RestErrorResponse error = new RestErrorResponse("Record Not Found", details);
-		logger.error(error.toString());
+		logger.error("handleRecordNotFoundException:" + error.toString());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
 				.header("Method", "handleRecordNotFoundException")
 				.body(error);

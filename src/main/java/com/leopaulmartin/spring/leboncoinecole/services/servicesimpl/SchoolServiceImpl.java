@@ -1,8 +1,10 @@
 package com.leopaulmartin.spring.leboncoinecole.services.servicesimpl;
 
+import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.School;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Student;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.SchoolRepository;
+import com.leopaulmartin.spring.leboncoinecole.services.AddressService;
 import com.leopaulmartin.spring.leboncoinecole.services.SchoolService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,8 @@ public class SchoolServiceImpl implements SchoolService {
 
 	@Autowired
 	private SchoolRepository repository;
+	@Autowired
+	private AddressService addressService;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, timeout = 10)
 	@Override
@@ -30,8 +34,14 @@ public class SchoolServiceImpl implements SchoolService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	@Override
-	public School getSchoolById(Long id) {
-		return repository.getOne(id);
+	public School getSchoolById(Long id) throws RecordNotFoundException {
+		Optional<School> school = repository.findById(id);
+
+		if (school.isPresent()) {
+			return school.get();
+		} else {
+			throw new RecordNotFoundException("No school record exist for given id");
+		}
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -43,12 +53,36 @@ public class SchoolServiceImpl implements SchoolService {
 
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
-	public School createSchool(School announcement) {
-		if (!isSchoolValid(announcement)) {
+	public School createSchool(School school) {
+		if (addressService.createAddress(school.getAddress()) == null) {
+			return null;
+		}
+		if (!isSchoolValid(school)) {
 			return null;
 		}
 
-		return repository.saveAndFlush(announcement);
+		return repository.saveAndFlush(school);
+	}
+
+	@Transactional(propagation = Propagation.SUPPORTS)
+	@Override
+	public School createOrUpdateSchool(School school) {
+		if (school.getSchoolId() == null) {
+			return repository.save(school);
+		} else {
+			Optional<School> found = repository.findById(school.getSchoolId());
+
+			if (found.isPresent()) {
+				School newSchool = found.get();
+				newSchool.setName(school.getName());
+				newSchool.setAddress(school.getAddress());
+				newSchool.setLink(school.getLink());
+
+				return repository.save(newSchool);
+			} else {
+				return repository.save(school);
+			}
+		}
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS)
@@ -75,8 +109,15 @@ public class SchoolServiceImpl implements SchoolService {
 
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
-	public void deleteSchoolById(Long id) {
-		repository.deleteById(id);
+	public void deleteSchoolById(Long id) throws RecordNotFoundException {
+		Optional<School> school = repository.findById(id);
+		logger.error("schoolserviceimpl:" + school.toString());
+		if (school.isPresent()) {
+			logger.error("schoolserviceimpl2:" + school.get().toString());
+			repository.deleteById(id);
+		} else {
+			throw new RecordNotFoundException("No sSchool record exist for given id");
+		}
 	}
 
 	@Override

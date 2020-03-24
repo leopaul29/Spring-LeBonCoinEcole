@@ -18,6 +18,8 @@ public interface SchoolService {
 
 	School updateSchool(Long id, School school);
 
+	School createOrUpdateSchool(School school);
+
 	void deleteSchoolById(Long id);
 
 	boolean isSchoolValid(School school);

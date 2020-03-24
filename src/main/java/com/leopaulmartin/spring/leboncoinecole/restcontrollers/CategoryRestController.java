@@ -47,7 +47,7 @@ class CategoryRestController {
 		List<Category> categories = categoryService.getAllCategories();
 		for (final Category category : categories) {
 			Link link = linkTo(CategoryRestController.class).slash(category.getCategoryId()).withSelfRel();
-			category.add(link);
+//			category.add(link);
 		}
 	/*
 		Sample of ResponseEntity creation
