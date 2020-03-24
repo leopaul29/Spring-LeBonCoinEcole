@@ -137,7 +137,7 @@ public class CategoryRepositoryIntegrationTest {
 	@Test(expected = DataIntegrityViolationException.class)
 	public void whenCategorySaved_NoLabel_thenDataIntegrityViolationException() {
 		// when
-		Category newCategory = new Category();
+		Category newCategory = new Category("");
 		repository.saveAndFlush(newCategory);
 
 		// then throw DataIntegrityViolationException

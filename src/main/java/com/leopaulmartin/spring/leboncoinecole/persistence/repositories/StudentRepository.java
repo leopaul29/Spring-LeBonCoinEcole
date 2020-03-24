@@ -12,14 +12,14 @@ import java.util.List;
 public interface StudentRepository extends JpaRepository<Student, Long> {
 
 	@Query("SELECT s FROM students s WHERE LOWER(s.username) = LOWER(:username)")
-	Student findByUsername(@Param("username") String username);
+	Student findOneByUsername(@Param("username") String username);
 
-	@Query("SELECT s FROM students s INNER JOIN s.phonenumbers phn WHERE phn.number = :phonenumber")
-	Student findByPhonenumber(@Param("phonenumber") String phonenumber);
+//	@Query("SELECT s FROM students s INNER JOIN s.phonenumbers phn WHERE phn.number = :phonenumber")
+//	Student findOneByPhonenumber(@Param("phonenumber") String phonenumber);
 
 	@Query("SELECT stu " +
 			"FROM students stu " +
 			"INNER JOIN stu.school sch " +
 			"ON sch.schoolId =  :schoolId")
-	List<Student> findBySchool(@Param("schoolId") Long schoolId);
+	List<Student> findAllBySchool(@Param("schoolId") Long schoolId);
 }

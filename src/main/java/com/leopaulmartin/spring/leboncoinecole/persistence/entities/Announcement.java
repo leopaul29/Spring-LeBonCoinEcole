@@ -7,7 +7,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 @Entity(name = "announcements")
 //@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
@@ -50,27 +49,15 @@ public class Announcement {
 	@Column(name = "is_closed")
 	private boolean isClosed;
 
-	@ManyToMany//(cascade = {CascadeType.REMOVE})
-    /*@JoinTable(
-            name = "announcement_categories",
-            joinColumns = @JoinColumn(name = "announcement_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
-	@NotNull*/
-	private List<Category> categories;
+	@OneToOne
+	private Category category;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-/*	@JoinColumn(name = "student_id", nullable = false)
-	@JoinColumn(name="studentId", nullable=false)
-//    @JoinTable(
-//            name = "student_announcements",
-//            joinColumns = @JoinColumn(name = "announcement_id"),
-//            inverseJoinColumns = @JoinColumn(name = "student_id"))
-	@NotNull*/
 	private Student student;
 
 	/*
-	Constructors
-	 */
+		Constructors
+		 */
 	public Announcement() {
 		// sale by default
 		this.isAnnouncement = true;
@@ -80,13 +67,16 @@ public class Announcement {
 		GregorianCalendar gcalendar = new GregorianCalendar();
 		gcalendar.add(3, GregorianCalendar.MONTH);
 		this.endDate = gcalendar.getGregorianChange();
+		// isClosed by default
+		isClosed = false;
 	}
 
-	public Announcement(String title, String description, float price) {
+	public Announcement(String title, String description, Category category, float price) {
 		this();
 
 		this.title = title;
 		this.description = description;
+		this.category = category;
 		this.price = price;
 	}
 
@@ -172,12 +162,12 @@ public class Announcement {
 		isClosed = closed;
 	}
 
-	public List<Category> getCategories() {
-		return categories;
+	public Category getCategory() {
+		return category;
 	}
 
-	public void setCategories(List<Category> categories) {
-		this.categories = categories;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 	public Student getStudent() {
@@ -200,7 +190,7 @@ public class Announcement {
 				", endDate=" + endDate +
 				", description='" + description + '\'' +
 				", isClosed=" + isClosed +
-				", categories=" + categories +
+				", category=" + category +
 //				", student=" + student +
 				'}';
 	}

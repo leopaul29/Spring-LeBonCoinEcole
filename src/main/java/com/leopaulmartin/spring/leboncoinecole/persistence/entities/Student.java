@@ -1,28 +1,14 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity(name = "students")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Student {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "student_id")
-	private Long studentId;
-
-	@Column(name = "username", length = 30, nullable = false, unique = true)
-	@NotNull(message = "Cannot be null")
-	private String username;
-
-	@Column(name = "password", length = 30, nullable = false)
-	@NotNull(message = "Cannot be null")
-	private String password;
-
+@Table(name = "students")
+public class Student extends User {
 	@Column(name = "first_name", length = 30)
 	private String firstName;
 
@@ -34,79 +20,40 @@ public class Student {
 	@Column(name = "photo")
 	private byte[] photo;
 
-	@OneToMany(cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-//	@JoinTable(
-//			name = "student_phonenumbers",
-//			joinColumns = @JoinColumn(name = "student_id"),
-//			inverseJoinColumns = @JoinColumn(name = "phonenumber_id"))
-	private List<PhoneNumber> phonenumbers;
-
-	@OneToMany(cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-//	@JoinTable(
-//			name = "student_emails",
-//			joinColumns = @JoinColumn(name = "student_id"),
-//			inverseJoinColumns = @JoinColumn(name = "email_id"))
-	private List<Email> emails;
-
-	@ManyToOne(targetEntity = com.leopaulmartin.spring.leboncoinecole.persistence.entities.School.class,
-			fetch = FetchType.LAZY)
-//	@JoinTable(
-//			name = "school_students",
-//			joinColumns = @JoinColumn(name = "student_id"),
-//			inverseJoinColumns = @JoinColumn(name = "school_id"))
+	@ManyToOne
 	private School school;
 
 	@OneToMany(targetEntity = com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement.class,
 			mappedBy = "student",
+			fetch = FetchType.LAZY,
 			cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-//	@JoinTable(
-//			name = "student_announcements",
-//			joinColumns = @JoinColumn(name = "student_id"),
-//			inverseJoinColumns = @JoinColumn(name = "announcement_id"))
 	private List<Announcement> announcements;
 
 	public Student() {
+		super();
+
+		this.role = "ROLE_STUDENT";
 	}
 
-	public Student(@NotNull(message = "Cannot be null") String username, @NotNull(message = "Cannot be null") String password) {
+	public Student(String username, String password) {
+		this();
+
 		this.username = username;
 		this.password = password;
 	}
 
-	public Student(@NotNull(message = "Cannot be null") String username, @NotNull(message = "Cannot be null") String password,
-				   String firstName, String lastName,
-				   List<PhoneNumber> phonenumbers, List<Email> emails) {
+	public Student(String username, String password, String firstName, String lastName, String email, String phoneNumber) {
+		this();
+
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.phonenumbers = phonenumbers;
-		this.emails = emails;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
 	}
 
-	public Long getStudentId() {
-		return studentId;
-	}
-
-	public void setStudentId(Long studentId) {
-		this.studentId = studentId;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
+	// Getter & Setter
 
 	public String getFirstName() {
 		return firstName;
@@ -132,22 +79,6 @@ public class Student {
 		this.photo = photo;
 	}
 
-	public List<PhoneNumber> getPhonenumbers() {
-		return phonenumbers;
-	}
-
-	public void setPhonenumbers(List<PhoneNumber> phonenumbers) {
-		this.phonenumbers = phonenumbers;
-	}
-
-	public List<Email> getEmails() {
-		return emails;
-	}
-
-	public void setEmails(List<Email> emails) {
-		this.emails = emails;
-	}
-
 	public School getSchool() {
 		return school;
 	}
@@ -164,15 +95,22 @@ public class Student {
 		this.announcements = announcements;
 	}
 
+	// Override
+
 	@Override
 	public String toString() {
 		return "Student{" +
-				"studentId=" + studentId +
+				"firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", photo=" + Arrays.toString(photo) +
+				", school=" + school +
+				", announcements=" + announcements +
 				", username='" + username + '\'' +
 				", password='" + password + '\'' +
-				", firstName='" + firstName + '\'' +
-				", lastName='" + lastName + '\'' +
-				", photo=" + (photo != null) +
+				", email='" + email + '\'' +
+				", phoneNumber='" + phoneNumber + '\'' +
+				", role='" + role + '\'' +
+				", created=" + created +
 				'}';
 	}
 }

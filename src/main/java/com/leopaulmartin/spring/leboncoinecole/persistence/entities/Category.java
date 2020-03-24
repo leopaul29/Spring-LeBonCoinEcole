@@ -1,9 +1,8 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.entities;
 
-import org.springframework.hateoas.ResourceSupport;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 /*
 Constraint validation annotations
@@ -11,7 +10,7 @@ https://docs.oracle.com/javaee/7/api/javax/validation/constraints/package-summar
  */
 @Entity(name = "categories")
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Category extends ResourceSupport {
+public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "category_id")
@@ -22,7 +21,12 @@ public class Category extends ResourceSupport {
 	@Size(min = 3, max = 50, message = "Category's Label must be longer than 3 characters and shorter than 50 characters")
 	private String label;
 
-	public Category() {
+	@OneToMany(targetEntity = com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement.class,
+			mappedBy = "category",
+			cascade = {CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Announcement> announcements;
+
+	protected Category() {
 	}
 
 	public Category(final String label) {
@@ -45,6 +49,14 @@ public class Category extends ResourceSupport {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	public List<Announcement> getAnnouncements() {
+		return announcements;
+	}
+
+	public void setAnnouncements(List<Announcement> announcements) {
+		this.announcements = announcements;
 	}
 
 	//

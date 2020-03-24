@@ -50,16 +50,19 @@
             <artifactId>spring-boot-starter-hateoas</artifactId>
         </dependency>
 
+        <!-- View -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf -->
         <dependency>
-            <!--			THYMELEAF-->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect -->
         <dependency>
-            <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+            <groupId>nz.net.ultraq.thymeleaf</groupId>
+            <artifactId>thymeleaf-layout-dialect</artifactId>
+            <version>2.4.1</version>
         </dependency>
+
 
         <dependency>
             <!--            SECURITY-->
@@ -72,23 +75,6 @@
         <!--            <groupId>org.springframework.boot</groupId>-->
         <!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
         <!--        </dependency>-->
-
-        <!--        -->
-        <!--        CLIENT UI LIB -->
-        <!--        -->
-        <!--        <dependency>-->
-        <!--            &lt;!&ndash;            bootstrap&ndash;&gt;-->
-        <!--            <groupId>org.webjars</groupId>-->
-        <!--            <artifactId>bootstrap</artifactId>-->
-        <!--            <version>3.3.7</version>-->
-        <!--        </dependency>-->
-        <!--        <dependency>-->
-        <!--            &lt;!&ndash;            jquery&ndash;&gt;-->
-        <!--            <groupId>org.webjars</groupId>-->
-        <!--            <artifactId>jquery</artifactId>-->
-        <!--            <version>3.2.1</version>-->
-        <!--        </dependency>-->
-
 
         <!--		-->
         <!--	Development and Test purpose-->
