@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/layout-admin.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Students</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h3> Edit Student</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-10">
+            <form action="#" method="post" th:action="@{/admin/students/createStudent}" th:object="${student}">
+                <div class="row">
+                    <div class="form-group col-md-8">
+                        <label class="col-form-label" for="username">Username</label>
+                        <input class="form-control" id="username" placeholder="Username"
+                               th:field="*{username}" type="text"/>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label class="col-form-label" for="password">Password</label>
+                        <input class="form-control" id="password" placeholder="Password"
+                               th:field="*{password}" type="password"/>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label class="col-form-label" for="firstName">First Name</label>
+                        <input class="form-control" id="firstName" placeholder="First Name"
+                               th:field="*{firstName}" type="text"/>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label class="col-form-label" for="lastName">Last Name</label>
+                        <input class="form-control" id="lastName" placeholder="Last Name"
+                               th:field="*{lastName}" type="text"/>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label class="col-form-label" for="email">Email</label>
+                        <input class="form-control" id="email" placeholder="Email"
+                               th:field="*{email}" type="text"/>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label class="col-form-label" for="phoneNumber">Phone number</label>
+                        <input class="form-control" id="phoneNumber" placeholder="phone Number"
+                               th:field="*{phoneNumber}" type="text"/>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label for="school">School</label>
+                        <select class="form-control" id="school" th:field="*{school}">
+                            <option
+                                    th:each="dropdownValue: ${allSchools}"
+                                    th:text="${dropdownValue.name}"
+                                    th:value="${dropdownValue.schoolId}">school.name
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <input class="btn btn-primary" type="submit" value=" Submit ">
+                    </div>
+
+                    <input id="id" th:field="*{userId}" type="hidden">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

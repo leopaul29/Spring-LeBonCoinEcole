@@ -13,10 +13,10 @@ public class AdminController {
 	@Value("${app.version}")
 	String appVersion;
 
-	@GetMapping("/admin")
+	@GetMapping({"/admin", "/admin/home"})
 	public String adminHomePage(Model model) {
 		model.addAttribute("appName", appName);
 		model.addAttribute("appVersion", appVersion);
-		return "admin/home";
+		return "admin/index";
 	}
 }

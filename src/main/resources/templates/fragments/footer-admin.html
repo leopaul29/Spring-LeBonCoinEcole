@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="footer">
+    <footer>
+        <p>
+            &copy; LBCE
+            <span sec:authorize="isAuthenticated()" style="display: inline-block;">
+                    | Logged user: <span sec:authentication="name"></span> |
+                    Roles: <span sec:authentication="principal.authorities"></span> |
+                    <a th:href="@{/logout}">Sign Out</a>
+                </span>
+        </p>
+    </footer>
+</th:block>
+</body>
+</html>

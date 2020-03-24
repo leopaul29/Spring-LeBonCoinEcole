@@ -1,47 +1,56 @@
 package com.leopaulmartin.spring.leboncoinecole.controllers.admin;
 
-import com.leopaulmartin.spring.leboncoinecole.forms.CategoryForm;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
+import com.leopaulmartin.spring.leboncoinecole.services.AnnouncementService;
 import com.leopaulmartin.spring.leboncoinecole.services.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin/categories")
 public class CategoryController {
-	public static final String API_ROOT = "admin/categories";
+	public static final String VIEW = "admin/categories";
 	public static final String REDIRECT = "redirect:/";
 	private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 	@Autowired
 	private CategoryService service;
+	@Autowired
+	private AnnouncementService announcementService;
+
+	@ModelAttribute("allCategories")
+	public List<Category> populateCategories() {
+		return service.getAllCategories();
+	}
+
+//	@ModelAttribute(value = "countAnnouncementByCategory")
+//	public int populateCountAnnouncementByCategory(Long categoryId) {
+//		return announcementService.countAnnouncementForCategory(categoryId);
+//	}
 
 	@GetMapping
-	public String showAllCategories(Model model) {
-		model.addAttribute("allCategories", service.getAllCategories());
-
-		CategoryForm categoryForm = new CategoryForm();
-		model.addAttribute("categoryForm", categoryForm);
-
-		return API_ROOT;
+	public String showCategories() {
+		return VIEW;
 	}
 
 	@PostMapping
-	public String saveCategory(Model model, @ModelAttribute CategoryForm categoryForm) {
-		Category newCategory = new Category(categoryForm.getLabel());
-
-		service.createCategory(newCategory);
-
-		return /*REDIRECT +*/ API_ROOT;
+	public String createCategory(@ModelAttribute("categoryLabel") String categoryLabel) {
+		Category newCategory = new Category(categoryLabel);
+		boolean categoryValid = service.isCategoryValid(newCategory);
+		if (categoryValid) service.createCategory(newCategory);
+		// TODO: else return and display error
+		return REDIRECT + VIEW;
 	}
 
-	@RequestMapping("/{id}")
-	public String show(@PathVariable("id") Category category, Model model) {
+	@DeleteMapping("/{id}")
+	public String deleteCategory(@RequestParam("removeRow") Long categoryId) {
+		logger.error("deleteCategory:" + categoryId);
+		service.deleteCategoryById(categoryId);
 
-//		model.addAttribute("categories", service.getAllCategories());
-		return "admin/category";
+		return REDIRECT + VIEW;
 	}
 }

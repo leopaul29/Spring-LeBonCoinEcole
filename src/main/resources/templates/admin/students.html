@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/layout-admin.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Students</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Map of students</h1>
+
+        <!-- Button trigger modal -->
+        <a class="btn btn-primary float-right" href="/edit" th:href="@{/admin/students/edit}">
+            Add new Student
+        </a>
+    </div>
+
+    <!--    student list-->
+    <div th:unless="${#lists.isEmpty(allStudents)}">
+        <h2>Student List</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-sm">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Username</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>School</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="student : ${allStudents}">
+                    <td th:text="${student.userId}">studentId</td>
+                    <td th:text="${student.username}">username</td>
+                    <td th:text="${student.firstName}">firstName</td>
+                    <td th:text="${student.lastName}">lastName</td>
+                    <td th:text="${student.school.name}">school.name</td>
+
+                    <td>
+                        <a class="btn btn-primary"
+                           th:href="@{/admin/students/edit/{id}(id=${student.userId})}">
+                            <span class="material-icons">
+                                edit
+                            </span>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-primary" target="_top"
+                           th:href="@{/admin/students/delete/{id}(id=${student.userId})}">
+                            <span class="material-icons">
+                                delete
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

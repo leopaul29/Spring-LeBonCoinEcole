@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/layout-admin.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Schools</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h3> Edit School</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-10">
+            <form action="#" method="post" th:action="@{/admin/schools/createSchool}" th:object="${school}">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input class="form-control" id="name" th:field="*{name}" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="link">link</label>
+                        <input class="form-control" id="link" th:field="*{link}" type="text">
+                    </div>
+                    <h6>Address</h6>
+                    <div class="form-group">
+                        <label for="addressLabel">Label</label>
+                        <input class="form-control" id="addressLabel" th:field="*{address.label}" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="addressZipcode">Zipcode</label>
+                        <input class="form-control" id="addressZipcode" th:field="*{address.zipCode}"
+                               type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="addressCity">City</label>
+                        <input class="form-control" id="addressCity" th:field="*{address.city}" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="addressCountry">Country</label>
+                        <input class="form-control" id="addressCountry" th:field="*{address.country}"
+                               type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="addressLongitude">Longitude</label>
+                        <input class="form-control" id="addressLongitude" th:field="*{address.longitude}"
+                               type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="addressLatitude">Latitude</label>
+                        <input class="form-control" id="addressLatitude" th:field="*{address.latitude}"
+                               type="text">
+                    </div>
+                    <div class="col-md-6">
+                        <input class="btn btn-primary" type="submit" value=" Submit ">
+                    </div>
+
+                    <input id="id" th:field="*{schoolId}" type="hidden">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

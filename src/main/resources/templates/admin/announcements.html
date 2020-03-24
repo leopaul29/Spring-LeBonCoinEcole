@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/layout-admin.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Announcements</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Map of announcements</h1>
+        <!-- Button trigger modal -->
+        <a class="btn btn-primary float-right" th:href="@{/admin/announcements/edit}">
+            Add new Announcement
+        </a>
+        <!-- Button trigger modal -->
+        <!--        <button type="button" class="btn btn-primary float-right" data-toggle="modal"-->
+        <!--                data-target="#addNewAnnouncement">-->
+        <!--            Add new Announcement-->
+        <!--        </button>-->
+    </div>
+    <div th:unless="${#lists.isEmpty(allAnnouncements)}">
+        <h2>Announcement List</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-sm">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="announcement : ${allAnnouncements}">
+                    <td th:text="${announcement.announcementId}">announcementId</td>
+                    <td th:text="${announcement.title}">title</td>
+                    <td th:text="${announcement.description}">description</td>
+                    <td th:text="${announcement.category.label}">category</td>
+                    <td th:text="${announcement.price}">price</td>
+
+                    <td>
+                        <a class="btn btn-primary"
+                           th:href="@{/admin/announcements/edit/{id}(id=${announcement.announcementId})}">
+                            <span class="material-icons">
+                                edit
+                            </span>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-primary"
+                           target="_top"
+                           th:href="@{/admin/announcements/delete/{id}(id=${announcement.announcementId})}">
+                            <span class="material-icons">
+                                delete
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <!--    <div class="modal fade" id="addNewAnnouncement" tabindex="-1" role="dialog">-->
+    <!--        <div class="modal-dialog" role="document">-->
+    <!--            <div class="modal-content">-->
+    <!--                <form class="modal-content" action="#" th:action="@{/admin/announcements}"-->
+    <!--                      th:object="${announcementForm}"-->
+    <!--                      method="POST">-->
+    <!--                    <div class="modal-header">-->
+    <!--                        <h5 class="modal-title" id="addNewAnnouncementLabel">Create Announcement</h5>-->
+    <!--                        <button type="button" class="close" data-dismiss="modal">&times;</span>-->
+    <!--                        </button>-->
+    <!--                    </div>-->
+    <!--                    <div class="modal-body">-->
+    <!--                        <div class="form-group">-->
+    <!--                            <label for="title">Title</label>-->
+    <!--                            <input th:field="*{title}" type="text" class="form-control" id="title">-->
+    <!--                        </div>-->
+    <!--                        <div class="form-group">-->
+    <!--                            <label for="description">Description</label>-->
+    <!--                            <input th:field="*{description}" type="text" class="form-control" id="description">-->
+    <!--                        </div>-->
+    <!--                        <div class="form-group">-->
+    <!--                            <label for="category">Category</label>-->
+    <!--                            <select th:field="*{categoryId}" class="form-control" id="category">-->
+    <!--                                <option-->
+    <!--                                        th:each="dropdownValue: ${allCategories}"-->
+    <!--                                        th:value="${dropdownValue.categoryId}"-->
+    <!--                                        th:text="${dropdownValue.label}"></option>-->
+    <!--                            </select>-->
+    <!--                        </div>-->
+    <!--                        <div class="form-group">-->
+    <!--                            <label for="price">Price</label>-->
+    <!--                            <input th:field="*{price}" type="number" class="form-control" id="price">-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                    <div class="modal-footer">-->
+    <!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+    <!--                        <button type="submit" class="btn btn-primary">Create</button>-->
+    <!--                    </div>-->
+    <!--                </form>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+</div>
+</body>
+</html>

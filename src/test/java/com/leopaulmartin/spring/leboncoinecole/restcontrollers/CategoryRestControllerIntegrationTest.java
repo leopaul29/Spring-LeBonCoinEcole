@@ -71,8 +71,7 @@ public class CategoryRestControllerIntegrationTest {
 	}
 
 	private Category createRandomBook() {
-		Category category = new Category();
-		category.setLabel("azerty");
+		Category category = new Category("azerty");
 		return category;
 	}
 

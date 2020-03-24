@@ -5,21 +5,29 @@
     <meta charset="utf-8"/>
     <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <!--Bootstrap-->
+
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" rel="stylesheet">
     <!--Icons-->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" rel="stylesheet">
     <!--replace with title we have specified in the content view-->
-    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Le bon coin ecole</title>
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Admin LBCE</title>
 </head>
 <body>
-
-<th:block th:replace="fragments/header.html :: header"/>
-<div class="container">
-    <th:block layout:fragment="content"/>
+<!--header-->
+<th:block th:replace="fragments/header-admin.html :: header"/>
+<div class="container-fluid pt-5">
+    <div class="row">
+        <!--    sidebar-->
+        <th:block th:replace="fragments/sidebar-admin.html :: sidebar"/>
+        <!--main-->
+        <main class="col-md-9 ml-sm-auto col-lg-10 px-4" role="main">
+            <th:block layout:fragment="content"/>
+        </main>
+        <!--footer-->
+        <th:block th:replace="fragments/footer.html :: footer"/>
+    </div>
 </div>
-<th:block th:replace="fragments/footer.html :: footer"/>
 
 <script crossorigin="anonymous"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
