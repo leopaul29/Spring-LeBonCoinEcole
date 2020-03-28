@@ -7,14 +7,19 @@ import java.util.Arrays;
 import java.util.List;
 
 @Entity(name = "students")
-@Table(name = "students")
-public class Student extends User {
-	@Column(name = "first_name", length = 30)
+public class Student {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "student_id")
+	private Long studentId;
+
+	@Column(name = "first_name")
 	private String firstName;
-
-	@Column(name = "last_name", length = 30)
+	@Column(name = "last_name")
 	private String lastName;
-
+	@Column(name = "phone_number")
+	private String phoneNumber;
 	@Lob
 	@Type(type = "org.hibernate.type.BinaryType")
 	@Column(name = "photo")
@@ -23,37 +28,52 @@ public class Student extends User {
 	@ManyToOne
 	private School school;
 
-	@OneToMany(targetEntity = com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement.class,
-			mappedBy = "student",
-			fetch = FetchType.LAZY,
-			cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+	@OneToOne
+	private User userProfil;
+
+	@OneToMany//(
+//			targetEntity = com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement.class,
+//			mappedBy = "student",
+//			fetch = FetchType.LAZY,
+//			cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+	@JoinTable(
+			name = "students_announcements",
+			joinColumns = @JoinColumn(
+					name = "student_id", referencedColumnName = "student_id"),
+			inverseJoinColumns = @JoinColumn(
+					name = "announcement_id", referencedColumnName = "announcement_id"))
 	private List<Announcement> announcements;
 
 	public Student() {
-		super();
-
-		this.role = "ROLE_STUDENT";
 	}
 
-	public Student(String username, String password) {
+	public Student(String firstName, String lastName) {
 		this();
 
-		this.username = username;
-		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
 	}
 
 	public Student(String username, String password, String firstName, String lastName, String email, String phoneNumber) {
 		this();
 
-		this.username = username;
-		this.password = password;
+//		this.username = username;
+//		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
+//		this.email = email;
+//		this.phoneNumber = phoneNumber;
 	}
 
 	// Getter & Setter
+
+	public User getUserProfil() {
+		return userProfil;
+	}
+
+	public void setUserProfil(User userProfil) {
+		this.userProfil = userProfil;
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -105,12 +125,7 @@ public class Student extends User {
 				", photo=" + Arrays.toString(photo) +
 				", school=" + school +
 				", announcements=" + announcements +
-				", username='" + username + '\'' +
-				", password='" + password + '\'' +
-				", email='" + email + '\'' +
-				", phoneNumber='" + phoneNumber + '\'' +
-				", role='" + role + '\'' +
-				", created=" + created +
+				", phoneNumber='" + phoneNumber +
 				'}';
 	}
 }

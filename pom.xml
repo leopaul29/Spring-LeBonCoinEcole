@@ -22,19 +22,18 @@
     <dependencies>
         <!--        -->
         <!--        SPRING STARTER-->
-        <!--        -->
+        <!--			REST Web Services -->
+        <!--			This starter includes:
+                            • spring-web and the spring-webmvc module that we need for our Spring web application
+                            • a Tomcat starter so that we can run our web application directly without explicitly installing any server-->
         <dependency>
-            <!--			REST Web Services -->
-            <!--			This starter includes:
-                                • spring-web and the spring-webmvc module that we need for our Spring web application
-                                • a Tomcat starter so that we can run our web application directly without explicitly installing any server-->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!--			JPA-->
+        <!--			references all the necessary dependencies such as hibernate-entitymanager-->
         <dependency>
-            <!--			JPA-->
-            <!--			references all the necessary dependencies such as hibernate-entitymanager-->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
@@ -44,14 +43,14 @@
         <!--            <artifactId>spring-boot-starter-data-rest</artifactId>-->
         <!--        </dependency>-->
 
-        <dependency>
-            <!--            HATEOAS-->
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-hateoas</artifactId>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            &lt;!&ndash;            HATEOAS&ndash;&gt;-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-hateoas</artifactId>-->
+        <!--        </dependency>-->
 
-        <!-- View -->
-        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf -->
+        <!--         THYMELEAF-->
+        <!--         https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -62,10 +61,49 @@
             <artifactId>thymeleaf-layout-dialect</artifactId>
             <version>2.4.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+        </dependency>
 
         <dependency>
-            <!--            SECURITY-->
+            <!--            https://commons.apache.org/proper/commons-beanutils/-->
+            <!--            https://www.tutorialspoint.com/java_beanutils/index.htm-->
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+
+        <!--        WEB-->
+        <!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>4.4.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.webjars/jquery -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.webjars/popper.js -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>popper.js</artifactId>
+            <version>1.16.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.webjars/font-awesome -->
+        <!-- https://www.w3schools.com/icons/fontawesome5_intro.asp-->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>font-awesome</artifactId>
+            <version>5.12.0</version>
+        </dependency>
+
+
+        <!--        SECURITY-->
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
@@ -79,17 +117,17 @@
         <!--		-->
         <!--	Development and Test purpose-->
         <!--		-->
+        <!--			https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-devtools-->
+        <!--			A common feature of developing web applications is coding a change, restarting your application, and refreshing the browser to view the change.-->
+        <!--                    https://www.baeldung.com/spring-boot-devtools-->
         <dependency>
-            <!--			https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-devtools-->
-            <!--			A common feature of developing web applications is coding a change, restarting your application, and refreshing the browser to view the change.-->
-            <!--                    https://www.baeldung.com/spring-boot-devtools-->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
 
+        <!--			Unit Test-->
         <dependency>
-            <!--			Unit Test-->
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -102,30 +140,36 @@
         </dependency>
 
         <dependency>
-            <!--            https://www.baeldung.com/spring-boot-testing-->
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--            https://www.baeldung.com/spring-boot-testing-->
+        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>test</scope>
             <version>1.4.194</version>
         </dependency>
 
+        <!--			opensource community-driven library used for writing fluent and rich assertions in Java tests.-->
+        <!--			https://www.baeldung.com/introduction-to-assertj-->
         <dependency>
-            <!--			opensource community-driven library used for writing fluent and rich assertions in Java tests.-->
-            <!--			https://www.baeldung.com/introduction-to-assertj-->
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>3.4.1</version>
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <!--            https://www.baeldung.com/rest-assured-tutorial-->
-            <!--            https://www.baeldung.com/rest-assured-authentication-->
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>3.0.0</version>
-            <scope>test</scope>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            &lt;!&ndash;            https://www.baeldung.com/rest-assured-tutorial&ndash;&gt;-->
+        <!--            &lt;!&ndash;            https://www.baeldung.com/rest-assured-authentication&ndash;&gt;-->
+        <!--            <groupId>io.rest-assured</groupId>-->
+        <!--            <artifactId>rest-assured</artifactId>-->
+        <!--            <version>3.0.0</version>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
 
         <!--        <dependency>-->
         <!--            &lt;!&ndash;            https://www.baeldung.com/integration-testing-in-spring&ndash;&gt;-->
@@ -170,43 +214,6 @@
                     <excludeDevtools>false</excludeDevtools>
                 </configuration>
             </plugin>
-
-            <!--            <plugin>-->
-            <!--                &lt;!&ndash;                https://spring.io/guides/tutorials/react-and-spring-data-rest/Loading JavaScript Modules&ndash;&gt;-->
-            <!--                <groupId>com.github.eirslett</groupId>-->
-            <!--                <artifactId>frontend-maven-plugin</artifactId>-->
-            <!--                <version>1.6</version>-->
-            <!--                <configuration>-->
-            <!--                    <installDirectory>target</installDirectory>-->
-            <!--                </configuration>-->
-            <!--                <executions>-->
-            <!--                    <execution>-->
-            <!--                        <id>install node and npm</id>-->
-            <!--                        <goals>-->
-            <!--                            <goal>install-node-and-npm</goal>-->
-            <!--                        </goals>-->
-            <!--                        <configuration>-->
-            <!--                            <nodeVersion>v10.11.0</nodeVersion>-->
-            <!--                            <npmVersion>6.4.1</npmVersion>-->
-            <!--                        </configuration>-->
-            <!--                    </execution>-->
-            <!--                    <execution>-->
-            <!--                        <id>npm install</id>-->
-            <!--                        <goals>-->
-            <!--                            <goal>npm</goal>-->
-            <!--                        </goals>-->
-            <!--                        <configuration>-->
-            <!--                            <arguments>install</arguments>-->
-            <!--                        </configuration>-->
-            <!--                    </execution>-->
-            <!--                    <execution>-->
-            <!--                        <id>webpack build</id>-->
-            <!--                        <goals>-->
-            <!--                            <goal>webpack</goal>-->
-            <!--                        </goals>-->
-            <!--                    </execution>-->
-            <!--                </executions>-->
-            <!--            </plugin>-->
         </plugins>
     </build>
 

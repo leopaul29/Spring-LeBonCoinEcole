@@ -56,8 +56,8 @@ public class Announcement {
 	private Student student;
 
 	/*
-		Constructors
-		 */
+	Constructors
+	 */
 	public Announcement() {
 		// sale by default
 		this.isAnnouncement = true;
