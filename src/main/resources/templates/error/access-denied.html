@@ -7,8 +7,11 @@
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
-    <h1>Access denied</h1>
-    <p><a href="/" th:href="@{/}">Back to home page</a></p>
+
+    <div class="jumbotron text-center">
+        <h1>Access denied page</h1>
+        <p><a href="/" th:href="@{/}">Back to home page</a></p>
+    </div>
 </div>
 </body>
 </html>
