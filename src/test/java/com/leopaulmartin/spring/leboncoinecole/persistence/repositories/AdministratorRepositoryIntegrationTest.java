@@ -1,6 +1,5 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.repositories;
 
-import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Administrator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

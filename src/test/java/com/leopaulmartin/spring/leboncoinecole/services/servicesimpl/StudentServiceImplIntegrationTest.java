@@ -1,13 +1,7 @@
 package com.leopaulmartin.spring.leboncoinecole.services.servicesimpl;
 
-import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Email;
-import com.leopaulmartin.spring.leboncoinecole.persistence.entities.PhoneNumber;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Student;
-import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.EmailRepository;
-import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.PhoneNumberRepository;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.StudentRepository;
-import com.leopaulmartin.spring.leboncoinecole.services.EmailService;
-import com.leopaulmartin.spring.leboncoinecole.services.PhoneNumberService;
 import com.leopaulmartin.spring.leboncoinecole.services.StudentService;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,9 +14,6 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.reset;
@@ -38,17 +29,17 @@ public class StudentServiceImplIntegrationTest {
 
 	@Autowired
 	private StudentService service;
-	@Autowired
-	private PhoneNumberService phoneNumberService;
-	@Autowired
-	private EmailService emailService;
+//	@Autowired
+//	private PhoneNumberService phoneNumberService;
+//	@Autowired
+//	private EmailService emailService;
 
 	@MockBean
 	private StudentRepository repository;
-	@MockBean
-	private PhoneNumberRepository phoneNumberRepository;
-	@MockBean
-	private EmailRepository emailRepository;
+//	@MockBean
+//	private PhoneNumberRepository phoneNumberRepository;
+//	@MockBean
+//	private EmailRepository emailRepository;
 
 	@Before
 	public void setUp() {
@@ -114,14 +105,14 @@ public class StudentServiceImplIntegrationTest {
 		// reset
 		reset(repository);
 		// add PhoneNumbers
-		PhoneNumber phoneNumber = phoneNumberService.createPhoneNumber(new PhoneNumber("0123456789"));
-		List<PhoneNumber> phoneNumbers = new ArrayList<>();
-		phoneNumbers.add(phoneNumber);
+//		PhoneNumber phoneNumber = phoneNumberService.createPhoneNumber(new PhoneNumber("0123456789"));
+//		List<PhoneNumber> phoneNumbers = new ArrayList<>();
+//		phoneNumbers.add(phoneNumber);
 //		studentTester.setPhonenumbers(phoneNumbers);
 		// add Emails
-		Email email = emailService.createEmail(new Email("perso@leboncoinecole.fr"));
-		List<Email> emails = new ArrayList<>();
-		emails.add(email);
+//		Email email = emailService.createEmail(new Email("perso@leboncoinecole.fr"));
+//		List<Email> emails = new ArrayList<>();
+//		emails.add(email);
 //		studentTester.setEmails(emails);
 		// mock save
 		Mockito.when(repository.saveAndFlush(studentTester))
@@ -134,10 +125,10 @@ public class StudentServiceImplIntegrationTest {
 		assertThat(found).isNotNull();
 //		assertThat(found.getStudentId())
 //				.isEqualTo(studentTesterId);
-		assertThat(found.getUsername())
-				.isEqualTo(studentTesterUsername);
-		assertThat(found.getPassword())
-				.isEqualTo(studentTesterPassword);
+//		assertThat(found.getUsername())
+//				.isEqualTo(studentTesterUsername);
+//		assertThat(found.getPassword())
+//				.isEqualTo(studentTesterPassword);
 //		assertThat(found.getPhonenumbers())
 //				.isNotNull()
 //				.isNotEmpty()
@@ -156,8 +147,8 @@ public class StudentServiceImplIntegrationTest {
 		// when
 		String newUsername = "new-user";
 		String newPassword = "new-pass";
-		studentTester.setUsername(newUsername);
-		studentTester.setPassword(newPassword);
+//		studentTester.setUsername(newUsername);
+//		studentTester.setPassword(newPassword);
 		Student found = service.createOrUpdateStudent(studentTester);
 
 		// then
@@ -165,10 +156,10 @@ public class StudentServiceImplIntegrationTest {
 				.isNotNull();
 //		assertThat(found.getStudentId())
 //				.isEqualTo(studentTesterId);
-		assertThat(found.getUsername())
-				.isEqualTo(newUsername);
-		assertThat(found.getPassword())
-				.isEqualTo(newPassword);
+//		assertThat(found.getUsername())
+//				.isEqualTo(newUsername);
+//		assertThat(found.getPassword())
+//				.isEqualTo(newPassword);
 	}
 
 	@Test
@@ -184,8 +175,8 @@ public class StudentServiceImplIntegrationTest {
 	@Test
 	public void whenUpdateCategory_thenLabelCannotBeNull() {
 		// when
-		studentTester.setUsername(null);
-		studentTester.setPassword(null);
+//		studentTester.setUsername(null);
+//		studentTester.setPassword(null);
 		Student found = service.createOrUpdateStudent(studentTester);
 
 		// then
@@ -196,8 +187,8 @@ public class StudentServiceImplIntegrationTest {
 	public void whenUpdateCategory_thenNullIdNotExist() {
 		// when
 		Student secondStudent = new Student();
-		secondStudent.setUsername("studentBis");
-		secondStudent.setPassword("studentBis");
+//		secondStudent.setUsername("studentBis");
+//		secondStudent.setPassword("studentBis");
 		Long secondStudentId = 18L;
 //		secondStudent.setStudentId(secondStudentId);
 		Student found = service.createOrUpdateStudent(secondStudent);
@@ -241,8 +232,8 @@ public class StudentServiceImplIntegrationTest {
 	private void contactStudentTest(Student studentTested) {
 		assertThat(studentTested).isNotNull();
 //		assertThat(studentTested.getStudentId()).isEqualTo(studentTesterId);
-		assertThat(studentTested.getUsername()).isEqualTo(studentTesterUsername);
-		assertThat(studentTested.getPassword()).isEqualTo(studentTesterPassword);
+//		assertThat(studentTested.getUsername()).isEqualTo(studentTesterUsername);
+//		assertThat(studentTested.getPassword()).isEqualTo(studentTesterPassword);
 //		assertThat(studentTested.getPhonenumbers()).isNullOrEmpty();
 //		assertThat(studentTested.getEmails()).isNullOrEmpty();
 		assertThat(studentTested.getAnnouncements()).isNullOrEmpty();
@@ -259,14 +250,14 @@ public class StudentServiceImplIntegrationTest {
 			return new StudentServiceImpl();
 		}
 
-		@Bean
-		public PhoneNumberService phoneNumberService() {
-			return new PhoneNumberServiceImpl();
-		}
-
-		@Bean
-		public EmailService emailService() {
-			return new EmailServiceImpl();
-		}
+//		@Bean
+//		public PhoneNumberService phoneNumberService() {
+//			return new PhoneNumberServiceImpl();
+//		}
+//
+//		@Bean
+//		public EmailService emailService() {
+//			return new EmailServiceImpl();
+//		}
 	}
 }

@@ -2,7 +2,6 @@ package com.leopaulmartin.spring.leboncoinecole.restcontrollers;
 
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
 import com.leopaulmartin.spring.leboncoinecole.services.CategoryService;
-import io.restassured.response.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import java.util.List;
 
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -76,10 +74,11 @@ public class CategoryRestControllerIntegrationTest {
 	}
 
 	private String createBookAsUri(Category category) {
-		Response response = given()
-				.contentType(MediaType.APPLICATION_JSON_VALUE)
-				.body(category)
-				.post(API_ROOT);
-		return API_ROOT + "/" + response.jsonPath().get("id");
+//		Response response = given()
+//				.contentType(MediaType.APPLICATION_JSON_VALUE)
+//				.body(category)
+//				.post(API_ROOT);
+//		return API_ROOT + "/" + response.jsonPath().get("id");
+		return null;
 	}
 }
