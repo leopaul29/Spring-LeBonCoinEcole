@@ -11,8 +11,8 @@ import java.util.List;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
 
-	@Query("SELECT s FROM students s WHERE LOWER(s.username) = LOWER(:username)")
-	Student findOneByUsername(@Param("username") String username);
+//	@Query("SELECT s FROM students s WHERE LOWER(s.username) = LOWER(:username)")
+//	Student findOneByUsername(@Param("username") String username);
 
 //	@Query("SELECT s FROM students s INNER JOIN s.phonenumbers phn WHERE phn.number = :phonenumber")
 //	Student findOneByPhonenumber(@Param("phonenumber") String phonenumber);

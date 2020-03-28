@@ -16,6 +16,18 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 	@Query("SELECT c FROM categories c WHERE LOWER(c.label) = LOWER(:label)")
 	Category findByLabel(@Param("label") String label);
 
+	//	@Query("SELECT c FROM categories c " +
+//			"INNER JOIN announcements a " +
+//			"WHERE c.categoryId = a.category " +
+//			"ORDER BY COUNT (a.announcementId) DESC")
+//	@Query("SELECT c.label " +
+//			"(SELECT COUNT(*) " +
+//			"FROM announcements a " +
+//			"WHERE a.category = c.categoryId) " +
+//			"AS announcements_number " +
+//			"FROM categories c")
+//	List<Category> findAllSortedByAnnounce();
+
 //	@Modifying
 ////	The @Modifying annotation is only relevant in combination with the @Query annotation. Derived query methods or custom methods do not require this Annotation.
 ////	https://docs.spring.io/spring-data/data-jpa/docs/current/reference/html/#jpa.modifying-queries
