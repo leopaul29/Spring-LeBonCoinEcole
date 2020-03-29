@@ -1,13 +1,18 @@
 package com.leopaulmartin.spring.leboncoinecole.utils;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 public class Utils {
 
-	public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	private static final DateTimeFormatter formatter =
+			DateTimeFormatter
+					.ofLocalizedDateTime(FormatStyle.SHORT)
+					.withZone(ZoneId.systemDefault());
 
-	public static String getFormattedDate(Date date) {
-		return SIMPLE_DATE_FORMAT.format(date);
+	public static String getFormattedDate(Instant date) {
+		return formatter.format(date);
 	}
 }
