@@ -1,24 +1,72 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:th="http://www.thymeleaf.org"
+>
 <body>
 <th:block th:fragment="header">
-    <nav class="navbar navbar-inverse navbar-static-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" th:href="@{/}">
-                    <img alt="LBCE logo" th:src="@{/img/logo.png}"/>
-                </a>
-            </div>
-            <div class="" id="navbar">
-                <ul class="nav navbar-nav">
-                    <li class="active">
-                        <a th:href="@{/}">Home</a>
-                    </li>
-                    <li><a th:href="@{/home}"/>Index</a></li>
-                    <li><a th:href="@{/admin/home}">Admin index</a></li>
-                    <li><a th:href="@{/admin/categories}">Categories</a></li>
-                </ul>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/" th:href="@{/}">
+            <img alt="" class="d-inline-block align-top" height="30"
+                 src="" width="30">
+            LBCE
+        </a>
+        <button class="navbar-toggler" data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/create-announce" th:href="@{/create-announce}">Create Announce</a>
+                </li>
+
+                <form action="/announces/announce" class="form-inline my-2 my-lg-0" method="get"
+                      th:action="@{/announces/announce}">
+                    <input class="form-control mr-sm-2" placeholder="Search" type="search">
+                </form>
+            </ul>
+
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/my-searches" th:href="@{/my-searches}">My Searches</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/my-favorites" th:href="@{/my-favorites}">Favorite</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/messages" th:href="@{/messages}">Messages</a>
+                </li>
+
+                <div th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
+                    <span th:case="${false}">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login" th:href="@{/login}">Sign in</a>
+                        </li>
+                    </span>
+                    <span th:case="${true}">
+                        <li class="nav-item dropdown float-right">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="navbarDropdown"
+                               role="button">
+                                <span sec:authentication="name"></span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="/my-account" th:href="@{/my-account}">Informations</a>
+                                <a class="dropdown-item" href="/history" th:href="@{/history}">History</a>
+                                <a class="dropdown-item" href="/my-announces"
+                                   th:href="@{/my-announces}">My announces</a>
+                                <div class="dropdown-divider"></div>
+                                <div sec:authorize="hasRole('ROLE_ADMIN')">
+                                    <a class="dropdown-item" href="/admin"
+                                       th:href="@{/admin}">Switch to Admin dashboard</a>
+                                    <div class="dropdown-divider"></div>
+                                </div>
+                                <a class="dropdown-item" href="/logout" th:href="@{/logout}">Logout</a>
+                            </div>
+                        </li>
+                    </span>
+                    <span th:case="*">Default authentication</span>
+                </div>
+            </ul>
         </div>
     </nav>
 </th:block>
