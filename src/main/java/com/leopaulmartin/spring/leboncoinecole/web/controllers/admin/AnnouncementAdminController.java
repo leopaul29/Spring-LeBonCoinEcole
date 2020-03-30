@@ -1,4 +1,4 @@
-package com.leopaulmartin.spring.leboncoinecole.controllers.admin;
+package com.leopaulmartin.spring.leboncoinecole.web.controllers.admin;
 
 import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
@@ -17,10 +17,10 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/announcements")
-public class AnnouncementController {
+public class AnnouncementAdminController {
 	public static final String VIEW = "admin/announcements";
 	public static final String REDIRECT = "redirect:/";
-	private static final Logger logger = LoggerFactory.getLogger(AnnouncementController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AnnouncementAdminController.class);
 	@Autowired
 	private AnnouncementService service;
 	@Autowired

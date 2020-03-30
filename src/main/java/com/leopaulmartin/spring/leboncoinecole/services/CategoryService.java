@@ -9,6 +9,8 @@ import java.util.List;
 public interface CategoryService {
 	List<Category> getAllCategories();
 
+//	List<Category> getAllCategoriesSortedByAnnounce();
+
 	Category getCategoryById(Long id);
 
 	Category getCategoryByLabel(String label);

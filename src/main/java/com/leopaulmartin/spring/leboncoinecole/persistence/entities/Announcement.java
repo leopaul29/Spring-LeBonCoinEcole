@@ -1,10 +1,12 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.entities;
 
+import com.leopaulmartin.spring.leboncoinecole.utils.Utils;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -39,9 +41,7 @@ public class Announcement {
 	@Min(value = 0, message = "Cannot be negatif")
 	private float price;
 
-	@Column(name = "creation_date")
-	//@NotNull
-	private Date creationDate;
+	private Instant created;
 
 	@Column(name = "end_date")
 	private Date endDate;
@@ -62,7 +62,7 @@ public class Announcement {
 		// sale by default
 		this.isAnnouncement = true;
 		// server date when announcement created
-		this.creationDate = new Date(System.currentTimeMillis());
+		this.created = Instant.now();
 		// life of the announcement set to 3 month maximum
 		GregorianCalendar gcalendar = new GregorianCalendar();
 		gcalendar.add(3, GregorianCalendar.MONTH);
@@ -130,13 +130,13 @@ public class Announcement {
 		this.price = price;
 	}
 
-	public Date getCreationDate() {
-		return creationDate;
-	}
-
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
+//	public Date getCreationDate() {
+//		return creationDate;
+//	}
+//
+//	public void setCreationDate(Date creationDate) {
+//		this.creationDate = creationDate;
+//	}
 
 	public Date getEndDate() {
 		return endDate;
@@ -178,6 +178,14 @@ public class Announcement {
 		this.student = student;
 	}
 
+	public String getCreated() {
+		return Utils.getFormattedDate(created);
+	}
+
+	public void setCreated(Instant created) {
+		this.created = created;
+	}
+
 	@Override
 	public String toString() {
 		return "Announcement{" +
@@ -186,7 +194,8 @@ public class Announcement {
 				", title='" + title + '\'' +
 				", photo=" + (photo != null) +
 				", price=" + price +
-				", creationDate=" + creationDate +
+				", created=" + created +
+//				", creationDate=" + creationDate +
 				", endDate=" + endDate +
 				", description='" + description + '\'' +
 				", isClosed=" + isClosed +

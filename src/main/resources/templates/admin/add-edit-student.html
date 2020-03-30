@@ -47,6 +47,7 @@
                     <div class="form-group col-md-8">
                         <label for="school">School</label>
                         <select class="form-control" id="school" th:field="*{school}">
+                            <option th:text="--" th:value="" value=""> --</option>
                             <option
                                     th:each="dropdownValue: ${allSchools}"
                                     th:text="${dropdownValue.name}"

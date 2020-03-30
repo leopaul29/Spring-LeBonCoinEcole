@@ -1,4 +1,4 @@
-package com.leopaulmartin.spring.leboncoinecole.controllers.admin;
+package com.leopaulmartin.spring.leboncoinecole.web.controllers.admin;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class AdminController {
+public class MainAdminController {
 
 	@Value("${spring.application.name}")
 	String appName;

@@ -1,5 +1,6 @@
-package com.leopaulmartin.spring.leboncoinecole.controllers.admin;
+package com.leopaulmartin.spring.leboncoinecole.web.controllers.admin;
 
+import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
 import com.leopaulmartin.spring.leboncoinecole.services.AnnouncementService;
 import com.leopaulmartin.spring.leboncoinecole.services.CategoryService;
@@ -7,16 +8,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
 @RequestMapping("/admin/categories")
-public class CategoryController {
-	public static final String VIEW = "admin/categories";
-	public static final String REDIRECT = "redirect:/";
-	private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
+public class CategoryAdminController {
+	private static final Logger logger = LoggerFactory.getLogger(CategoryAdminController.class);
+	private static final String VIEW = "admin/categories";
+	private static final String REDIRECT = "redirect:/";
 	@Autowired
 	private CategoryService service;
 	@Autowired
@@ -46,11 +48,10 @@ public class CategoryController {
 		return REDIRECT + VIEW;
 	}
 
-	@DeleteMapping("/{id}")
-	public String deleteCategory(@RequestParam("removeRow") Long categoryId) {
-		logger.error("deleteCategory:" + categoryId);
-		service.deleteCategoryById(categoryId);
-
+	@RequestMapping(path = "/delete/{id}")
+	public String deleteCategoryById(Model model, @PathVariable("id") Long id)
+			throws RecordNotFoundException {
+		service.deleteCategoryById(id);
 		return REDIRECT + VIEW;
 	}
 }

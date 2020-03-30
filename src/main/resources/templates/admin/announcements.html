@@ -13,11 +13,6 @@
         <a class="btn btn-primary float-right" th:href="@{/admin/announcements/edit}">
             Add new Announcement
         </a>
-        <!-- Button trigger modal -->
-        <!--        <button type="button" class="btn btn-primary float-right" data-toggle="modal"-->
-        <!--                data-target="#addNewAnnouncement">-->
-        <!--            Add new Announcement-->
-        <!--        </button>-->
     </div>
     <div th:unless="${#lists.isEmpty(allAnnouncements)}">
         <h2>Announcement List</h2>
@@ -51,6 +46,7 @@
                         </a>
                     </td>
                     <td>
+                        <!--                    TODO:trigger an alert to confirm the deletion -->
                         <a class="btn btn-primary"
                            target="_top"
                            th:href="@{/admin/announcements/delete/{id}(id=${announcement.announcementId})}">
