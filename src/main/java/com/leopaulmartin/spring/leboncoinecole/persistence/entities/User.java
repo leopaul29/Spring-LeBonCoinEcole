@@ -1,18 +1,21 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.entities;
 
+import com.leopaulmartin.spring.leboncoinecole.utils.Utils;
+
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Collection;
 
 @Entity(name = "users")
-//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-
+	@Column(name = "user_id")
+	private Long userId;
+	private String firstName;
+	private String lastName;
 	private String email;
 	private String password;
 	private Instant created;
@@ -21,61 +24,61 @@ public class User {
 	@JoinTable(
 			name = "users_roles",
 			joinColumns = @JoinColumn(
-					name = "user_id", referencedColumnName = "id"),
+					name = "user_id", referencedColumnName = "user_id"),
 			inverseJoinColumns = @JoinColumn(
-					name = "role_id", referencedColumnName = "id"))
+					name = "role_id", referencedColumnName = "role_id"))
 	private Collection<Role> roles;
+
+	// Constructor
 
 	public User() {
 		this.created = Instant.now();
 	}
 
-	public User(String email, String password) {
-		this();
-		this.email = email;
-		this.password = password;
-	}
-
 	public User(String firstName, String lastName, String email, String password) {
 		this();
-//		this.firstName = firstName;
-//		this.lastName = lastName;
+
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
 	}
 
 	public User(String firstName, String lastName, String email, String password, Collection<Role> roles) {
 		this();
-//		this.firstName = firstName;
-//		this.lastName = lastName;
+
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
 		this.roles = roles;
 	}
 
-	public Long getId() {
-		return id;
+	// Getters & Setters
+
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
-//	public String getFirstName() {
-//		return firstName;
-//	}
-//
-//	public void setFirstName(String firstName) {
-//		this.firstName = firstName;
-//	}
-//
-//	public String getLastName() {
-//		return lastName;
-//	}
-//
-//	public void setLastName(String lastName) {
-//		this.lastName = lastName;
-//	}
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
 	public String getEmail() {
 		return email;
@@ -93,6 +96,17 @@ public class User {
 		this.password = password;
 	}
 
+	public String getCreated() {
+		return Utils.getFormattedDate(created);
+	}
+//	public Instant getCreated() {
+//		return created;
+//	}
+
+	public void setCreated(Instant created) {
+		this.created = created;
+	}
+
 	public Collection<Role> getRoles() {
 		return roles;
 	}
@@ -101,14 +115,17 @@ public class User {
 		this.roles = roles;
 	}
 
+	// Override
+
 	@Override
 	public String toString() {
 		return "User{" +
-				"id=" + id +
-//				", firstName='" + firstName + '\'' +
-//				", lastName='" + lastName + '\'' +
+				"id=" + userId +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
 				", email='" + email + '\'' +
-				", password='" + "*********" + '\'' +
+				", password='" + "***********" + '\'' +
+				", created=" + created +
 				", roles=" + roles +
 				'}';
 	}
