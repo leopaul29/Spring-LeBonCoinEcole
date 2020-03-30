@@ -3,7 +3,6 @@ package com.leopaulmartin.spring.leboncoinecole.persistence.entities;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.List;
 
 @Entity(name = "students")
@@ -13,11 +12,6 @@ public class Student {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "student_id")
 	private Long studentId;
-
-	@Column(name = "first_name")
-	private String firstName;
-	@Column(name = "last_name")
-	private String lastName;
 	@Column(name = "phone_number")
 	private String phoneNumber;
 	@Lob
@@ -28,14 +22,16 @@ public class Student {
 	@ManyToOne
 	private School school;
 
-	@OneToOne
+	//set option to remove the user profil when student profil is deleted
+	@OneToOne(cascade = {CascadeType.REMOVE}, orphanRemoval = true)
 	private User userProfil;
 
-	@OneToMany//(
-//			targetEntity = com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement.class,
-//			mappedBy = "student",
-//			fetch = FetchType.LAZY,
-//			cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+	//TODO: set option to remove all announcement when student profil is deleted
+	@OneToMany/*(
+			targetEntity = com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement.class,
+			mappedBy = "student",
+			fetch = FetchType.LAZY,
+			cascade = {CascadeType.REMOVE}, orphanRemoval = true)*/
 	@JoinTable(
 			name = "students_announcements",
 			joinColumns = @JoinColumn(
@@ -44,51 +40,62 @@ public class Student {
 					name = "announcement_id", referencedColumnName = "announcement_id"))
 	private List<Announcement> announcements;
 
+	// Constructor
+
 	public Student() {
 	}
 
-	public Student(String firstName, String lastName) {
-		this();
-
-		this.firstName = firstName;
-		this.lastName = lastName;
+	public Student(User user) {
+		this.userProfil = user;
 	}
 
-	public Student(String username, String password, String firstName, String lastName, String email, String phoneNumber) {
-		this();
-
-//		this.username = username;
-//		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-//		this.email = email;
+//	public Student(String firstName, String lastName) {
+//		this();
+//
+//		this.firstName = firstName;
+//		this.lastName = lastName;
+//	}
+//
+//	public Student(String firstName, String lastName, String phoneNumber) {
+//		this();
+//
+//		this.firstName = firstName;
+//		this.lastName = lastName;
 //		this.phoneNumber = phoneNumber;
-	}
+//	}
 
 	// Getter & Setter
 
-	public User getUserProfil() {
-		return userProfil;
+	public Long getStudentId() {
+		return studentId;
 	}
 
-	public void setUserProfil(User userProfil) {
-		this.userProfil = userProfil;
+	public void setStudentId(Long studentId) {
+		this.studentId = studentId;
 	}
 
-	public String getFirstName() {
-		return firstName;
+//	public String getFirstName() {
+//		return firstName;
+//	}
+//
+//	public void setFirstName(String firstName) {
+//		this.firstName = firstName;
+//	}
+//
+//	public String getLastName() {
+//		return lastName;
+//	}
+//
+//	public void setLastName(String lastName) {
+//		this.lastName = lastName;
+//	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 	public byte[] getPhoto() {
@@ -107,6 +114,14 @@ public class Student {
 		this.school = school;
 	}
 
+	public User getUserProfil() {
+		return userProfil;
+	}
+
+	public void setUserProfil(User userProfil) {
+		this.userProfil = userProfil;
+	}
+
 	public List<Announcement> getAnnouncements() {
 		return announcements;
 	}
@@ -120,12 +135,12 @@ public class Student {
 	@Override
 	public String toString() {
 		return "Student{" +
-				"firstName='" + firstName + '\'' +
-				", lastName='" + lastName + '\'' +
-				", photo=" + Arrays.toString(photo) +
+				"studentId=" + studentId +
+				", phoneNumber='" + phoneNumber + '\'' +
+				", photo=" + (photo != null) +
 				", school=" + school +
+				", userProfil=" + userProfil +
 				", announcements=" + announcements +
-				", phoneNumber='" + phoneNumber +
 				'}';
 	}
 }

@@ -1,7 +1,6 @@
 package com.leopaulmartin.spring.leboncoinecole.restcontrollers;
 
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Student;
-import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.PhoneNumberRepository;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.StudentRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import java.util.List;
 public class StudentRestController {
 	@Autowired
 	private StudentRepository studentRepository;
-	@Autowired
-	private PhoneNumberRepository phoneNumberRepository;
 
 	@GetMapping
 	public List<Student> list() {

@@ -22,4 +22,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 			"INNER JOIN stu.school sch " +
 			"ON sch.schoolId =  :schoolId")
 	List<Student> findAllBySchool(@Param("schoolId") Long schoolId);
+
+	@Query("SELECT s FROM students s WHERE s.userProfil = :userId")
+	Student findByUserId(@Param("userId") Long userId);
 }
