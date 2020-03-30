@@ -1,31 +1,33 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Entity
+@Entity(name = "roles")
 public class Role {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@Column(name = "role_id")
+	private Long roleId;
 	private String name;
+
+	// Constructor
 
 	public Role() {
 	}
+
+	// Getter & Setter
 
 	public Role(String name) {
 		this.name = name;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getRoleId() {
+		return roleId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
 	}
 
 	public String getName() {
@@ -36,10 +38,12 @@ public class Role {
 		this.name = name;
 	}
 
+	// Override
+
 	@Override
 	public String toString() {
 		return "Role{" +
-				"id=" + id +
+				"roleId=" + roleId +
 				", name='" + name + '\'' +
 				'}';
 	}
