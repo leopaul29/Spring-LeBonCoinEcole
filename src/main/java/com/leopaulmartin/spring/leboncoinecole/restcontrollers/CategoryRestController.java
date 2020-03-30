@@ -1,15 +1,12 @@
 package com.leopaulmartin.spring.leboncoinecole.restcontrollers;
 
 import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.RestPreconditions;
-import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
 import com.leopaulmartin.spring.leboncoinecole.services.AnnouncementService;
 import com.leopaulmartin.spring.leboncoinecole.services.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +15,6 @@ import javax.validation.Valid;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 /**
@@ -46,7 +42,7 @@ class CategoryRestController {
 	public ResponseEntity<List<Category>> getAllCategories() {
 		List<Category> categories = categoryService.getAllCategories();
 		for (final Category category : categories) {
-			Link link = linkTo(CategoryRestController.class).slash(category.getCategoryId()).withSelfRel();
+//			Link link = linkTo(CategoryRestController.class).slash(category.getCategoryId()).withSelfRel();
 //			category.add(link);
 		}
 	/*
@@ -61,19 +57,19 @@ class CategoryRestController {
 				.body(categories);
 	}
 
-	@GetMapping(path = "/{id}/announcements", produces = APPLICATION_JSON_AND_HATEOAS)
-	public Resources<Announcement> getAnnouncementForCategory(@PathVariable("id") final Long categoryId) {
-//		List<Announcement> announcements = announcementService.getAnnouncementForCategory(categoryId);
-//		for (final Announcement announcement : announcements) {
-//			Link selfLink = linkTo(methodOn(CategoryRestController.class).getCategoryById(categoryId)).withSelfRel();
-//			announcement.add(selfLink);
-//		}
-//
-//		Link link = linkTo(methodOn(CategoryRestController.class).getAnnouncementForCategory(categoryId)).withSelfRel();
-//		Resources<Announcement> result = new Resources<Announcement>(announcements, link);
-//		return result;
-		return null;
-	}
+//	@GetMapping(path = "/{id}/announcements", produces = APPLICATION_JSON_AND_HATEOAS)
+//	public Resources<Announcement> getAnnouncementForCategory(@PathVariable("id") final Long categoryId) {
+////		List<Announcement> announcements = announcementService.getAnnouncementForCategory(categoryId);
+////		for (final Announcement announcement : announcements) {
+////			Link selfLink = linkTo(methodOn(CategoryRestController.class).getCategoryById(categoryId)).withSelfRel();
+////			announcement.add(selfLink);
+////		}
+////
+////		Link link = linkTo(methodOn(CategoryRestController.class).getAnnouncementForCategory(categoryId)).withSelfRel();
+////		Resources<Announcement> result = new Resources<Announcement>(announcements, link);
+////		return result;
+//		return null;
+//	}
 
 	@GetMapping(path = "/{id}", produces = APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Category> getCategoryById(@PathVariable("id") Long id) {
