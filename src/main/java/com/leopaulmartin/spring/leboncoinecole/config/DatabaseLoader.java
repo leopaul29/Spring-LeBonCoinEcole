@@ -3,11 +3,11 @@ package com.leopaulmartin.spring.leboncoinecole.config;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.*;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.AddressRepository;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.AnnouncementRepository;
-import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.EmailRepository;
-import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.PhoneNumberRepository;
 import com.leopaulmartin.spring.leboncoinecole.services.CategoryService;
 import com.leopaulmartin.spring.leboncoinecole.services.SchoolService;
 import com.leopaulmartin.spring.leboncoinecole.services.StudentService;
+import com.leopaulmartin.spring.leboncoinecole.services.UserService;
+import com.leopaulmartin.spring.leboncoinecole.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -21,10 +21,10 @@ public class DatabaseLoader implements CommandLineRunner {
 
 	@Autowired
 	private CategoryService categoryService;
+	//	@Autowired
+//	private PhoneNumberRepository phoneNumberRepository;
 	@Autowired
-	private PhoneNumberRepository phoneNumberRepository;
-	@Autowired
-	private EmailRepository emailRepository;
+	private UserService userService;
 	@Autowired
 	private StudentService studentService;
 	@Autowired
@@ -46,26 +46,42 @@ public class DatabaseLoader implements CommandLineRunner {
 		student.setSchool(school);
 
 		// Announcement & Categories
-		// Categories
-		Category cat1 = categoryService.getCategoryById(1L);
 		// Announcement
-		Announcement ann1 = new Announcement("title exemple", "description exemple", cat1, 10.0f);
+		Announcement ann1 = new Announcement(Utils.generateAnnounceTitle(), Utils.generateAnnounceDescription(), getRandomCategory(), Utils.getRandomPrice100());
+		Announcement ann2 = new Announcement(Utils.generateAnnounceTitle(), Utils.generateAnnounceDescription(), getRandomCategory(), Utils.getRandomPrice100());
+		Announcement ann3 = new Announcement(Utils.generateAnnounceTitle(), Utils.generateAnnounceDescription(), getRandomCategory(), Utils.getRandomPrice100());
+		Announcement ann4 = new Announcement(Utils.generateAnnounceTitle(), Utils.generateAnnounceDescription(), getRandomCategory(), Utils.getRandomPrice100());
+		Announcement ann5 = new Announcement(Utils.generateAnnounceTitle(), Utils.generateAnnounceDescription(), getRandomCategory(), Utils.getRandomPrice100());
 		announcementRepository.saveAndFlush(ann1);
+		announcementRepository.saveAndFlush(ann2);
+		announcementRepository.saveAndFlush(ann3);
+		announcementRepository.saveAndFlush(ann4);
+		announcementRepository.saveAndFlush(ann5);
 
 		// Add announcement in student list
 		List<Announcement> listann = new ArrayList<>();
 		listann.add(ann1);
+		listann.add(ann2);
+		listann.add(ann3);
+		listann.add(ann4);
+		listann.add(ann5);
 		student.setAnnouncements(listann);
 
 		// save student
 		studentService.createOrUpdateStudent(student);
 
+		User u = new User("user", "lastn", "usertest@t", "passtest");
+		userService.createOrUpdateUser(u);
+
+		userService.createAdmin("admin@t", "passadm");
 	}
 
 	private void createStudentTest(String lastname, String firstname, School school) {
-		Student student = studentService.createOrUpdateStudent(new Student(lastname.charAt(0) + firstname, "pass",
-				firstname, lastname, firstname + "." + lastname + "@lbce.com", "0123456789"));
+		User user = userService.createOrUpdateUser(new User(firstname, lastname, firstname + "." + lastname + "@lbce.com", "pass"));
+		Student student = studentService.createOrUpdateStudent(new Student(user));
+		student.setPhoneNumber("0123456789");
 		student.setSchool(school);
+//		student.setUserProfil(user);
 		studentService.createOrUpdateStudent(student);
 	}
 
@@ -79,7 +95,7 @@ public class DatabaseLoader implements CommandLineRunner {
 		createStudentTest("Pomme", "Thomas", schools.get(random.nextInt(maxSchoolId)));
 		createStudentTest("Aydogan", "Mehmet", schools.get(random.nextInt(maxSchoolId)));
 		createStudentTest("Rabadan", "Andy", schools.get(random.nextInt(maxSchoolId)));
-		createStudentTest("Guery", "Steven", schools.get(random.nextInt(maxSchoolId)));
+		/*createStudentTest("Guery", "Steven", schools.get(random.nextInt(maxSchoolId)));
 		createStudentTest("Nagy", "Niko", schools.get(random.nextInt(maxSchoolId)));
 		createStudentTest("Silvestro", "Benoit", schools.get(random.nextInt(maxSchoolId)));
 		createStudentTest("Delas", "Romain", schools.get(random.nextInt(maxSchoolId)));
@@ -118,7 +134,7 @@ public class DatabaseLoader implements CommandLineRunner {
 		createStudentTest("Eme", "Nag", schools.get(random.nextInt(maxSchoolId)));
 		createStudentTest("Begyn", "Mélissa", schools.get(random.nextInt(maxSchoolId)));
 		createStudentTest("Benyas", "Nour", schools.get(random.nextInt(maxSchoolId)));
-		createStudentTest("Amira", "Mimouna", schools.get(random.nextInt(maxSchoolId)));
+		createStudentTest("Amira", "Mimouna", schools.get(random.nextInt(maxSchoolId)));*/
 	}
 
 	private void createCategories() {
@@ -127,7 +143,7 @@ public class DatabaseLoader implements CommandLineRunner {
 		categoryService.createCategory(new Category("Motos"));
 		categoryService.createCategory(new Category("Caravaning"));
 		categoryService.createCategory(new Category("Utilitaires"));
-		categoryService.createCategory(new Category("Equipement Auto"));
+		/*categoryService.createCategory(new Category("Equipement Auto"));
 		categoryService.createCategory(new Category("Equipement Moto"));
 		categoryService.createCategory(new Category("Equipement Caravaning"));
 		categoryService.createCategory(new Category("Nautisme"));
@@ -174,7 +190,7 @@ public class DatabaseLoader implements CommandLineRunner {
 		categoryService.createCategory(new Category("Montres & Bijoux"));
 		categoryService.createCategory(new Category("Equipement bébé"));
 		categoryService.createCategory(new Category("Vêtements bébé"));
-		categoryService.createCategory(new Category("Autres"));
+		categoryService.createCategory(new Category("Autres"));*/
 	}
 
 	private void createSchoolsTest() {
@@ -187,7 +203,7 @@ public class DatabaseLoader implements CommandLineRunner {
 		schoolService.createSchool(new School("Institut national des techniques économiques et comptables", new Address("8 boulevard Louis XIV", "59024", "Lille", "France", 0.129004f, 49.4958179f), "603"));
 		schoolService.createSchool(new School("Médiaquitaine - Centre régional de formation aux carrières des bibliothèques", new Address("10 A avenue d'Aquitaine", "33172", "Gradignan", "France", -0.5561339f, 44.8298632f), "1267"));
 		schoolService.createSchool(new School("ESPÉ - École supérieure du professorat et de l'éducation Célestin Freinet (site de Nice, George V)", new Address("89 avenue Georges V", "06088", "Nice", "France", 5.890045f, 43.101422f), "5074"));
-		schoolService.createSchool(new School("Institut supérieur d'économie et de management", new Address("24 avenue des Diables bleus", "06088", "Nice", "France", 7.2903508f, 43.7083101f), "23627"));
+		/*schoolService.createSchool(new School("Institut supérieur d'économie et de management", new Address("24 avenue des Diables bleus", "06088", "Nice", "France", 7.2903508f, 43.7083101f), "23627"));
 		schoolService.createSchool(new School("IUP Tourisme", new Address("Villa Arcadie", "06088", "Nice", "France", 7.2483479f, 43.6942128f), "22607"));
 		schoolService.createSchool(new School("Faculté de lettres, arts et sciences humaines - Campus St Jean d'angely", new Address("24 avenue des Diables bleus", "06088", "Nice", "France", 7.2884677f, 43.7082791f), "22446"));
 		schoolService.createSchool(new School("IUP Miage", new Address("1645 route des Lucioles", "06018", "Biot", "France", 7.0637145f, 43.6166598f), "22606"));
@@ -199,5 +215,11 @@ public class DatabaseLoader implements CommandLineRunner {
 		schoolService.createSchool(new School("Ecole d'économie", new Address("41 boulevard François Mitterrand", "63113", "Clermont-Ferrand", "France", 3.0863503f, 45.7707643f), "17445"));
 		schoolService.createSchool(new School("Faculté de médecine - Enseignements des techniques de réadaptation", new Address("133 route de Narbonne", "31555", "Toulouse", "France", 1.4650897f, 43.5571642f), "18004"));
 		schoolService.createSchool(new School("UFR de physique et ingénierie", new Address("3-5 rue de l'Université", "67482", "Strasbourg", "France"), null));
+	*/
+	}
+
+	public Category getRandomCategory() {
+		int size = categoryService.getAllCategories().size();
+		return categoryService.getAllCategories().get(Utils.getRandom(size));
 	}
 }
