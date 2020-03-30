@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>History</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <h1>History
+
+        <a th:href="@{/history/delete}">
+            <i class="fas fa-eraser"></i>
+        </a>
+    </h1>
+    <section class="col-md-10" id="my-favorite">
+        <th:block th:replace="display-announces.html :: display-announces"/>
+    </section>
+</div>
+</body>
+</html>

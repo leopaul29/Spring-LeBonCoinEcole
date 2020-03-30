@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{fragments/layout}"
+<html layout:decorate="~{fragments/layout.html}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -7,7 +7,6 @@
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
-
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <h1>Login page</h1>
@@ -22,40 +21,29 @@
                         You have been logged out.
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="username">Username</label>:
-                    <input autofocus="autofocus"
-                           class="form-control"
-                           id="username"
-                           name="username"
-                           placeholder="Username"
-                           type="text">
+                <a href="/" th:href="@{/}">
+                    <img alt="" class="mb-4" height="72" src="" width="72">
+                </a>
+                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                <label class="sr-only" for="username">Email address</label>
+                <input autofocus="" class="form-control" id="username" name="username" placeholder="Email address"
+                       required=""
+                       type="email">
+                <label class="sr-only" for="password">Password</label>
+                <input class="form-control" id="password" name="password" placeholder="Password" required=""
+                       type="password">
+                <div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" value="remember-me"> Remember me
+                    </label>
                 </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
                 <div class="form-group">
-                    <label for="password">Password</label>:
-                    <input class="form-control"
-                           id="password"
-                           name="password"
-                           placeholder="Password"
-                           type="password">
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-sm-6 col-sm-offset-3">
-                            <input class="form-control btn btn-info"
-                                   id="login-submit"
-                                   name="login-submit"
-                                   type="submit"
-                                   value="Log In">
-                        </div>
-                    </div>
+                    <span>You are a new joiner ? <a href="/" th:href="@{/registration}">Register here</a></span>
                 </div>
             </form>
         </div>
     </div>
-
-    <p><a href="/" th:href="@{/}">Back to home page</a></p>
-
 </div>
 </body>
 </html>

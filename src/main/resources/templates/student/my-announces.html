@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Announces</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <h1>My announces</h1>
+    <section class="col-md-10" id="my-announces" th:unless="${#lists.isEmpty(allAnnouncements)}">
+        <div class="card shadow-sm mb-3" th:each="announcement : ${allAnnouncements}">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img alt="This is an announce" class="card-img"
+                         src="https://fakeimg.pl/350x210/?text=Big Announce !">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a class="stretched-link"
+                               th:href="@{/announces/view/{id}(id=${announcement.announcementId})}">
+                                <span th:text="${announcement.title}">announcement.title</span>
+                            </a>
+                        </h5>
+                        <p class="card-text" th:text="${announcement.category.label}">category.label</p>
+                        <p class="card-text"><span th:text="${announcement.price}">price</span> €</p>
+                        <p class="card-text"><small class="text-muted">Posted <span th:text="${announcement.created}">3 mins
+                            ago</span></small></p>
+
+                        <!--                        //TODO: add option to edit-->
+
+                        <!--                        //TODO: add option to delete-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

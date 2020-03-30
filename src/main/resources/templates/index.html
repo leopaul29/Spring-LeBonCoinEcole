@@ -7,12 +7,91 @@
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
-    <h1 th:text="#{hello}">Hi !</h1>
-    <p th:text="${#locale.language}"> language</p>
-    <p>This is an unsecured page, but you can access the secured pages after authenticating.</p>
-    <ul>
-        <li>Go to the <a href="/user" th:href="@{/student}">secured pages</a></li>
-    </ul>
+
+    <section id="search-form">
+        <!--Search Form-->
+        <div class="jumbotron text-center">
+            <form action="/search" class="col-md-10 offset-1" method="get" th:action="@{/search}"
+                  th:object="${searchForm}">
+                <div class="form-check form-check-inline">
+                    <input checked class="form-check-input" id="isAnnounce" name="isAnnounceOrSearch"
+                           th:field="*{type}" type="radio" value="announce">
+                    <label class="form-check-label" for="isAnnounce">Announce</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" id="isSearch" name="isAnnounceOrSearch" th:field="*{type}"
+                           type="radio" value="search">
+                    <label class="form-check-label" for="isSearch">Search</label>
+                </div>
+
+                <div class="form-inline">
+                    <label class="sr-only" for="category">Name</label>
+                    <select class="form-control col-md-2" id="category" name="category" th:field="*{category}">
+                        <option selected value="--">Category</option>
+                        <option
+                                th:each="dropdownValue: ${allCategories}"
+                                th:text="${dropdownValue.label}"
+                                th:value="${dropdownValue.categoryId}">category.label
+                        </option>
+                    </select>
+
+                    <label class="sr-only" for="keywordsInput">Name</label>
+                    <input class="form-control col-md-6" id="keywordsInput" placeholder="Key words"
+                           th:field="*{keywordsInput}"
+                           type="text">
+
+                    <label class="sr-only" for="school">Name</label>
+                    <select class="form-control col-md-4" id="school" th:field="*{school}">
+                        <option selected value="--">School</option>
+                        <option
+                                th:each="dropdownValue: ${allSchools}"
+                                th:text="${dropdownValue.name}"
+                                th:value="${dropdownValue.schoolId}">school.name
+                        </option>
+                    </select>
+
+                </div>
+                <button class="btn btn-primary mb-2" type="submit">Submit</button>
+            </form>
+        </div>
+    </section>
+
+    <section id="top-categories" th:unless="${#lists.isEmpty(top5categories)}">
+        <!--display top5 categories-->
+        <h2>Top5 categories</h2>
+        <div class="card-group">
+            <div class="card" th:each="category,state : ${top5categories}">
+                <img alt="" class="card-img-top" src="">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${category.label}">category.label</h5>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="schools-around" th:unless="${#lists.isEmpty(top5schools)}">
+        <!--take geolocalisation and top10 schools nearby-->
+        <h2>Top5 schools</h2>
+        <div class="card-group">
+            <div class="card" th:each="school,state : ${top5schools}">
+                <img alt="" class="card-img-top" src="">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${school.name}">school.name</h5><a th:href="${school.link}">
+                        <span class="material-icons">
+                            link
+                        </span></a>
+                    <p class="card-text" th:text="${school.address}">school.address</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="all-categories">
+        <!--display all categories-->
+    </section>
+
 </div>
 </body>
 </html>
