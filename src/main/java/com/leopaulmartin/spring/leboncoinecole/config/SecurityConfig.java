@@ -36,23 +36,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						"/css/**",
 						"/img/**",
 						"/webjars/**").permitAll()
+				//role should not start with 'ROLE_' since it is automatically inserted.
+				.antMatchers("/admin/**").hasRole("ADMIN")
 				.anyRequest().authenticated();
-//			.and()
+
 		http.formLogin()
 				.loginPage("/login")
-				.successForwardUrl("/")
+				.failureUrl("/login?error")
 				.permitAll();
-//			.and()
+
 		http.logout()
 				.invalidateHttpSession(true)
 				.clearAuthentication(true)
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.logoutSuccessUrl("/login?logout")
 				.permitAll();
-//				.and()
+
 		http.exceptionHandling()
 				.accessDeniedHandler(accessDeniedHandler);
-//				.and().csrf().disable();
 	}
 
 	@Bean
@@ -71,10 +72,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider());
-//		auth
-//				.inMemoryAuthentication()
-//				.withUser("user").password("password").roles("USER")
-//				.and()
-//				.withUser("manager").password("password").roles("MANAGER");
 	}
 }
