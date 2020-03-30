@@ -45,10 +45,12 @@ public class SchoolRepositoryIntegrationTest {
 		school = new School(schoolName, parisAddress);
 		em.persist(school);
 
-		stu1 = new Student("username1", "password1");
+//		stu1 = new Student("username1@t", "password1");
+		stu1 = new Student();
 		stu1.setSchool(school);
 		em.persist(stu1);
-		stu2 = new Student("username2", "password2");
+//		stu2 = new Student("username2@t", "password2");
+		stu2 = new Student();
 		stu2.setSchool(school);
 		em.persist(stu2);
 

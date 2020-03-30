@@ -56,7 +56,8 @@ public class AnnouncementRepositoryIntegrationTest {
 		List<Announcement> announcements = new ArrayList<>();
 		announcements.add(iphoneAnnounce);
 		announcements.add(ipadAnnounce);
-		student = new Student("username", "password");
+		student = new Student();
+//		student = new Student("username", "password");
 		student.setAnnouncements(announcements);
 		em.persist(student);
 

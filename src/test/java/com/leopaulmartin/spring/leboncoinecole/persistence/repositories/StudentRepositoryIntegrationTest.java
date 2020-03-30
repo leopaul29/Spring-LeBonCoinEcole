@@ -56,7 +56,8 @@ public class StudentRepositoryIntegrationTest {
 //		PhoneNumber phn1 = new PhoneNumber(stu1number);
 //		em.persist(phn1);
 
-		stu1 = new Student(stu1username, stu1password);
+//		stu1 = new Student(stu1username, stu1password);
+		stu1 = new Student();
 //		List<PhoneNumber> phoneNumberList = new ArrayList<>();
 //		phoneNumberList.add(phn1);
 //		stu1.setPhonenumbers(phoneNumberList);

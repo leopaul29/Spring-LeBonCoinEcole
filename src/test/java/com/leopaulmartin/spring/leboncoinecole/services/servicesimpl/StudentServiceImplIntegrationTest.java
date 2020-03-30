@@ -44,7 +44,7 @@ public class StudentServiceImplIntegrationTest {
 	@Before
 	public void setUp() {
 		// create tested category object
-		studentTester = new Student(studentTesterUsername, studentTesterPassword);
+		studentTester = new Student();//studentTesterUsername, studentTesterPassword);
 //		studentTester.setStudentId(studentTesterId);
 
 		// mock getOne
