@@ -23,10 +23,12 @@
             <table class="table table-striped table-sm">
                 <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Username</th>
+                    <!--                    <th>#User</th>-->
                     <th>First name</th>
                     <th>Last name</th>
+                    <th>Email</th>
+                    <th>Date creation</th>
+                    <!--                    <th>#Student</th>-->
                     <th>School</th>
                     <th>Edit</th>
                     <th>Delete</th>
@@ -34,23 +36,25 @@
                 </thead>
                 <tbody>
                 <tr th:each="student : ${allStudents}">
-                    <td th:text="${student.userId}">studentId</td>
-                    <td th:text="${student.username}">username</td>
-                    <td th:text="${student.firstName}">firstName</td>
-                    <td th:text="${student.lastName}">lastName</td>
+                    <td th:text="${student.studentId}">studentId</td>
+                    <td th:text="${student.userProfil.firstName}">userProfil.firstName</td>
+                    <td th:text="${student.userProfil.lastName}">userProfil.lastName</td>
+                    <td th:text="${student.userProfil.email}">userProfil.email</td>
                     <td th:text="${student.school.name}">school.name</td>
+                    <td th:text="${student.school.address.city}">school.address.city</td>
 
                     <td>
                         <a class="btn btn-primary"
-                           th:href="@{/admin/students/edit/{id}(id=${student.userId})}">
+                           th:href="@{/admin/students/edit/{id}(id=${student.studentId})}">
                             <span class="material-icons">
                                 edit
                             </span>
                         </a>
                     </td>
                     <td>
+                        <!--                    TODO:trigger an alert to confirm the deletion -->
                         <a class="btn btn-primary" target="_top"
-                           th:href="@{/admin/students/delete/{id}(id=${student.userId})}">
+                           th:href="@{/admin/students/delete/{id}(id=${student.studentId})}">
                             <span class="material-icons">
                                 delete
                             </span>

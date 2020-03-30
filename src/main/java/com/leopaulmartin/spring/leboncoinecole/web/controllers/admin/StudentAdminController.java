@@ -1,10 +1,11 @@
-package com.leopaulmartin.spring.leboncoinecole.controllers.admin;
+package com.leopaulmartin.spring.leboncoinecole.web.controllers.admin;
 
 import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.School;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Student;
 import com.leopaulmartin.spring.leboncoinecole.services.SchoolService;
 import com.leopaulmartin.spring.leboncoinecole.services.StudentService;
+import com.leopaulmartin.spring.leboncoinecole.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,19 +18,21 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/students")
-public class StudentController {
+public class StudentAdminController {
 	public static final String VIEW = "admin/students";
 	public static final String REDIRECT = "redirect:/";
-	private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
+	private static final Logger logger = LoggerFactory.getLogger(StudentAdminController.class);
 	@Autowired
 	private StudentService service;
 	@Autowired
+	private UserService userService;
+	@Autowired
 	private SchoolService schoolService;
 
-	@ModelAttribute("allStudents")
-	public List<Student> populateStudents() {
-		return service.getAllStudents();
-	}
+//	@ModelAttribute("allStudents")
+//	public List<Student> populateStudents() {
+//		return service.getAllStudents();
+//	}
 
 	@ModelAttribute("allSchools")
 	public List<School> populateSchools() {
@@ -38,7 +41,11 @@ public class StudentController {
 
 	@GetMapping
 	public String showStudents(Model model) {
-		model.addAttribute("student", new Student());
+		//model.addAttribute("student", new Student());
+
+		logger.debug("------service.getAllStudents():" + service.getAllStudents());
+		logger.debug("------service.getAllUsers():" + userService.getAllUsers());
+		model.addAttribute("allStudents", service.getAllStudents());
 		return VIEW;
 	}
 
