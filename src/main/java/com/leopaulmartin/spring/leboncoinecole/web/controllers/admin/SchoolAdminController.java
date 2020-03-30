@@ -1,4 +1,4 @@
-package com.leopaulmartin.spring.leboncoinecole.controllers.admin;
+package com.leopaulmartin.spring.leboncoinecole.web.controllers.admin;
 
 import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.School;
@@ -17,10 +17,10 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/schools")
-public class SchoolController {
+public class SchoolAdminController {
 	public static final String VIEW = "admin/schools";
 	public static final String REDIRECT = "redirect:/";
-	private static final Logger logger = LoggerFactory.getLogger(SchoolController.class);
+	private static final Logger logger = LoggerFactory.getLogger(SchoolAdminController.class);
 	@Autowired
 	private SchoolService service;
 
@@ -35,9 +35,9 @@ public class SchoolController {
 			throws RecordNotFoundException {
 		if (id.isPresent()) {
 			School school = service.getSchoolById(id.get());
-			model.addAttribute("student", school);
+			model.addAttribute("school", school);
 		} else {
-			model.addAttribute("student", new School());
+			model.addAttribute("school", new School());
 		}
 		return "admin/add-edit-school";
 	}
