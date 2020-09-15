@@ -150,7 +150,7 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>test</scope>
-            <version>1.4.194</version>
+<!--            <version>1.4.194</version>-->
         </dependency>
 
         <!--			opensource community-driven library used for writing fluent and rich assertions in Java tests.-->

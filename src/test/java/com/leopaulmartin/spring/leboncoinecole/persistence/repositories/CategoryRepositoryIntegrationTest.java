@@ -134,8 +134,8 @@ public class CategoryRepositoryIntegrationTest {
 				.isEqualTo(label);
 	}
 
-	@Test(expected = DataIntegrityViolationException.class)
-	public void whenCategorySaved_NoLabel_thenDataIntegrityViolationException() {
+	@Test(expected = ConstraintViolationException.class)
+	public void whenCategorySaved_NoLabel_thenConstraintViolationException() {
 		// when
 		Category newCategory = new Category("");
 		repository.saveAndFlush(newCategory);
@@ -195,8 +195,8 @@ public class CategoryRepositoryIntegrationTest {
 				.isEqualTo(updatedCategory.getCategoryId());
 	}
 
-	@Test(expected = DataIntegrityViolationException.class)
-	public void whenCategoryUpdate_NoLabel_thenDataIntegrityViolationException() {
+	@Test(expected = ConstraintViolationException.class)
+	public void whenCategoryUpdate_NoLabel_thenConstraintViolationException() {
 		// when
 		Category found = repository.getOne(deviceCategory.getCategoryId());
 		found.setLabel("");
