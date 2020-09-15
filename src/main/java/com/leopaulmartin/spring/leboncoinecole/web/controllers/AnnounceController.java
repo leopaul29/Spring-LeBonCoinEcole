@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -28,7 +29,11 @@ public class AnnounceController {
 	@GetMapping("/search")
 	public String handleSearchRequest(@ModelAttribute("searchForm") SearchForm searchForm, BindingResult errors, HttpServletRequest request, Model model) {
 		//TODO: foreach announce: display title, category, school and creation date
-		logger.debug("searchForm:" + searchForm);
+		logger.debug("searchForm:" + searchForm.toString());
+
+		List<Announcement> allAnnouncements = announcementService.getAllAnnouncements();
+		logger.debug(allAnnouncements.toString());
+		model.addAttribute("allAnnouncements", allAnnouncements);
 		return "search";
 	}
 
@@ -45,6 +50,18 @@ public class AnnounceController {
 			model.addAttribute("announcement", new Announcement());
 		}
 		return "add-edit-announcement";
+	}
+
+	@GetMapping(path = {"/announces/view/{id}"})
+	public String viewAnnouncementById(Model model, @PathVariable("id") Optional<Long> id)
+			throws RecordNotFoundException {
+		if (id.isPresent()) {
+			Announcement announcement = announcementService.getAnnouncementById(id.get());
+			model.addAttribute("announcement", announcement);
+			return "display-one";
+		} else {
+			return "error-404";
+		}
 	}
 
 

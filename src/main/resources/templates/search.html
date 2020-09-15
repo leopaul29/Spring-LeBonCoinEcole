@@ -27,7 +27,7 @@
                 <div class="form-inline">
                     <label class="sr-only" for="category">Name</label>
                     <select class="form-control col-md-2" id="category" name="category" th:field="*{category}">
-                        <option selected value="--">Category</option>
+                        <option selected value="-1">Category</option>
                         <option
                                 th:each="dropdownValue: ${allCategories}"
                                 th:text="${dropdownValue.label}"
@@ -63,7 +63,7 @@
             <p>For the criteria following criteria :</p>
         </div>
         <div class="searchResult-results">
-
+            <th:block th:replace="display-announces.html :: display-announces"/>
         </div>
     </section>
 </div>

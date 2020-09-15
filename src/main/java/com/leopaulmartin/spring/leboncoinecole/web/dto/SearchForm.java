@@ -46,4 +46,14 @@ public class SearchForm implements Serializable {
 	public void setSchool(School school) {
 		this.school = school;
 	}
+
+	@Override
+	public String toString() {
+		return "SearchForm{" +
+				"type='" + type + '\'' +
+				", category=" + category +
+				", keywordsInput='" + keywordsInput + '\'' +
+				", school=" + school +
+				'}';
+	}
 }
