@@ -18,3 +18,11 @@ Lemon Meringue: EAE2B7
     margin: auto;
     text-align: center;
 }
+
+.form-registration {
+    width: 100%;
+    max-width: 550px;
+    padding: 15px;
+    margin: auto;
+    text-align: center;
+}
