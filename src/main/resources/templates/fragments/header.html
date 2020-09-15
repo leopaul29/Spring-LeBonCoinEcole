@@ -20,9 +20,8 @@
                     <a class="nav-link" href="/create-announce" th:href="@{/create-announce}">Create Announce</a>
                 </li>
 
-                <form action="/announces/announce" class="form-inline my-2 my-lg-0" method="get"
-                      th:action="@{/announces/announce}">
-                    <input class="form-control mr-sm-2" placeholder="Search" type="search">
+                <form class="form-inline my-2 my-lg-0" method="get" th:action="@{/quick-search}">
+                    <input class="form-control mr-sm-2" name="q" placeholder="Search" type="search">
                 </form>
             </ul>
 

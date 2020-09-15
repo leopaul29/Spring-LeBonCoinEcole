@@ -9,12 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,9 +24,16 @@ public class AnnounceController {
 	@Autowired
 	private AnnouncementService announcementService;
 
+	@GetMapping(path = "/quick-search")
+	public String handleQuickSearchRequest(Model model, @RequestParam("q") String q) {
+		SearchForm searchForm = new SearchForm();
+		searchForm.setKeywordsInput(q);
+		return REDIRECT+"search";
+	}
+
 	// request GET sample: https://.../recherche/?category=43&text=nitendo&locations=Lyon__45.76071825414269_4.836251707178035_7600&search_in=subject
 	@GetMapping("/search")
-	public String handleSearchRequest(@ModelAttribute("searchForm") SearchForm searchForm, BindingResult errors, HttpServletRequest request, Model model) {
+	public String handleSearchRequest(@ModelAttribute("searchForm") SearchForm searchForm, Model model) {
 		//TODO: foreach announce: display title, category, school and creation date
 		logger.debug("searchForm:" + searchForm.toString());
 
@@ -63,6 +69,4 @@ public class AnnounceController {
 			return "error-404";
 		}
 	}
-
-
 }

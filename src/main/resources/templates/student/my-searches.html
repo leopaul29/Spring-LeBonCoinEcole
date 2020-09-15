@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html layout:decorate="~{fragments/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Favorites</title>
+</head>
+<body>
+<div layout:fragment="content" th:remove="tag">
+    <h1>My searches</h1>
+    <section class="col-md-10" id="my-favorites">
+        <th:block th:replace="display-announces.html :: display-announces"/>
+    </section>
+</div>
+</body>
+</html>

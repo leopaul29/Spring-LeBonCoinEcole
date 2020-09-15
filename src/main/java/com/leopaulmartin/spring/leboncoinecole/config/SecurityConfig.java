@@ -2,7 +2,6 @@ package com.leopaulmartin.spring.leboncoinecole.config;
 
 import com.leopaulmartin.spring.leboncoinecole.security.RestAccessDeniedHandler;
 import com.leopaulmartin.spring.leboncoinecole.services.UserService;
-import com.leopaulmartin.spring.leboncoinecole.web.controllers.MainController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 				.authorizeRequests()
 				.antMatchers(
-						"/", "/registration", "/search",
+						"/", "/registration", "/search", "/quick-search",
 						"/js/**",
 						"/css/**",
 						"/img/**",
