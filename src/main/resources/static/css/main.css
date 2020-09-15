@@ -6,9 +6,15 @@ Maximum Yellow Red: FCBF49
 Lemon Meringue: EAE2B7
 */
 
+.body-signin {
+    height: 100vh;
+    display: flex;
+}
+
 .form-signin {
     width: 100%;
     max-width: 330px;
     padding: 15px;
     margin: auto;
+    text-align: center;
 }
