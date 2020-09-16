@@ -2,6 +2,7 @@ package com.leopaulmartin.spring.leboncoinecole.web.controllers;
 
 
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.School;
 import com.leopaulmartin.spring.leboncoinecole.services.CategoryService;
 import com.leopaulmartin.spring.leboncoinecole.services.SchoolService;
 import com.leopaulmartin.spring.leboncoinecole.web.dto.SearchForm;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -24,16 +26,21 @@ public class MainController {
 	@Autowired
 	private SchoolService schoolService;
 
-	@GetMapping("/")
-	public String index(Model model, HttpSession session) {
-		List<Category> allCategories = categoryService.getAllCategories();
-		model.addAttribute("allCategories", allCategories);
-//		List<Category> top5categories = categoryService.getAllCategoriesSortedByAnnounce();
-		model.addAttribute("top5categories", allCategories.subList(0, 5));
-		model.addAttribute("top5schools", schoolService.getAllSchools().subList(0, 5));
-		model.addAttribute("allSchools", schoolService.getAllSchools());
-		model.addAttribute("searchForm", new SearchForm());
+	@ModelAttribute("allCategories")
+	public List<Category> populateCategories() {
+		return categoryService.getAllCategories();
+	}
+	@ModelAttribute("allSchools")
+	public List<School> populateSchools() {
+		return schoolService.getAllSchools();
+	}
+	@ModelAttribute("searchForm")
+	public SearchForm populateSearchForm() { return new SearchForm(); }
 
+	@GetMapping("/")
+	public String index(Model model) {
+		model.addAttribute("top5categories", categoryService.getAllCategories().subList(0, 5));
+		model.addAttribute("top5schools", schoolService.getAllSchools().subList(0, 5));
 		return "index";
 	}
 

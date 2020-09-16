@@ -27,7 +27,7 @@ public class StudentController {
 	private UserService userService;
 
 	@ModelAttribute("allAnnouncements")
-	public List<Announcement> populateCategories() {
+	public List<Announcement> populateAnnouncements() {
 		return announcementService.getAllAnnouncements();
 	}
 
