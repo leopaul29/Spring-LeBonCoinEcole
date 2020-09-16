@@ -12,24 +12,25 @@
     </div>
     <div class="row">
         <div class="col-md-10">
-            <form action="#" method="post" th:action="@{/announcements/createAnnouncement}"
+            <form action="#" method="post" th:action="@{/announces/createUpdateAnnouncement}"
                   th:object="${announcement}">
                 <div class="row">
                     <div class="form-group col-md-8">
                         <label for="title">Title</label>
-                        <input class="form-control" id="title" th:field="*{title}" type="text">
+                        <input class="form-control" id="title" th:field="*{title}" type="text" required>
                     </div>
                     <div class="form-group col-md-8">
                         <label for="description">Description</label>
-                        <input class="form-control" id="description" th:field="*{description}" type="text">
+                        <input class="form-control" id="description" th:field="*{description}" type="text" required>
                     </div>
                     <div class="form-group col-md-8">
                         <label for="category">Category</label>
                         <select class="form-control" id="category" th:field="*{category}">
+                            <option selected value="">Category</option>
                             <option
                                     th:each="dropdownValue: ${allCategories}"
                                     th:text="${dropdownValue.label}"
-                                    th:value="${dropdownValue.categoryId}"></option>
+                                    th:value="${dropdownValue.categoryId}">category.label</option>
                         </select>
                     </div>
                     <div class="form-group col-md-8">

@@ -3,6 +3,7 @@ package com.leopaulmartin.spring.leboncoinecole.web.controllers;
 import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.School;
 import com.leopaulmartin.spring.leboncoinecole.services.AnnouncementService;
 import com.leopaulmartin.spring.leboncoinecole.services.CategoryService;
 import com.leopaulmartin.spring.leboncoinecole.services.SchoolService;
@@ -13,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +29,17 @@ public class AnnounceController {
 	private CategoryService categoryService;
 	@Autowired
 	private SchoolService schoolService;
+
+	@ModelAttribute("allCategories")
+	public List<Category> populateCategories() {
+		return categoryService.getAllCategories();
+	}
+	@ModelAttribute("allSchools")
+	public List<School> populateSchools() {
+		return schoolService.getAllSchools();
+	}
+	@ModelAttribute("searchForm")
+	public SearchForm populateSearchForm() { return new SearchForm(); }
 
 	@GetMapping(path = "/quick-search")
 	public String handleQuickSearchRequest(Model model, @RequestParam("q") String q) {
@@ -50,11 +59,6 @@ public class AnnounceController {
 		// search the announce with filter
 		List<Announcement> allAnnouncements = announcementService.getAllAnnouncements();
 		model.addAttribute("allAnnouncements", allAnnouncements);
-
-		// setup categories and schools for the search form
-		model.addAttribute("allCategories", categoryService.getAllCategories());
-		model.addAttribute("allSchools", schoolService.getAllSchools());
-		model.addAttribute("searchForm", new SearchForm());
 		return "search";
 	}
 
@@ -62,7 +66,7 @@ public class AnnounceController {
 	//TODO: save the research
 
 	@GetMapping(path = {"/create-announce", "/edit-announce/{id}"})
-	public String editAnnouncementById(Model model, @PathVariable("id") Optional<Long> id)
+	public String showEditAnnouncementById(Model model, @PathVariable("id") Optional<Long> id)
 			throws RecordNotFoundException {
 		if (id.isPresent()) {
 			Announcement announcement = announcementService.getAnnouncementById(id.get());
@@ -73,8 +77,23 @@ public class AnnounceController {
 		return "add-edit-announcement";
 	}
 
+	@PostMapping("/announces/createUpdateAnnouncement")
+	public String handleCreateUpdateAnnouncementRequest(Model model,
+														@ModelAttribute("announcement") Announcement announcement,
+														BindingResult errors) {
+		logger.debug("announcement: "+announcement);
+		if(!errors.hasErrors()) {
+			Announcement createUpdateAnnounce = announcementService.createOrUpdateAnnouncement(announcement);
+			Long id = createUpdateAnnounce.getAnnouncementId();
+			return REDIRECT + "announces/view/"+id;
+		} else {
+			//TODO manage error
+			return "add-edit-announcement";
+		}
+	}
+
 	@GetMapping(path = {"/announces/view/{id}"})
-	public String viewAnnouncementById(Model model, @PathVariable("id") Optional<Long> id)
+	public String showAnnouncementById(Model model, @PathVariable("id") Optional<Long> id)
 			throws RecordNotFoundException {
 		if (id.isPresent()) {
 			Announcement announcement = announcementService.getAnnouncementById(id.get());
