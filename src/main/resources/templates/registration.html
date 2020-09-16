@@ -21,6 +21,10 @@
        th:if="${#fields.hasGlobalErrors()}"
        th:text="${error}">Validation error</p>
 
+
+    <a href="/" th:href="@{/}">
+        <img alt="" class="mb-4" height="72" src="" width="72">
+    </a>
     <h1 class="mb-5">Registration</h1>
     <div class="form-group row"
          th:classappend="${#fields.hasErrors('firstName')}? 'has-error':''">
