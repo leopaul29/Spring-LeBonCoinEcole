@@ -12,21 +12,20 @@
     </div>
     <div th:object="${announcement}">
         <div class="form-group">
-            <label class="col-sm-4 " for="title">Title</label>
-            <label class="col-sm-8 " id="title" th:text="*{title}">title.text</label>
+            <h2 class="col-sm-8 " id="title" th:text="*{title}">title.text</h2>
         </div>
         <div class="row form-group">
             <div class="col-sm-6">
-                <label class="col-sm-4 " for="category">Category</label>
+                <h4 class="col-sm-4 " for="category">Category</h4>
                 <label class="col-sm-8 " id="category" th:text="*{category.label}">category.text</label>
             </div>
             <div class="col-sm-6">
-                <label class="col-sm-4 " for="price">Price</label>
+                <h4 class="col-sm-4 " for="price">Price</h4>
                 <label class="col-sm-8 " id="price" th:text="*{price}">price.text</label>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-4 " for="description">Description</label>
+            <h4 class="col-sm-4 " for="description">Description</h4>
             <label class="col-sm-8 " id="description" th:text="*{description}">description.text</label>
         </div>
     </div>
