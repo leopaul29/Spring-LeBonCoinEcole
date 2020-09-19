@@ -51,7 +51,9 @@ public class DatabaseLoader implements CommandLineRunner {
 		Announcement ann2 = new Announcement(Utils.generateAnnounceTitle(), Utils.generateAnnounceDescription(), getRandomCategory(), Utils.getRandomPrice100());
 		Announcement ann3 = new Announcement(Utils.generateAnnounceTitle(), Utils.generateAnnounceDescription(), getRandomCategory(), Utils.getRandomPrice100());
 		Announcement ann4 = new Announcement(Utils.generateAnnounceTitle(), Utils.generateAnnounceDescription(), getRandomCategory(), Utils.getRandomPrice100());
+		ann4.makeItaSearch();
 		Announcement ann5 = new Announcement(Utils.generateAnnounceTitle(), Utils.generateAnnounceDescription(), getRandomCategory(), Utils.getRandomPrice100());
+		ann5.makeItaSearch();
 		announcementRepository.saveAndFlush(ann1);
 		announcementRepository.saveAndFlush(ann2);
 		announcementRepository.saveAndFlush(ann3);
