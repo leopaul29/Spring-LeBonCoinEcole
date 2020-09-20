@@ -125,4 +125,17 @@ public class AnnounceController {
 			return "error-404";
 		}
 	}
+
+	@GetMapping(path = {"/announces/category/{label}"})
+	public String showAnnouncementsByCategory(Model model, @PathVariable("label") Optional<String> label)
+			throws RecordNotFoundException {
+		if (label.isPresent()) {
+			Category category = categoryService.getCategoryByLabel(label.get());
+			List<Announcement> allAnnouncements = announcementService.getAnnouncementsByCategory(category.getCategoryId());
+			model.addAttribute("allAnnouncements", allAnnouncements);
+			return "search";
+		} else {
+			return "error-404";
+		}
+	}
 }

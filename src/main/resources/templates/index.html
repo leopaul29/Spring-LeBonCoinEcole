@@ -17,7 +17,9 @@
             <div class="card" th:each="category,state : ${top5categories}">
                 <img alt="" class="card-img-top" src="">
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${category.label}">category.label</h5>
+                    <a href="/announces/category" th:href="@{/announces/category/{label}(label=${category.label})}">
+                        <h5 class="card-title" th:text="${category.label}">category.label</h5>
+                    </a>
                 </div>
             </div>
         </div>
