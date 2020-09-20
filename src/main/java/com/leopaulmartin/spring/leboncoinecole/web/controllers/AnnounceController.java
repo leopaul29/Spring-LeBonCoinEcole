@@ -132,6 +132,9 @@ public class AnnounceController {
 		if (label.isPresent()) {
 			Category category = categoryService.getCategoryByLabel(label.get());
 			List<Announcement> allAnnouncements = announcementService.getAnnouncementsByCategory(category.getCategoryId());
+			if (allAnnouncements==null){
+				allAnnouncements = new ArrayList<>();
+			}
 			model.addAttribute("allAnnouncements", allAnnouncements);
 			return "search";
 		} else {
