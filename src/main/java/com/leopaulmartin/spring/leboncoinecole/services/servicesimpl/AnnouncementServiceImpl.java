@@ -43,6 +43,26 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 		return repository.getOne(id);
 	}
 
+//	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+//	@Override
+//	public List<Announcement> getAnnouncementsFromSearchForm(SearchForm searchForm) {
+//		String type = null;
+//		if (type.equals("announce")) {
+//			type = "true";
+//		}
+//		if (type.equals("search")){
+//			type = "false";
+//		}
+//		List<Announcement> announcementsFromSearchForm = repository.getAnnouncementsFromSearchForm(
+//				type,
+//				searchForm.getCategoryId(),
+//				searchForm.getKeywordsInput()
+//		);
+//		logger.debug("announcementsFromSearchForm: "+announcementsFromSearchForm);
+//
+//		return announcementsFromSearchForm;
+//	}
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	@Override
 	public List<Announcement> getAnnouncementsByType(String type) {
@@ -58,30 +78,15 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	@Override
-	public List<Announcement> getAnnouncementsFromSearchForm(SearchForm searchForm) {
-		String type = null;
-		if (type.equals("announce")) {
-			type = "true";
-		}
-		if (type.equals("search")){
-			type = "false";
-		}
-		List<Announcement> announcementsFromSearchForm = repository.getAnnouncementsFromSearchForm(
-				type,
-//				searchForm.getCategoryId(),
-				searchForm.getKeywordsInput()
-//				searchForm.getSchoolId()
-		);
-		logger.debug("announcementsFromSearchForm: "+announcementsFromSearchForm);
-
-		return announcementsFromSearchForm;
+	public List<Announcement> getAnnouncementsByCategory(Long categoryId) {
+		Category category = categoryRepository.getOne(categoryId);
+		return repository.findByCategory(category);
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	@Override
-	public List<Announcement> getAnnouncementsByCategory(Long categoryId) {
-		Category category = categoryRepository.getOne(categoryId);
-		return repository.findByCategory(category);
+	public List<Announcement> getAnnouncementsByKeywordInput(String keywordInput) {
+		return repository.findByTitle(keywordInput);
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS)

@@ -16,22 +16,17 @@ public interface AnnouncementRepository extends JpaRepository<Announcement, Long
 
     List<Announcement> findByIsAnnouncement(boolean isAnnouncement);
     List<Announcement> findByCategory(Category category);
+    List<Announcement> findByTitle(String title);
 
-    @Query(value = "SELECT a " +
-			"FROM announcements a " +
-//			"INNER JOIN categories c " +
-//            "ON a.categoryId =  c.categoryId " +
-//            "INNER JOIN school sch " +
-//            "ON a.schoolId = sch.schoolId " +
-			"WHERE a.title = :keywordsInput AND " +
-            "a.isAnnouncement = :isAnnouncement"// AND " +
-//            "c.categoryId = :categoryId AND " +
-//            "c.schoolId = :schoolId"
-    )
-    List<Announcement> getAnnouncementsFromSearchForm(
-            @Param("isAnnouncement") String type,
+//    @Query(value = "SELECT a " +
+//			"FROM announcements a " +
+//			"WHERE a.title = :keywordsInput AND " +
+//            "a.isAnnouncement = :isAnnouncement AND " +
+//            "a.category = :categoryId"
+//    )
+//    List<Announcement> getAnnouncementsFromSearchForm(
+//            @Param("isAnnouncement") String type,
 //            @Param("categoryId") Long categoryId,
-            @Param("keywordsInput") String keywordsInput
-//            @Param("schoolId") Long schoolId
-    );
+//            @Param("keywordsInput") String keywordsInput
+//    );
 }

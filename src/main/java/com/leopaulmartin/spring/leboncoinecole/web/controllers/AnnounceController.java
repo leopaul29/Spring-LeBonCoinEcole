@@ -59,6 +59,7 @@ public class AnnounceController {
 
 		List<Announcement> allAnnouncements = new ArrayList<>();
 
+		allAnnouncements = announcementService.getAllAnnouncements();
 		if (searchForm.getType()==null && searchForm.getCategoryId()==-1 &&
 				searchForm.getKeywordsInput().isEmpty() && searchForm.getSchoolId()==-1) {
 			logger.debug("no filter");
@@ -71,8 +72,13 @@ public class AnnounceController {
 				searchForm.getKeywordsInput().isEmpty() && searchForm.getSchoolId()==-1){
 			logger.debug("filter by category only");
 			allAnnouncements = announcementService.getAnnouncementsByCategory(searchForm.getCategoryId());
+		} else if(searchForm.getType()==null && searchForm.getCategoryId()==-1 &&
+				!searchForm.getKeywordsInput().isEmpty() && searchForm.getSchoolId()==-1){
+			logger.debug("filter by keywordInput only");
+			allAnnouncements = announcementService.getAnnouncementsByKeywordInput(searchForm.getKeywordsInput());
 		} else {
-			allAnnouncements = announcementService.getAnnouncementsFromSearchForm(searchForm);
+//			allAnnouncements = announcementService.getAnnouncementsFromSearchForm(searchForm);
+			allAnnouncements = announcementService.getAllAnnouncements();
 		}
 		model.addAttribute("allAnnouncements", allAnnouncements);
 		return "search";

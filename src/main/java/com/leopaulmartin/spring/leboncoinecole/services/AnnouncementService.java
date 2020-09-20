@@ -1,7 +1,6 @@
 package com.leopaulmartin.spring.leboncoinecole.services;
 
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
-import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
 import com.leopaulmartin.spring.leboncoinecole.web.dto.SearchForm;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +14,7 @@ public interface AnnouncementService {
 
 	List<Announcement> getAnnouncementsByType(String type);
 	List<Announcement> getAnnouncementsByCategory(Long categoryId);
+	List<Announcement> getAnnouncementsByKeywordInput(String keywordsInput);
 
 	Announcement createAnnouncement(Announcement announcement);
 
@@ -26,5 +26,5 @@ public interface AnnouncementService {
 
 	boolean isAnnouncementValid(Announcement announcement);
 
-	List<Announcement> getAnnouncementsFromSearchForm(SearchForm searchForm);
+//	List<Announcement> getAnnouncementsFromSearchForm(SearchForm searchForm);
 }
