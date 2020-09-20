@@ -8,9 +8,9 @@ import java.io.Serializable;
 public class SearchForm implements Serializable {
 
 	public String type;
-	public Category category;
+	public Long categoryId;
 	public String keywordsInput;
-	public School school;
+	public Long schoolId;
 
 	public SearchForm() {
 	}
@@ -23,12 +23,12 @@ public class SearchForm implements Serializable {
 		this.type = type;
 	}
 
-	public Category getCategory() {
-		return category;
+	public Long getCategoryId() {
+		return categoryId;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	public String getKeywordsInput() {
@@ -39,21 +39,21 @@ public class SearchForm implements Serializable {
 		this.keywordsInput = keywordsInput;
 	}
 
-	public School getSchool() {
-		return school;
+	public Long getSchoolId() {
+		return schoolId;
 	}
 
-	public void setSchool(School school) {
-		this.school = school;
+	public void setSchoolId(Long schoolId) {
+		this.schoolId = schoolId;
 	}
 
 	@Override
 	public String toString() {
 		return "SearchForm{" +
 				"type='" + type + '\'' +
-				", category=" + category +
+				", categoryId=" + categoryId +
 				", keywordsInput='" + keywordsInput + '\'' +
-				", school=" + school +
+				", schoolId=" + schoolId +
 				'}';
 	}
 }

@@ -2,8 +2,13 @@ package com.leopaulmartin.spring.leboncoinecole.services.servicesimpl;
 
 import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.School;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.AnnouncementRepository;
+import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.CategoryRepository;
+import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.SchoolRepository;
 import com.leopaulmartin.spring.leboncoinecole.services.AnnouncementService;
+import com.leopaulmartin.spring.leboncoinecole.web.dto.SearchForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +26,10 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
 	@Autowired
 	private AnnouncementRepository repository;
+	@Autowired
+	private CategoryRepository categoryRepository;
+	@Autowired
+	private SchoolRepository schoolRepository;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, timeout = 10)
 	@Override
@@ -34,29 +43,46 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 		return repository.getOne(id);
 	}
 
-//	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-//	@Override
-//	public List<Announcement> getAnnouncementForCategory(Long categoryId) {
-//		return repository.findAnnouncementsByCategory(categoryId);
-//	}
-//
-////	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-////	@Override
-////	public int countAnnouncementForCategory(Long categoryId) {
-////		return repository.countAnnouncementsByCategory(categoryId);
-////	}
-//
-//	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-//	@Override
-//	public List<Announcement> getSearchesByCategory(Long categoryId) {
-//		return repository.findAnnouncementsByCategory(categoryId);
-//	}
-//
-//	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-//	@Override
-//	public List<Announcement> getSalesByCategory(Long categoryId) {
-//		return repository.findAnnouncementsByCategory(categoryId);
-//	}
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	@Override
+	public List<Announcement> getAnnouncementsByType(String type) {
+		if (type.equals("announce")) {
+			return repository.findByIsAnnouncement(true);
+		}
+		if (type.equals("search")){
+			return repository.findByIsAnnouncement(false);
+		}
+
+		return repository.findAll();
+	}
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	@Override
+	public List<Announcement> getAnnouncementsFromSearchForm(SearchForm searchForm) {
+		String type = null;
+		if (type.equals("announce")) {
+			type = "true";
+		}
+		if (type.equals("search")){
+			type = "false";
+		}
+		List<Announcement> announcementsFromSearchForm = repository.getAnnouncementsFromSearchForm(
+				type,
+//				searchForm.getCategoryId(),
+				searchForm.getKeywordsInput()
+//				searchForm.getSchoolId()
+		);
+		logger.debug("announcementsFromSearchForm: "+announcementsFromSearchForm);
+
+		return announcementsFromSearchForm;
+	}
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	@Override
+	public List<Announcement> getAnnouncementsByCategory(Long categoryId) {
+		Category category = categoryRepository.getOne(categoryId);
+		return repository.findByCategory(category);
+	}
 
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override

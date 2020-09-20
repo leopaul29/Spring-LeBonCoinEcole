@@ -20,8 +20,8 @@
 
                 <div class="form-inline">
                     <label class="sr-only" for="category">Name</label>
-                    <select class="form-control col-md-2" id="category" name="category" th:field="*{category}">
-                        <option selected value="">Category</option>
+                    <select class="form-control col-md-2" id="category" name="category" th:field="*{categoryId}">
+                        <option selected value="-1">Category</option>
                         <option
                                 th:each="dropdownValue: ${allCategories}"
                                 th:text="${dropdownValue.label}"
@@ -35,8 +35,8 @@
                            type="text">
 
                     <label class="sr-only" for="school">Name</label>
-                    <select class="form-control col-md-4" id="school" th:field="*{school}">
-                        <option selected value="">School</option>
+                    <select class="form-control col-md-4" id="school" th:field="*{schoolId}">
+                        <option selected value="-1">School</option>
                         <option
                                 th:each="dropdownValue: ${allSchools}"
                                 th:text="${dropdownValue.name}"

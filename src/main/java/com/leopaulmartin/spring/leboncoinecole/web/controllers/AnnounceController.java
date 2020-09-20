@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,8 +57,23 @@ public class AnnounceController {
 		//TODO: handle search form errors and display it in a alert box
 		logger.debug("errors:" + errors.toString());
 
-		// search the announce with filter
-		List<Announcement> allAnnouncements = announcementService.getAllAnnouncements();
+		List<Announcement> allAnnouncements = new ArrayList<>();
+
+		if (searchForm.getType()==null && searchForm.getCategoryId()==-1 &&
+				searchForm.getKeywordsInput().isEmpty() && searchForm.getSchoolId()==-1) {
+			logger.debug("no filter");
+			allAnnouncements = announcementService.getAllAnnouncements();
+		} else if (searchForm.getType()!=null && searchForm.getCategoryId()==-1 &&
+				searchForm.getKeywordsInput().isEmpty() && searchForm.getSchoolId()==-1) {
+			logger.debug("filter by type only");
+			allAnnouncements = announcementService.getAnnouncementsByType(searchForm.getType());
+		} else if(searchForm.getType()==null && searchForm.getCategoryId()!=-1 &&
+				searchForm.getKeywordsInput().isEmpty() && searchForm.getSchoolId()==-1){
+			logger.debug("filter by category only");
+			allAnnouncements = announcementService.getAnnouncementsByCategory(searchForm.getCategoryId());
+		} else {
+			allAnnouncements = announcementService.getAnnouncementsFromSearchForm(searchForm);
+		}
 		model.addAttribute("allAnnouncements", allAnnouncements);
 		return "search";
 	}
