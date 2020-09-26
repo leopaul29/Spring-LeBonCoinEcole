@@ -1,28 +1,49 @@
-URL NAMING
+*URL NAMING*
 
-*** unsigned features
-G*/=home
-G*=/quick-search
-G*=/search
-G*=/search/all
-G*/category/label=display announces by category
-G*/label=display announce by name
-G*/registration=registration form page
-G*/login=login page
-G*/access-denied=access denied page
+**Legende**
+G:GET   */URL-NAMING/{param}        =description
+P:POST  *
+D:DELETE*
+
+*** unsigned features ***
+**MAIN CONTROLLER**
+G*/                                 =home
+G*/label                            =display announce by name
+G*/category/label                   =display announces by category
+
+**REGISTRATION CONTROLLER**
+G*/registration                     =registration form page
+
+//G*/access-denied                    =access denied page
+
+**SEARCH CONTROLLER**
+G*/quick-search                     =display search results from key-input
+G*/search                           =display search results from search modal
+G*/search/all                       =display all announces
 
 *** signed-in features
-G*/my-account/announces=display student announces
-G*/my-account/announces/create=create announces
-G*/my-account/announces/edit/id=edit student announces
-G*/my-account/searches=student searches
-G*/my-account/favorites=student favorites
-G*/my-account/favorites/add/{id}=add the announce to favorite list
-G*/my-account/favorites/remove/{id}=add the announce to favorite list
-G*/my-account/messages=student messages
-G*/my-account/historic=student historic
+**STUDENT CONTROLLER**
+G*/login                            =login page
+G*/account/dashboard                =display student dashboard
+G*/account/personal-information     =display student info
+G*/account/historic                 =student historic
+D*/account/historic/delete          =delete student historic
 
-P*/my-account/searches/add=student searches
-D*/my-account/announces/delete/id=student announces
-P*/my-account/announces/createUpdate=create update student announces on back-end side
-D*/my-account/historic/delete=delete student historic
+**MYANNONCES CONTROLLER**
+G*/my-announces                     =display student announces
+G*/my-announces/create              =create announces
+G*/my-announces/edit/id             =edit student announces
+P*/my-announces/createUpdate        =create update student announces on back-end side
+D*/my-announces/delete/id           =delete student announces
+
+**MYSEARCHES CONTROLLER**
+G*/my-searches                      =student searches
+P*/my-searches/add                  =student searches
+
+**FAVORITES CONTROLLER**
+G*/favorites                        =student favorites
+G*/favorites/add/{id}               =add the announce to favorite list
+G*/favorites/remove/{id}            =add the announce to favorite list
+
+**MESSAGE CONTROLLER**
+G*/my-account/messages              =student messages
