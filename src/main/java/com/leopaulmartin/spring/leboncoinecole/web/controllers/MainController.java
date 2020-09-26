@@ -49,8 +49,8 @@ public class MainController {
 		return "login";
 	}
 
-	@GetMapping("/access-denied")
-	public String accessDenied() {
-		return "/error/access-denied";
-	}
+//	@GetMapping("/access-denied")
+//	public String accessDenied() {
+//		return "/error/access-denied";
+//	}
 }
