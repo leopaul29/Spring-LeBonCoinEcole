@@ -1,0 +1,28 @@
+URL NAMING
+
+*** unsigned features
+G*/=home
+G*=/quick-search
+G*=/search
+G*=/search/all
+G*/category/label=display announces by category
+G*/label=display announce by name
+G*/registration=registration form page
+G*/login=login page
+G*/access-denied=access denied page
+
+*** signed-in features
+G*/my-account/announces=display student announces
+G*/my-account/announces/create=create announces
+G*/my-account/announces/edit/id=edit student announces
+G*/my-account/searches=student searches
+G*/my-account/favorites=student favorites
+G*/my-account/favorites/add/{id}=add the announce to favorite list
+G*/my-account/favorites/remove/{id}=add the announce to favorite list
+G*/my-account/messages=student messages
+G*/my-account/historic=student historic
+
+P*/my-account/searches/add=student searches
+D*/my-account/announces/delete/id=student announces
+P*/my-account/announces/createUpdate=create update student announces on back-end side
+D*/my-account/historic/delete=delete student historic
