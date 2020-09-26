@@ -87,18 +87,6 @@ public class AnnounceController {
 	//TODO: use AJAX to propose words for the keyword field (with elastic search ?)
 	//TODO: save the research
 
-	@GetMapping(path = {"/create-announce", "/edit-announce/{id}"})
-	public String showEditAnnouncementById(Model model, @PathVariable("id") Optional<Long> id)
-			throws RecordNotFoundException {
-		if (id.isPresent()) {
-			Announcement announcement = announcementService.getAnnouncementById(id.get());
-			model.addAttribute("announcement", announcement);
-		} else {
-			model.addAttribute("announcement", new Announcement());
-		}
-		return "add-edit-announcement";
-	}
-
 	@PostMapping("/announces/createUpdateAnnouncement")
 	public String handleCreateUpdateAnnouncementRequest(Model model,
 														@ModelAttribute("announcement") Announcement announcement,

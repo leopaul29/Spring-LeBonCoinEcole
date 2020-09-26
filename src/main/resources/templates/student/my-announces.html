@@ -18,11 +18,15 @@
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title">
-                            <a class="stretched-link"
-                               th:href="@{/announces/view/{id}(id=${announcement.announcementId})}">
+                            <a th:href="@{/announces/view/{id}(id=${announcement.announcementId})}">
                                 <span th:text="${announcement.title}">announcement.title</span>
                             </a>
+
+                            <a th:href="@{/my-announces/edit/{id}(id=${announcement.announcementId})}">
+                                <span class="float-right">EDIT</span>
+                            </a>
                         </h5>
+
                         <p class="card-text" th:text="${announcement.category.label}">category.label</p>
                         <p class="card-text"><span th:text="${announcement.price}">price</span> €</p>
                         <p class="card-text"><small class="text-muted">Posted <span th:text="${announcement.created}">3 mins
