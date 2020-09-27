@@ -21,18 +21,18 @@ D:DELETE*
 [ ]G*/search/all                       =display all announces
 
 *** signed-in features
-**STUDENT CONTROLLER**
-[ ]G*/account/dashboard                =display student dashboard
-[ ]G*/account/personal-information     =display student info
-[ ]G*/account/historic                 =student historic
-[ ]D*/account/historic/delete          =delete student historic
+**ACCOUNT CONTROLLER**
+[x]G*/account/dashboard                =display student dashboard
+[x]G*/account/edit                     =display edit student info
+[x]G*/account/historic                 =student historic
+[o]P*/account/historic/delete          =delete student historic
 
 **MYANNONCES CONTROLLER**
 [x]G*/my-announces                     =display student announces
 [x]G*/my-announces/create              =create announces
 [x]G*/my-announces/edit/id             =edit student announces
 [x]P*/my-announces/createUpdate        =create update student announces on back-end side
-[o]D*/my-announces/delete/id           =delete student announces
+[o]P*/my-announces/delete/id           =delete student announces
 
 **MYSEARCHES CONTROLLER**
 [ ]G*/my-searches                      =student searches

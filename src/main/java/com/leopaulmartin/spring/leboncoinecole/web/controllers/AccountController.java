@@ -9,19 +9,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
-public class StudentController {
+@RequestMapping("/account")
+public class AccountController {
 	public static final String REDIRECT = "redirect:/";
-	private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 	@Autowired
 	private AnnouncementService announcementService;
 	@Autowired
@@ -34,13 +32,13 @@ public class StudentController {
 
 	//	Dropdown Account Menu
 	//TODO: display account data
-	@GetMapping("/my-account")
+	@GetMapping("/dashboard")
 	public String account() {
 		return "student/index";
 	}
 
 	//TODO: edit account data
-	@GetMapping("/my-account/edit")
+	@GetMapping("/edit")
 	public String editAccount(Model model, HttpSession session) {
 //		Long myUserId = (Long) session.getAttribute("myUserId");
 //		userService.findById(myUserId);
@@ -51,10 +49,15 @@ public class StudentController {
 
 	//TODO: check announced previously payed
 	@GetMapping("/history")
-	public String displayHistory() {
+	public String showHistory() {
 		return "student/history";
 	}
 
+	@PostMapping("/history/delete")
+	public String handleDeleteHistoricRequest() {
+		logger.debug("handleDeleteHistoricRequest");
+		return "student/history";
+	}
 
 	//	Other link in menu
 
