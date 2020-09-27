@@ -10,11 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,9 +43,12 @@ public class MyAnnouncesController {
     }
 
     @GetMapping(path = {"/create", "/edit/{id}"})
-    public String showEditAnnouncementById(Model model,
-                                           @PathVariable("id") Optional<Long> id)
+    public String showCreateEditAnnouncement(Model model,
+                                             @PathVariable("id") Optional<Long> id)
             throws RecordNotFoundException {
+
+        //TODO: if url path is "create" then set the title page to "Create Announcement" else "Edit"
+
         if (id.isPresent()) {
             Announcement announcement = announcementService.getAnnouncementById(id.get());
             model.addAttribute("announcement", announcement);
@@ -56,5 +58,21 @@ public class MyAnnouncesController {
         model.addAttribute("allCategories", categoryService.getAllCategories());
 
         return "student/add-edit-announcement";
+    }
+
+    @PostMapping("/createUpdate")
+    public String handleCreateUpdateAnnouncementRequest(Model model,
+                                                        @ModelAttribute("announcement") Announcement announcement,
+                                                        BindingResult errors) {
+        logger.debug("announcement: "+announcement);
+        if(!errors.hasErrors()) {
+            Announcement createUpdateAnnounce = announcementService.createOrUpdateAnnouncement(announcement);
+            Long id = createUpdateAnnounce.getAnnouncementId();
+            return REDIRECT + "announces/view/"+id;
+        } else {
+            //TODO: manage error
+            //TODO: if url path is "create" then set the title page to "Create Announcement" else "Edit"
+            return "add-edit-announcement";
+        }
     }
 }

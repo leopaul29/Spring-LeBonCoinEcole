@@ -10,7 +10,7 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h3> Edit Announcement</h3>
     </div>
-    <form method="post" th:action="@{/announces/createUpdateAnnouncement}" th:object="${announcement}">
+    <form method="post" th:action="@{/my-announces/createUpdate}" th:object="${announcement}">
         <div class="form-group">
             <label for="title">Title</label>
             <input class="form-control" id="title" th:field="*{title}" type="text" required>
