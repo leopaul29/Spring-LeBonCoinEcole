@@ -32,10 +32,6 @@ public class MyAnnouncesController {
     public List<Announcement> populateAnnouncements() {
         return announcementService.getAllAnnouncements();
     }
-//    @ModelAttribute("allCategories")
-//    public List<Category> populateCategories() {
-//        return categoryService.getAllCategories();
-//    }
 
     @GetMapping
     public String showAnnounces() {

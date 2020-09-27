@@ -18,7 +18,7 @@
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title">
-                            <a th:href="@{/announces/view/{id}(id=${announcement.announcementId})}">
+                            <a th:href="@{/announces/{id}(id=${announcement.announcementId})}">
                                 <span th:text="${announcement.title}">announcement.title</span>
                             </a>
 
@@ -32,7 +32,11 @@
                             </form>
                         </h5>
 
-                        <p class="card-text" th:text="${announcement.category.label}">category.label</p>
+                        <p class="card-text">
+                            <a th:href="@{/category/{label}(label=${announcement.category.label})}">
+                                <span th:text="${announcement.category.label}">category.label</span>
+                            </a>
+                        </p>
                         <p class="card-text"><span th:text="${announcement.price}">price</span> €</p>
                         <p class="card-text"><small class="text-muted">Posted <span th:text="${announcement.created}">3 mins
                             ago</span></small></p>

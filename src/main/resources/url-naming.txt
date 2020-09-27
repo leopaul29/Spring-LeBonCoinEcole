@@ -7,14 +7,13 @@ D:DELETE*
 
 *** unsigned features ***
 **MAIN CONTROLLER**
-[ ]G*/                                 =home
-[ ]G*/label                            =display announce by name
-[ ]G*/category/label                   =display announces by category
+[x]G*/                                 =home
+[x]G*/login                            =login page
+[x]G*/id/label                         =display announce by name
+[x]G*/category/label                   =display announces by category
 
 **REGISTRATION CONTROLLER**
-[ ]G*/registration                     =registration form page
-
-//G*/access-denied                    =access denied page
+[x]G*/registration                     =registration form page
 
 **SEARCH CONTROLLER**
 [ ]G*/quick-search                     =display search results from key-input
@@ -23,7 +22,6 @@ D:DELETE*
 
 *** signed-in features
 **STUDENT CONTROLLER**
-[ ]G*/login                            =login page
 [ ]G*/account/dashboard                =display student dashboard
 [ ]G*/account/personal-information     =display student info
 [ ]G*/account/historic                 =student historic
@@ -34,7 +32,7 @@ D:DELETE*
 [x]G*/my-announces/create              =create announces
 [x]G*/my-announces/edit/id             =edit student announces
 [x]P*/my-announces/createUpdate        =create update student announces on back-end side
-[ ]D*/my-announces/delete/id           =delete student announces
+[o]D*/my-announces/delete/id           =delete student announces
 
 **MYSEARCHES CONTROLLER**
 [ ]G*/my-searches                      =student searches
@@ -47,3 +45,6 @@ D:DELETE*
 
 **MESSAGE CONTROLLER**
 [ ]G*/my-account/messages              =student messages
+
+**ERROR CONTROLLER**
+[ ]G*/access-denied                    =access denied page

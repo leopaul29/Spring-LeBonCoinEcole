@@ -17,7 +17,9 @@
         <div class="row form-group">
             <div class="col-sm-6">
                 <h4 for="category">Category</h4>
-                <label id="category" th:text="*{category.label}">category.text</label>
+                <a th:href="@{/category/{label}(label=*{category.label})}">
+                    <label id="category" th:text="*{category.label}">category.text</label>
+                </a>
             </div>
             <div class="col-sm-6">
                 <h4 for="price">Price</h4>

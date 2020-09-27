@@ -86,32 +86,4 @@ public class AnnounceController {
 
 	//TODO: use AJAX to propose words for the keyword field (with elastic search ?)
 	//TODO: save the research
-
-	@GetMapping(path = {"/announces/view/{id}"})
-	public String showAnnouncementById(Model model, @PathVariable("id") Optional<Long> id)
-			throws RecordNotFoundException {
-		if (id.isPresent()) {
-			Announcement announcement = announcementService.getAnnouncementById(id.get());
-			model.addAttribute("announcement", announcement);
-			return "display-one";
-		} else {
-			return "error-404";
-		}
-	}
-
-	@GetMapping(path = {"/announces/category/{label}"})
-	public String showAnnouncementsByCategory(Model model, @PathVariable("label") Optional<String> label)
-			throws RecordNotFoundException {
-		if (label.isPresent()) {
-			Category category = categoryService.getCategoryByLabel(label.get());
-			List<Announcement> allAnnouncements = announcementService.getAnnouncementsByCategory(category.getCategoryId());
-			if (allAnnouncements==null){
-				allAnnouncements = new ArrayList<>();
-			}
-			model.addAttribute("allAnnouncements", allAnnouncements);
-			return "search";
-		} else {
-			return "error-404";
-		}
-	}
 }
