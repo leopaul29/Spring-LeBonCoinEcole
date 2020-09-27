@@ -27,19 +27,19 @@
 
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/my-searches" th:href="@{/my-searches}">My Searches</a>
+                    <a class="nav-link" th:href="@{/my-searches}">My Searches</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/my-favorites" th:href="@{/my-favorites}">Favorite</a>
+                    <a class="nav-link" th:href="@{/my-favorites}">Favorite</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/messages" th:href="@{/messages}">Messages</a>
+                    <a class="nav-link" th:href="@{/messages}">Messages</a>
                 </li>
 
                 <div th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
                     <span th:case="${false}">
                         <li class="nav-item">
-                            <a class="nav-link" href="/login" th:href="@{/login}">Sign in</a>
+                            <a class="nav-link" th:href="@{/login}">Sign in</a>
                         </li>
                     </span>
                     <span th:case="${true}">

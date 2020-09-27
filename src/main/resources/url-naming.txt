@@ -35,8 +35,10 @@ D:DELETE*
 [o]P*/my-announces/delete/id           =delete student announces
 
 **MYSEARCHES CONTROLLER**
-[ ]G*/my-searches                      =student searches
-[ ]P*/my-searches/add                  =student searches
+[x]G*/my-searches                      =student searches
+[x]P*/my-searches/add                  =add student searches
+[ ]P*/my-searches/delete               =delete student searches
+[ ]P*/my-searches/clear                =clear student searches
 
 **FAVORITES CONTROLLER**
 [ ]G*/favorites                        =student favorites

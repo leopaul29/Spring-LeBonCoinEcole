@@ -59,21 +59,6 @@ public class AccountController {
 		return "student/history";
 	}
 
-	//	Other link in menu
-
-	//TODO: replay a search saved
-	@GetMapping("/my-searches")
-	public String mySearches() {
-		return "student/my-searches";
-	}
-
-	//TODO: clean my-searches
-	@GetMapping("/my-searches/clear")
-	public String clearMySearches() {
-		// delete all history
-		return REDIRECT + "student/my-searches";
-	}
-
 	//TODO: student's afavorite nnounce
 	@GetMapping("/my-favorites")
 	public String favorite() {
