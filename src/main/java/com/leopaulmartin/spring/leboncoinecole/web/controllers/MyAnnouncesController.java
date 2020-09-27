@@ -70,9 +70,15 @@ public class MyAnnouncesController {
             Long id = createUpdateAnnounce.getAnnouncementId();
             return REDIRECT + "announces/view/"+id;
         } else {
-            //TODO: manage error
+            //TODO: manage errors
             //TODO: if url path is "create" then set the title page to "Create Announcement" else "Edit"
-            return "add-edit-announcement";
+            return "student/add-edit-announcement";
         }
+    }
+
+    @PostMapping("/delete")
+    public String handleDeleteAnnouncementRequest() {
+        logger.debug("handleDeleteAnnouncementRequest");
+        return REDIRECT + "my-announces";
     }
 }

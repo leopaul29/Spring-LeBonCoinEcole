@@ -23,18 +23,19 @@
                             </a>
 
                             <a th:href="@{/my-announces/edit/{id}(id=${announcement.announcementId})}">
-                                <span class="float-right">EDIT</span>
+                                <button class="btn btn-primary float-right">EDIT</button>
                             </a>
+
+                            <form method="post" th:action="@{/my-announces/delete}">
+                                <input id="id-to-delete" th:value="*{announcementId}" type="hidden">
+                                <input class="btn btn-danger float-right" type="submit" value="Delete">
+                            </form>
                         </h5>
 
                         <p class="card-text" th:text="${announcement.category.label}">category.label</p>
                         <p class="card-text"><span th:text="${announcement.price}">price</span> €</p>
                         <p class="card-text"><small class="text-muted">Posted <span th:text="${announcement.created}">3 mins
                             ago</span></small></p>
-
-                        <!--                        //TODO: add option to edit-->
-
-                        <!--                        //TODO: add option to delete-->
                     </div>
                 </div>
             </div>
