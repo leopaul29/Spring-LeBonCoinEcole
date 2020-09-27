@@ -1,6 +1,5 @@
 package com.leopaulmartin.spring.leboncoinecole.web.controllers;
 
-import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.School;
@@ -14,16 +13,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
-public class AnnounceController {
+@RequestMapping("/search")
+public class SearchController {
 	public static final String REDIRECT = "redirect:/";
-	private static final Logger logger = LoggerFactory.getLogger(AnnounceController.class);
+	private static final Logger logger = LoggerFactory.getLogger(SearchController.class);
+
 	@Autowired
 	private AnnouncementService announcementService;
 	@Autowired
@@ -42,7 +45,7 @@ public class AnnounceController {
 	@ModelAttribute("searchForm")
 	public SearchForm populateSearchForm() { return new SearchForm(); }
 
-	@GetMapping(path = "/quick-search")
+	@GetMapping("/quick")
 	public String handleQuickSearchRequest(Model model, @RequestParam("q") String q) {
 		SearchForm searchForm = new SearchForm();
 		searchForm.setKeywordsInput(q);
@@ -50,7 +53,7 @@ public class AnnounceController {
 	}
 
 	// request GET sample: https://.../recherche/?category=43&text=nitendo&locations=Lyon__45.76071825414269_4.836251707178035_7600&search_in=subject
-	@GetMapping("/search")
+	@GetMapping
 	public String handleSearchRequest(@ModelAttribute("searchForm") SearchForm searchForm, BindingResult errors, Model model) {
 		//TODO: foreach announce: display title, category, school and creation date
 		logger.debug("searchForm:" + searchForm.toString());
@@ -63,7 +66,8 @@ public class AnnounceController {
 		if (searchForm.getType()==null && searchForm.getCategoryId()==-1 &&
 				searchForm.getKeywordsInput().isEmpty() && searchForm.getSchoolId()==-1) {
 			logger.debug("no filter");
-			allAnnouncements = announcementService.getAllAnnouncements();
+			//allAnnouncements = announcementService.getAllAnnouncements();
+			return REDIRECT + "search/all";
 		} else if (searchForm.getType()!=null && searchForm.getCategoryId()==-1 &&
 				searchForm.getKeywordsInput().isEmpty() && searchForm.getSchoolId()==-1) {
 			logger.debug("filter by type only");
@@ -71,7 +75,8 @@ public class AnnounceController {
 		} else if(searchForm.getType()==null && searchForm.getCategoryId()!=-1 &&
 				searchForm.getKeywordsInput().isEmpty() && searchForm.getSchoolId()==-1){
 			logger.debug("filter by category only");
-			allAnnouncements = announcementService.getAnnouncementsByCategory(searchForm.getCategoryId());
+			//allAnnouncements = announcementService.getAnnouncementsByCategory(searchForm.getCategoryId());
+			return REDIRECT + "category/"+ categoryService.getCategoryById(searchForm.getCategoryId()).getLabel();
 		} else if(searchForm.getType()==null && searchForm.getCategoryId()==-1 &&
 				!searchForm.getKeywordsInput().isEmpty() && searchForm.getSchoolId()==-1){
 			logger.debug("filter by keywordInput only");
@@ -85,5 +90,11 @@ public class AnnounceController {
 	}
 
 	//TODO: use AJAX to propose words for the keyword field (with elastic search ?)
-	//TODO: save the research
+
+	@GetMapping(path = "/all")
+	public String handleAllSearchRequest(Model model) {
+		List<Announcement> allAnnouncements = announcementService.getAllAnnouncements();
+		model.addAttribute("allAnnouncements", allAnnouncements);
+		return "search";
+	}
 }

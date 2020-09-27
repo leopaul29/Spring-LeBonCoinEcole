@@ -16,9 +16,9 @@ D:DELETE*
 [x]G*/registration                     =registration form page
 
 **SEARCH CONTROLLER**
-[ ]G*/quick-search                     =display search results from key-input
-[ ]G*/search                           =display search results from search modal
-[ ]G*/search/all                       =display all announces
+[o]G*/search/quick                     =display search results from key-input
+[x]G*/search                           =display search results from search modal
+[x]G*/search/all                       =display all announces
 
 *** signed-in features
 **ACCOUNT CONTROLLER**
