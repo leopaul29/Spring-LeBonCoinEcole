@@ -20,6 +20,7 @@ import java.util.Optional;
 public class AccountController {
 	public static final String REDIRECT = "redirect:/";
 	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
+
 	@Autowired
 	private AnnouncementService announcementService;
 	@Autowired
@@ -59,23 +60,6 @@ public class AccountController {
 		return "student/history";
 	}
 
-	//TODO: student's afavorite nnounce
-	@GetMapping("/my-favorites")
-	public String favorite() {
-		return "student/my-favorites";
-	}
-
-	//TODO: add announce to favorite list
-	@GetMapping("/my-favorites/add/{id}")
-	public void addFavorite(Model model, @PathVariable("id") Optional<Long> id)
-			throws RecordNotFoundException {
-		if (id.isPresent()) {
-			Announcement announcement = announcementService.getAnnouncementById(id.get());
-//				model.addAttribute("announcement", announcement);
-		}
-//			return "student/my-favorites";
-	}
-	//TODO: delete announce to favorite list
 
 	//TODO: check message send and received for an announce
 	@GetMapping("/messages")

@@ -41,9 +41,9 @@ D:DELETE*
 [ ]P*/my-searches/clear                =clear student searches
 
 **FAVORITES CONTROLLER**
-[ ]G*/favorites                        =student favorites
-[ ]G*/favorites/add/{id}               =add the announce to favorite list
-[ ]G*/favorites/remove/{id}            =add the announce to favorite list
+[x]G*/favorites                        =student favorites list
+[x]G*/favorites/add/{id}               =add the announce to favorite list
+[ ]G*/favorites/remove/{id}            =remove the announce to favorite list
 
 **MESSAGE CONTROLLER**
 [ ]G*/my-account/messages              =student messages
