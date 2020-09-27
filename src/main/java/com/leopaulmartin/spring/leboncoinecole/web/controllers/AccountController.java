@@ -1,6 +1,5 @@
 package com.leopaulmartin.spring.leboncoinecole.web.controllers;
 
-import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
 import com.leopaulmartin.spring.leboncoinecole.services.AnnouncementService;
 import com.leopaulmartin.spring.leboncoinecole.services.UserService;
@@ -9,11 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/account")
@@ -58,12 +59,5 @@ public class AccountController {
 	public String handleDeleteHistoricRequest() {
 		logger.debug("handleDeleteHistoricRequest");
 		return "student/history";
-	}
-
-
-	//TODO: check message send and received for an announce
-	@GetMapping("/messages")
-	public String messages() {
-		return "student/messages";
 	}
 }

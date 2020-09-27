@@ -46,7 +46,7 @@ D:DELETE*
 [ ]G*/favorites/remove/{id}            =remove the announce to favorite list
 
 **MESSAGE CONTROLLER**
-[ ]G*/my-account/messages              =student messages
+[x]G*/my-account/messages              =student messages
 
 **ERROR CONTROLLER**
 [ ]G*/access-denied                    =access denied page

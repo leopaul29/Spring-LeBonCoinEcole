@@ -2,7 +2,6 @@ package com.leopaulmartin.spring.leboncoinecole.web.controllers;
 
 import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
-import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
 import com.leopaulmartin.spring.leboncoinecole.services.AnnouncementService;
 import com.leopaulmartin.spring.leboncoinecole.services.CategoryService;
 import org.slf4j.Logger;
@@ -13,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
