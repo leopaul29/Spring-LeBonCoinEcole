@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TODO: use AJAX to propose words for the keyword field (with elastic search ?)
+ */
 @Controller
 @RequestMapping("/search")
 public class SearchController {
@@ -45,14 +48,6 @@ public class SearchController {
 	@ModelAttribute("searchForm")
 	public SearchForm populateSearchForm() { return new SearchForm(); }
 
-	@GetMapping("/quick")
-	public String handleQuickSearchRequest(Model model, @RequestParam("q") String q) {
-		SearchForm searchForm = new SearchForm();
-		searchForm.setKeywordsInput(q);
-		return REDIRECT+"search";
-	}
-
-	// request GET sample: https://.../recherche/?category=43&text=nitendo&locations=Lyon__45.76071825414269_4.836251707178035_7600&search_in=subject
 	@GetMapping
 	public String handleSearchRequest(@ModelAttribute("searchForm") SearchForm searchForm, BindingResult errors, Model model) {
 		//TODO: foreach announce: display title, category, school and creation date
@@ -89,9 +84,14 @@ public class SearchController {
 		return "search";
 	}
 
-	//TODO: use AJAX to propose words for the keyword field (with elastic search ?)
+	@GetMapping("/quick")
+	public String handleQuickSearchRequest(Model model, @RequestParam("q") String q) {
+		SearchForm searchForm = new SearchForm();
+		searchForm.setKeywordsInput(q);
+		return REDIRECT+"search";
+	}
 
-	@GetMapping(path = "/all")
+	@GetMapping("/all")
 	public String handleAllSearchRequest(Model model) {
 		List<Announcement> allAnnouncements = announcementService.getAllAnnouncements();
 		model.addAttribute("allAnnouncements", allAnnouncements);

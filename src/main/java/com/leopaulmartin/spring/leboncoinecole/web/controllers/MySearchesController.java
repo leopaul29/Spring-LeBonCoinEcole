@@ -18,9 +18,22 @@ public class MySearchesController {
         return "student/my-searches";
     }
 
+    //TODO: add mySearch
+    @PostMapping("/add")
+    public String handleAddMySearchRequest() {
+        logger.debug("handleAddMySearchRequest");
+        return showMySearches();
+    }
+    //TODO: delete mySearch
+    @PostMapping("/delete/{id}")
+    public String handleDeleteMySearchRequest() {
+        logger.debug("handleDeleteMySearchRequest");
+        return showMySearches();
+    }
+    //TODO: delete all mySearch
     @PostMapping("/clear")
-    public String handleClearMySearches() {
-        // delete all history
+    public String handleClearMySearchesRequest() {
+        logger.debug("handleClearMySearchesRequest");
         return showMySearches();
     }
 }

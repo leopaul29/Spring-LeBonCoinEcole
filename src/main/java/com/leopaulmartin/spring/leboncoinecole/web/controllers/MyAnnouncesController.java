@@ -32,7 +32,7 @@ public class MyAnnouncesController {
     }
 
     @GetMapping
-    public String showAnnounces() {
+    public String showMyAnnounces() {
         return "student/my-announces";
     }
 
@@ -58,7 +58,7 @@ public class MyAnnouncesController {
     public String handleCreateUpdateAnnouncementRequest(Model model,
                                                         @ModelAttribute("announcement") Announcement announcement,
                                                         BindingResult errors) {
-        logger.debug("announcement: "+announcement);
+        logger.debug("handleCreateUpdateAnnouncementRequest: "+announcement);
         if(!errors.hasErrors()) {
             Announcement createUpdateAnnounce = announcementService.createOrUpdateAnnouncement(announcement);
             Long id = createUpdateAnnounce.getAnnouncementId();

@@ -33,15 +33,14 @@ public class AccountController {
 	}
 
 	//	Dropdown Account Menu
-	//TODO: display account data
 	@GetMapping("/dashboard")
-	public String account() {
+	public String showDashboard() {
 		return "student/index";
 	}
 
-	//TODO: edit account data
+	//TODO: show edit account page
 	@GetMapping("/edit")
-	public String editAccount(Model model, HttpSession session) {
+	public String showEditAccount(Model model, HttpSession session) {
 //		Long myUserId = (Long) session.getAttribute("myUserId");
 //		userService.findById(myUserId);
 //		if()
@@ -49,15 +48,27 @@ public class AccountController {
 		return "student/edit-account";
 	}
 
-	//TODO: check announced previously payed
+	//TODO: handle edit account request
+	@PostMapping("/edit")
+	public String handleEditAccountRequest(Model model, HttpSession session) {
+		logger.debug("handleEditAccountRequest");
+//		Long myUserId = (Long) session.getAttribute("myUserId");
+//		userService.findById(myUserId);
+//		if()
+//		model.addAttribute("myAccount", myProfile);
+		return "student/edit-account";
+	}
+
+	//TODO: show history page
 	@GetMapping("/history")
 	public String showHistory() {
 		return "student/history";
 	}
 
-	@PostMapping("/history/delete")
-	public String handleDeleteHistoricRequest() {
-		logger.debug("handleDeleteHistoricRequest");
+	//TODO: handle clear history request
+	@PostMapping("/history/clear")
+	public String handleClearHistoryRequest() {
+		logger.debug("handleClearHistoryRequest");
 		return "student/history";
 	}
 }

@@ -28,6 +28,7 @@ public class FavoritesController {
         return "student/my-favorites";
     }
 
+    //TODO: add announce to favorite list
     @GetMapping("/add/{id}")
     public void addFavorite(Model model, @PathVariable("id") Optional<Long> id)
             throws RecordNotFoundException {
@@ -35,5 +36,13 @@ public class FavoritesController {
             Announcement announcement = announcementService.getAnnouncementById(id.get());
         }
     }
+
     //TODO: delete announce to favorite list
+    @GetMapping("/remove/{id}")
+    public void removeFavorite(Model model, @PathVariable("id") Optional<Long> id)
+            throws RecordNotFoundException {
+        if (id.isPresent()) {
+            Announcement announcement = announcementService.getAnnouncementById(id.get());
+        }
+    }
 }

@@ -17,15 +17,16 @@ D:DELETE*
 
 **SEARCH CONTROLLER**
 [o]G*/search/quick                     =display search results from key-input
-[x]G*/search                           =display search results from search modal
+[o]G*/search                           =display search results from search modal
 [x]G*/search/all                       =display all announces
 
 *** signed-in features
 **ACCOUNT CONTROLLER**
 [x]G*/account/dashboard                =display student dashboard
 [x]G*/account/edit                     =display edit student info
+[o]P*/account/edit                     =handle edit student info request
 [x]G*/account/historic                 =student historic
-[o]P*/account/historic/delete          =delete student historic
+[o]P*/account/historic/clear           =delete student historic
 
 **MYANNONCES CONTROLLER**
 [x]G*/my-announces                     =display student announces
@@ -36,17 +37,17 @@ D:DELETE*
 
 **MYSEARCHES CONTROLLER**
 [x]G*/my-searches                      =student searches
-[x]P*/my-searches/add                  =add student searches
-[ ]P*/my-searches/delete               =delete student searches
-[ ]P*/my-searches/clear                =clear student searches
+[o]P*/my-searches/add                  =add student searches
+[o]P*/my-searches/delete               =delete student searches
+[o]P*/my-searches/clear                =clear student searches
 
 **FAVORITES CONTROLLER**
 [x]G*/favorites                        =student favorites list
-[x]G*/favorites/add/{id}               =add the announce to favorite list
-[ ]G*/favorites/remove/{id}            =remove the announce to favorite list
+[o]G*/favorites/add/{id}               =add the announce to favorite list
+[o]G*/favorites/remove/{id}            =remove the announce to favorite list
 
 **MESSAGE CONTROLLER**
-[x]G*/my-account/messages              =student messages
+[x]G*/messages                         =student messages
 
 **ERROR CONTROLLER**
 [ ]G*/access-denied                    =access denied page
