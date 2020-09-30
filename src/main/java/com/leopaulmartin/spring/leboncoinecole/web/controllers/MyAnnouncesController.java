@@ -2,6 +2,7 @@ package com.leopaulmartin.spring.leboncoinecole.web.controllers;
 
 import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
 import com.leopaulmartin.spring.leboncoinecole.services.AnnouncementService;
 import com.leopaulmartin.spring.leboncoinecole.services.CategoryService;
 import org.slf4j.Logger;
@@ -26,6 +27,10 @@ public class MyAnnouncesController {
     @Autowired
     private CategoryService categoryService;
 
+    @ModelAttribute("allCategories")
+    public List<Category> populateCategories() {
+        return categoryService.getAllCategories();
+    }
     @ModelAttribute("allAnnouncements")
     public List<Announcement> populateAnnouncements() {
         return announcementService.getAllAnnouncements();

@@ -1,7 +1,9 @@
 package com.leopaulmartin.spring.leboncoinecole.web.controllers;
 
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
 import com.leopaulmartin.spring.leboncoinecole.services.AnnouncementService;
+import com.leopaulmartin.spring.leboncoinecole.services.CategoryService;
 import com.leopaulmartin.spring.leboncoinecole.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +28,13 @@ public class AccountController {
 	private AnnouncementService announcementService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private CategoryService categoryService;
 
+	@ModelAttribute("allCategories")
+	public List<Category> populateCategories() {
+		return categoryService.getAllCategories();
+	}
 	@ModelAttribute("allAnnouncements")
 	public List<Announcement> populateAnnouncements() {
 		return announcementService.getAllAnnouncements();
