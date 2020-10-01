@@ -8,6 +8,7 @@ import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.Announce
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.CategoryRepository;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.SchoolRepository;
 import com.leopaulmartin.spring.leboncoinecole.services.AnnouncementService;
+import com.leopaulmartin.spring.leboncoinecole.web.dto.AnnounceDto;
 import com.leopaulmartin.spring.leboncoinecole.web.dto.SearchForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -144,6 +145,35 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 				return repository.save(newAnnouncement);
 			} else {
 				return repository.save(announcement);
+			}
+		}
+	}
+	@Transactional(propagation = Propagation.SUPPORTS)
+	@Override
+	public Announcement createOrUpdateAnnouncement(AnnounceDto announceDto) {
+		Announcement newAnnouncement = new Announcement();
+		newAnnouncement.setTitle(announceDto.getTitle());
+		newAnnouncement.setDescription(announceDto.getDescription());
+		newAnnouncement.setPrice(announceDto.getPrice());
+		newAnnouncement.setCategory(announceDto.getCategory());
+
+		if (announceDto.getAnnouncementId() == null) {
+			return repository.save(newAnnouncement);
+		} else {
+			Optional<Announcement> found = repository.findById(announceDto.getAnnouncementId());
+
+			if (found.isPresent()) {
+				Announcement updateAnnouncement = found.get();
+				updateAnnouncement.setTitle(announceDto.getTitle());
+				updateAnnouncement.setDescription(announceDto.getDescription());
+				updateAnnouncement.setPrice(announceDto.getPrice());
+//				updateAnnouncement.setAnnouncement(announcement.isAnnouncement());
+				updateAnnouncement.setCategory(announceDto.getCategory());
+//				updateAnnouncement.setEndDate(announcement.getEndDate());
+//				updateAnnouncement.setPhoto(announcement.getPhoto());
+				return repository.save(updateAnnouncement);
+			} else {
+				return repository.save(newAnnouncement);
 			}
 		}
 	}

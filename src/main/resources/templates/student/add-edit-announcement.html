@@ -10,32 +10,53 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h3> Edit Announcement</h3>
     </div>
-    <form method="post" th:action="@{/my-announces/createUpdate}" th:object="${announcement}">
+
+    <p class="error-message"
+       th:each="error : ${#fields.errors('global')}"
+       th:if="${#fields.hasGlobalErrors()}"
+       th:text="${error}">Validation error</p>
+
+    <form method="post" th:action="@{/my-announces/createUpdate}" th:object="${announceDto}">
         <div class="form-group">
             <label for="title">Title</label>
-            <input class="form-control" id="title" th:field="*{title}" type="text" required>
+            <input class="form-control" id="title" th:field="*{title}" type="text"
+                   th:classappend="${#fields.hasErrors('title')}? 'is-invalid':''">
+            <div class="invalid-feedback"
+                 th:each="error : ${#fields.errors('title')}"
+                 th:text="${error}">Validation error</div>
         </div>
         <div class="row form-group">
             <div class="col-md-6">
                 <label for="category">Category</label>
-                <select class="form-control" id="category" th:field="*{category}">
-                    <option selected value="">Category</option>
+                <select class="form-control" id="category" th:field="*{category}"
+                        th:classappend="${#fields.hasErrors('category')}? 'is-invalid':''">
+                    <option value="" selected>Select a category</option>
                     <option
                             th:each="dropdownValue: ${allCategories}"
                             th:text="${dropdownValue.label}"
                             th:value="${dropdownValue.categoryId}">category.label</option>
                 </select>
+                <div class="invalid-feedback"
+                     th:each="error : ${#fields.errors('category')}"
+                     th:text="${error}">Validation error</div>
             </div>
             <div class="col-md-6">
                 <label for="price">Price</label>
-                <input class="form-control" id="price" th:field="*{price}" type="number">
+                <input class="form-control" id="price" th:field="*{price}" type="number"
+                       th:classappend="${#fields.hasErrors('price')}? 'is-invalid':''">
+                <div class="invalid-feedback"
+                     th:each="error : ${#fields.errors('price')}"
+                     th:text="${error}">Validation error</div>
             </div>
         </div>
         <div class="form-group">
             <label for="description">Description</label>
             <textarea class="form-control" id="description" th:field="*{description}" type="text"
-                      required rows="10">
+                      rows="10" th:classappend="${#fields.hasErrors('description')}? 'is-invalid':''">
             </textarea>
+            <div class="invalid-feedback"
+                 th:each="error : ${#fields.errors('description')}"
+                 th:text="${error}">Validation error</div>
         </div>
 
         <input class="btn btn-primary" type="submit" value="Submit ">

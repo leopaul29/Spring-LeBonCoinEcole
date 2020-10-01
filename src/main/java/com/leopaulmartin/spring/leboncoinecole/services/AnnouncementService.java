@@ -1,6 +1,7 @@
 package com.leopaulmartin.spring.leboncoinecole.services;
 
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
+import com.leopaulmartin.spring.leboncoinecole.web.dto.AnnounceDto;
 import com.leopaulmartin.spring.leboncoinecole.web.dto.SearchForm;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ public interface AnnouncementService {
 	Announcement createAnnouncement(Announcement announcement);
 
 	Announcement createOrUpdateAnnouncement(Announcement announcement);
+	Announcement createOrUpdateAnnouncement(AnnounceDto announceDto);
 
 	Announcement updateAnnouncement(Long id, Announcement announcement);
 
