@@ -38,11 +38,11 @@
         </div>
         <div class="row">
             <label class="col-sm-6 col-form-label" for="phonenumber">Phonenumber</label>
-            <label class="col-sm-6 col-form-label" id="phonenumber" text="01.23.45.69.87">Phonenumber</label>
+            <label class="col-sm-6 col-form-label" id="phonenumber" th:text="*{currentStudent.phoneNumber}">Phonenumber</label>
         </div>
         <div class="row">
             <label class="col-sm-6 col-form-label" for="school">School name</label>
-            <label class="col-sm-6 col-form-label" id="school" text="school1">School name</label>
+            <label class="col-sm-6 col-form-label" id="school" th:text="*{currentStudent.school.name}">School name</label>
         </div>
     </section>
 

@@ -74,6 +74,8 @@ public class DatabaseLoader implements CommandLineRunner {
 
 		User u = new User("user", "lastn", "usertest@t", "passtest");
 		userService.createOrUpdateUser(u);
+		student.setUserProfile(u);
+		studentService.createOrUpdateStudent(student);
 
 		userService.createAdmin("admin@t", "passadm");
 	}

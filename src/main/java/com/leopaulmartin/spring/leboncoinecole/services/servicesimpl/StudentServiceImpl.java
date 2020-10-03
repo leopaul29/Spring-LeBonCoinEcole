@@ -2,6 +2,7 @@ package com.leopaulmartin.spring.leboncoinecole.services.servicesimpl;
 
 import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Student;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.User;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.StudentRepository;
 import com.leopaulmartin.spring.leboncoinecole.services.StudentService;
 import org.slf4j.Logger;
@@ -44,6 +45,12 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public Student getStudentByUserId(Long id) throws RecordNotFoundException {
 		return repository.findByUserId(id);
+	}
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	@Override
+	public Student getStudentByUserProfile(User userProfile) throws RecordNotFoundException {
+		return repository.findByUserProfile(userProfile);
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS)

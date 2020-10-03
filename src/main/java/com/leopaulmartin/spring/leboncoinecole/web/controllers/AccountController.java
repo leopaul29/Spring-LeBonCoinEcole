@@ -2,9 +2,11 @@ package com.leopaulmartin.spring.leboncoinecole.web.controllers;
 
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Student;
 import com.leopaulmartin.spring.leboncoinecole.security.MyUserPrincipal;
 import com.leopaulmartin.spring.leboncoinecole.services.AnnouncementService;
 import com.leopaulmartin.spring.leboncoinecole.services.CategoryService;
+import com.leopaulmartin.spring.leboncoinecole.services.StudentService;
 import com.leopaulmartin.spring.leboncoinecole.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +34,8 @@ public class AccountController {
 	private UserService userService;
 	@Autowired
 	private CategoryService categoryService;
+	@Autowired
+	private StudentService studentService;
 
 	@ModelAttribute("allCategories")
 	public List<Category> populateCategories() {
@@ -45,6 +49,15 @@ public class AccountController {
 	@ModelAttribute("currentUser")
 	public MyUserPrincipal getCurrentUser(Authentication authentication) {
 		return (authentication == null) ? null : (MyUserPrincipal) authentication.getPrincipal();
+	}
+	@ModelAttribute("currentStudent")
+	public Student getCurrentStudent(Authentication authentication) {
+		MyUserPrincipal currentUser = getCurrentUser(authentication);
+		if (currentUser!=null) {
+			logger.debug(currentUser.getUser().getUserId().toString());
+			return studentService.getStudentByUserProfile(currentUser.getUser());
+		}
+		return null;
 	}
 
 	//	Dropdown Account Menu

@@ -2,6 +2,7 @@ package com.leopaulmartin.spring.leboncoinecole.services;
 
 import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Student;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.User;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,6 +14,8 @@ public interface StudentService {
 	Student getStudentById(Long id) throws RecordNotFoundException;
 
 	Student getStudentByUserId(Long id) throws RecordNotFoundException;
+
+	Student getStudentByUserProfile(User userProfile)throws RecordNotFoundException;
 
 	Student createOrUpdateStudent(Student student);
 
