@@ -1,6 +1,7 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.entities;
 
 import com.leopaulmartin.spring.leboncoinecole.utils.Utils;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -99,9 +100,6 @@ public class User {
 	public String getCreated() {
 		return Utils.getFormattedDate(created);
 	}
-//	public Instant getCreated() {
-//		return created;
-//	}
 
 	public void setCreated(Instant created) {
 		this.created = created;

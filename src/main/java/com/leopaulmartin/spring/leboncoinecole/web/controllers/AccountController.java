@@ -2,12 +2,14 @@ package com.leopaulmartin.spring.leboncoinecole.web.controllers;
 
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
+import com.leopaulmartin.spring.leboncoinecole.security.MyUserPrincipal;
 import com.leopaulmartin.spring.leboncoinecole.services.AnnouncementService;
 import com.leopaulmartin.spring.leboncoinecole.services.CategoryService;
 import com.leopaulmartin.spring.leboncoinecole.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +40,11 @@ public class AccountController {
 	@ModelAttribute("allAnnouncements")
 	public List<Announcement> populateAnnouncements() {
 		return announcementService.getAllAnnouncements();
+	}
+
+	@ModelAttribute("currentUser")
+	public MyUserPrincipal getCurrentUser(Authentication authentication) {
+		return (authentication == null) ? null : (MyUserPrincipal) authentication.getPrincipal();
 	}
 
 	//	Dropdown Account Menu

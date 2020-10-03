@@ -12,16 +12,20 @@
     <section id="account-info">
         <h3>Account informations</h3>
         <div class="row">
-            <label class="col-sm-6 col-form-label" for="staticEmail">Email</label>
-            <label class="col-sm-6 col-form-label" id="staticEmail" value="email@example.com">Email</label>
+            <label class="col-sm-6 col-form-label" for="username">Email</label>
+            <label class="col-sm-6 col-form-label" id="username" th:text="*{currentUser.getUsername()}">Email</label>
         </div>
         <div class="row">
             <label class="col-sm-6 col-form-label" for="firstname">First name</label>
-            <label class="col-sm-6 col-form-label" id="firstname" value="firstname">First name</label>
+            <label class="col-sm-6 col-form-label" id="firstname" th:text="*{currentUser.getFirstName()}">First name</label>
         </div>
         <div class="row">
             <label class="col-sm-6 col-form-label" for="lastname">Last name</label>
-            <label class="col-sm-6 col-form-label" id="lastname" value="lastname">Last name</label>
+            <label class="col-sm-6 col-form-label" id="lastname" th:text="*{currentUser.getLastName()}">Last name</label>
+        </div>
+        <div class="row">
+            <label class="col-sm-6 col-form-label" for="created">Created</label>
+            <label class="col-sm-6 col-form-label" id="created" th:text="*{currentUser.getCreated()}">Created</label>
         </div>
     </section>
 

@@ -1,5 +1,6 @@
 package com.leopaulmartin.spring.leboncoinecole.security;
 
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Role;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,13 +9,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class AppUserPrincipal implements UserDetails {
+public class MyUserPrincipal implements UserDetails {
 
     private final User user;
 
-    public AppUserPrincipal(User user) {
+    public MyUserPrincipal(User user, Collection<Role>  authorities) {
         this.user = user;
+        mapRolesToAuthorities(authorities);
+    }
+
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -55,5 +64,17 @@ public class AppUserPrincipal implements UserDetails {
 
     public User getUser() {
         return user;
+    }
+
+    public String getFirstName() {
+        return user.getFirstName();
+    }
+
+    public String getLastName() {
+        return user.getLastName();
+    }
+
+    public String getCreated() {
+        return user.getCreated();
     }
 }

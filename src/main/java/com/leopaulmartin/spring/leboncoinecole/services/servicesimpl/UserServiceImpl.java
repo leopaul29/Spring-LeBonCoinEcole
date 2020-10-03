@@ -4,6 +4,7 @@ import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.Recor
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Role;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.User;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.UserRepository;
+import com.leopaulmartin.spring.leboncoinecole.security.MyUserPrincipal;
 import com.leopaulmartin.spring.leboncoinecole.services.StudentService;
 import com.leopaulmartin.spring.leboncoinecole.services.UserService;
 import com.leopaulmartin.spring.leboncoinecole.web.dto.UserRegistrationDto;
@@ -62,9 +63,8 @@ public class UserServiceImpl implements UserService {
 		if (user == null) {
 			throw new UsernameNotFoundException("Invalid username or password.");
 		}
-		return new org.springframework.security.core.userdetails.User(user.getEmail(),
-				user.getPassword(),
-				mapRolesToAuthorities(user.getRoles()));
+
+		return new MyUserPrincipal(user, user.getRoles());
 	}
 
 	public User findByEmail(String email) {
@@ -73,8 +73,8 @@ public class UserServiceImpl implements UserService {
 
 	public User save(UserRegistrationDto registration) {
 		User user = new User();
-//		user.setFirstName(registration.getFirstName());
-//		user.setLastName(registration.getLastName());
+		user.setFirstName(registration.getFirstName());
+		user.setLastName(registration.getLastName());
 		user.setEmail(registration.getEmail());
 		user.setPassword(passwordEncoder.encode(registration.getPassword()));
 		user.setRoles(Arrays.asList(new Role("ROLE_USER")));
@@ -91,8 +91,8 @@ public class UserServiceImpl implements UserService {
 
 			if (found.isPresent()) {
 				User newUser = found.get();
-//				newUser.setFirstName(user.getFirstName());
-//				newUser.setLastName(user.getLastName());
+				newUser.setFirstName(user.getFirstName());
+				newUser.setLastName(user.getLastName());
 				newUser.setEmail(user.getEmail());
 				newUser.setPassword(passwordEncoder.encode(user.getPassword()));
 				newUser.setRoles(Arrays.asList(new Role("ROLE_USER")));
@@ -126,12 +126,6 @@ public class UserServiceImpl implements UserService {
 			return repository.save(newUser);
 		}
 		return null;
-	}
-
-	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-		return roles.stream()
-				.map(role -> new SimpleGrantedAuthority(role.getName()))
-				.collect(Collectors.toList());
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS)
