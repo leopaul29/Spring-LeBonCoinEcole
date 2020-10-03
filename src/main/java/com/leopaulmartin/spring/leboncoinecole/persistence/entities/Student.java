@@ -22,9 +22,9 @@ public class Student {
 	@ManyToOne
 	private School school;
 
-	//set option to remove the user profil when student profil is deleted
+	//set option to remove the user profile when student profile is deleted
 	@OneToOne(cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-	private User userProfil;
+	private User userProfile;
 
 	//TODO: set option to remove all announcement when student profil is deleted
 	@OneToMany/*(
@@ -46,7 +46,7 @@ public class Student {
 	}
 
 	public Student(User user) {
-		this.userProfil = user;
+		this.userProfile = user;
 	}
 
 //	public Student(String firstName, String lastName) {
@@ -114,12 +114,12 @@ public class Student {
 		this.school = school;
 	}
 
-	public User getUserProfil() {
-		return userProfil;
+	public User getUserProfile() {
+		return userProfile;
 	}
 
-	public void setUserProfil(User userProfil) {
-		this.userProfil = userProfil;
+	public void setUserProfile(User userProfile) {
+		this.userProfile = userProfile;
 	}
 
 	public List<Announcement> getAnnouncements() {
@@ -139,7 +139,7 @@ public class Student {
 				", phoneNumber='" + phoneNumber + '\'' +
 				", photo=" + (photo != null) +
 				", school=" + school +
-				", userProfil=" + userProfil +
+				", userProfil=" + userProfile +
 				", announcements=" + announcements +
 				'}';
 	}
