@@ -2,12 +2,11 @@ package com.leopaulmartin.spring.leboncoinecole.web.controllers;
 
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Category;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.School;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Student;
 import com.leopaulmartin.spring.leboncoinecole.security.MyUserPrincipal;
-import com.leopaulmartin.spring.leboncoinecole.services.AnnouncementService;
-import com.leopaulmartin.spring.leboncoinecole.services.CategoryService;
-import com.leopaulmartin.spring.leboncoinecole.services.StudentService;
-import com.leopaulmartin.spring.leboncoinecole.services.UserService;
+import com.leopaulmartin.spring.leboncoinecole.services.*;
+import com.leopaulmartin.spring.leboncoinecole.web.dto.StudentDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,33 +18,36 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
 @RequestMapping("/account")
 public class AccountController {
-	public static final String REDIRECT = "redirect:/";
 	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
 	@Autowired
 	private AnnouncementService announcementService;
 	@Autowired
-	private UserService userService;
-	@Autowired
 	private CategoryService categoryService;
 	@Autowired
+	private SchoolService schoolService;
+	@Autowired
 	private StudentService studentService;
+	@Autowired
+	private UserService userService;
 
-	@ModelAttribute("allCategories")
-	public List<Category> populateCategories() {
-		return categoryService.getAllCategories();
-	}
 	@ModelAttribute("allAnnouncements")
 	public List<Announcement> populateAnnouncements() {
 		return announcementService.getAllAnnouncements();
 	}
-
+	@ModelAttribute("allCategories")
+	public List<Category> populateCategories() {
+		return categoryService.getAllCategories();
+	}
+	@ModelAttribute("allSchools")
+	public List<School> populateSchools() {
+		return schoolService.getAllSchools();
+	}
 	@ModelAttribute("currentUser")
 	public MyUserPrincipal getCurrentUser(Authentication authentication) {
 		return (authentication == null) ? null : (MyUserPrincipal) authentication.getPrincipal();
@@ -54,7 +56,6 @@ public class AccountController {
 	public Student getCurrentStudent(Authentication authentication) {
 		MyUserPrincipal currentUser = getCurrentUser(authentication);
 		if (currentUser!=null) {
-			logger.debug(currentUser.getUser().getUserId().toString());
 			return studentService.getStudentByUserProfile(currentUser.getUser());
 		}
 		return null;
@@ -66,19 +67,17 @@ public class AccountController {
 		return "student/index";
 	}
 
-	//TODO: show edit account page
 	@GetMapping("/edit")
-	public String showEditAccount(Model model, HttpSession session) {
-//		Long myUserId = (Long) session.getAttribute("myUserId");
-//		userService.findById(myUserId);
-//		if()
-//		model.addAttribute("myAccount", myProfile);
+	public String showEditAccount(Model model, Authentication authentication) {
+		Student currentStudent = getCurrentStudent(authentication);
+		StudentDto studentDto = convertToDto(currentStudent);
+		model.addAttribute("studentDto", studentDto);
 		return "student/edit-account";
 	}
 
 	//TODO: handle edit account request
 	@PostMapping("/edit")
-	public String handleEditAccountRequest(Model model, HttpSession session) {
+	public String handleEditAccountRequest(Model model) {
 		logger.debug("handleEditAccountRequest");
 //		Long myUserId = (Long) session.getAttribute("myUserId");
 //		userService.findById(myUserId);
@@ -98,5 +97,36 @@ public class AccountController {
 	public String handleClearHistoryRequest() {
 		logger.debug("handleClearHistoryRequest");
 		return "student/history";
+	}
+
+//	private Student convertToEntity(StudentDto studentDto) {
+//		Student student = new Student();
+//		if (studentDto.getStudentId()!=null) {
+//			student = studentService.getStudentById(studentDto.getStudentId());
+//		}
+//		student.getUserProfile().setFirstName(studentDto.getFirstName());
+//		student.getUserProfile().setLastName(studentDto.getLastName());
+//		student.getUserProfile().setPassword(studentDto.getPassword());
+//		student.setPhoneNumber(studentDto.getPhoneNumber());
+//		student.setPhoto(studentDto.getPhoto());
+//		student.setSchool(studentDto.getSchool());
+//
+//		return student;
+//	}
+
+	private StudentDto convertToDto(Student student) {
+		StudentDto studentDto = new StudentDto();
+
+		if (student!=null) {
+//			studentDto.setStudentId(student.getStudentId());
+			studentDto.setEmail(student.getUserProfile().getEmail());
+			studentDto.setPassword(student.getUserProfile().getPassword());
+			studentDto.setFirstName(student.getUserProfile().getFirstName());
+			studentDto.setLastName(student.getUserProfile().getLastName());
+			studentDto.setPhoneNumber(student.getPhoneNumber());
+			studentDto.setSchool(student.getSchool());
+		}
+
+		return studentDto;
 	}
 }
