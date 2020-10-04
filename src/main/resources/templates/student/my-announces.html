@@ -8,7 +8,7 @@
 <body>
 <div layout:fragment="content" th:remove="tag">
     <h1>My announces</h1>
-    <section class="col-md-10" id="my-announces" th:unless="${#lists.isEmpty(allAnnouncements)}">
+    <section id="my-announces" th:unless="${#lists.isEmpty(allAnnouncements)}">
         <div class="card shadow-sm mb-3" th:each="announcement : ${allAnnouncements}">
             <div class="row no-gutters">
                 <div class="col-md-4">
@@ -22,14 +22,15 @@
                                 <span th:text="${announcement.title}">announcement.title</span>
                             </a>
 
-                            <a th:href="@{/my-announces/edit/{id}(id=${announcement.announcementId})}">
-                                <button class="btn btn-primary float-right">EDIT</button>
-                            </a>
-
-                            <form method="post" th:action="@{/my-announces/delete}">
-                                <input id="id-to-delete" th:value="*{announcementId}" type="hidden">
-                                <input class="btn btn-danger float-right" type="submit" value="Delete">
-                            </form>
+                            <div class="btn-group float-right" role="group" aria-label="Basic example">
+                                <a th:href="@{/my-announces/edit/{id}(id=${announcement.announcementId})}"
+                                    class="btn btn-primary ">Edit
+                                </a>
+                                <form method="post" th:action="@{/my-announces/delete}">
+                                    <input id="id-to-delete" th:value="*{announcementId}" type="hidden">
+                                    <input class="btn btn-danger float-right" type="submit" value="Delete">
+                                </form>
+                            </div>
                         </h5>
 
                         <p class="card-text">
