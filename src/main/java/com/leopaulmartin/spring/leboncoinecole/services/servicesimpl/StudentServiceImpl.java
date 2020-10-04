@@ -42,43 +42,26 @@ public class StudentServiceImpl implements StudentService {
 		}
 	}
 
-//	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-//	@Override
-//	public Student getStudentByUserId(Long id) throws RecordNotFoundException {
-//		return repository.findByUserId(id);
-//	}
-//
-//	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-//	@Override
-//	public Student getStudentByUserProfile(User userProfile) throws RecordNotFoundException {
-//		return repository.findByUserProfile(userProfile);
-//	}
-
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
 	public Student createOrUpdateStudent(Student student) {
-//		if (student.getUserId() == null) {
-//			return repository.save(student);
-//		} else {
-//			Optional<Student> found = repository.findById(student.getUserId());
-//
-//			if (found.isPresent()) {
-//				Student newStudent = found.get();
-//				newStudent.setUsername(student.getUsername());
-//				newStudent.setPassword(student.getPassword());
-//				newStudent.setFirstName(student.getFirstName());
-//				newStudent.setLastName(student.getLastName());
-//				newStudent.setEmail(student.getEmail());
-//				newStudent.setPhoneNumber(student.getPhoneNumber());
-//				newStudent.setPhoto(student.getPhoto());
-//				newStudent.setSchool(student.getSchool());
-//
-//				return repository.save(newStudent);
-//			} else {
-//				return repository.save(student);
-//			}
-//		}
-		return repository.save(student);
+		if (student.getStudentId() == null) {
+			return repository.save(student);
+		} else {
+			Optional<Student> found = repository.findById(student.getStudentId());
+
+			if (found.isPresent()) {
+				Student updateStudent = found.get();
+				updateStudent.setPhoneNumber(student.getPhoneNumber());
+				updateStudent.setPhoto(student.getPhoto());
+				updateStudent.setSchool(student.getSchool());
+				updateStudent.setAnnouncements(student.getAnnouncements());
+
+				return repository.save(updateStudent);
+			} else {
+				return null;
+			}
+		}
 	}
 
 	@Transactional(propagation = Propagation.SUPPORTS)
@@ -107,32 +90,4 @@ public class StudentServiceImpl implements StudentService {
 			throw new RecordNotFoundException("No student record exist for given id");
 		}
 	}
-
-//	@Transactional(propagation = Propagation.SUPPORTS)
-//	@Override
-//	public void deleteStudentByUserId(Long id) throws RecordNotFoundException {
-//		Student student = getStudentByUserId(id);
-//
-//		if (student != null) {
-//			repository.delete(student);
-//		}
-//	}
-
-//	@Override
-//	public boolean isStudentValid(Student student) {
-//		Boolean[] isValidTab = new Boolean[2];
-////		isValidTab[0] = student.getUsername() != null;
-////		isValidTab[1] = student.getPassword() != null;
-//
-//		for (int i = 0; i < isValidTab.length; i++) {
-//			boolean isValid = isValidTab[i];
-//			if (!isValid) {
-//				logger.error("validation failed");
-//				return false;
-//			}
-//		}
-//
-//		logger.error("validation success");
-//		return true;
-//	}
 }

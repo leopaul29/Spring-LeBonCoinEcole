@@ -37,12 +37,6 @@ public class CategoryServiceImpl implements CategoryService {
 		return repository.findAll();
 	}
 
-//	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-//	@Override
-//	public List<Category> getAllCategoriesSortedByAnnounce() {
-//		return repository.findAllSortedByAnnounce();
-//	}
-
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	@Override
 	public Category getCategoryById(Long id) {

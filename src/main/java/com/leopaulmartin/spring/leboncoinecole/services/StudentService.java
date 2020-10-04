@@ -14,17 +14,9 @@ public interface StudentService {
 
 	Student getStudentById(Long id) throws RecordNotFoundException;
 
-//	Student getStudentByUserId(Long id) throws RecordNotFoundException;
-//
-//	Student getStudentByUserProfile(User userProfile)throws RecordNotFoundException;
-
 	Student createOrUpdateStudent(Student student);
 
 	Student updateAccount(AccountDto accountDto);
 
 	void deleteStudentById(Long id) throws RecordNotFoundException;
-
-//	void deleteStudentByUserId(Long id) throws RecordNotFoundException;
-
-//	boolean isStudentValid(Student student);
 }

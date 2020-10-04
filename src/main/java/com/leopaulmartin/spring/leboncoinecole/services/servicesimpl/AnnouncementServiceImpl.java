@@ -92,40 +92,6 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
-	public Announcement createAnnouncement(Announcement announcement) {
-		if (!isAnnouncementValid(announcement)) {
-			return null;
-		}
-
-		return repository.saveAndFlush(announcement);
-	}
-
-	@Transactional(propagation = Propagation.SUPPORTS)
-	@Override
-	public Announcement updateAnnouncement(Long id, Announcement announcement) {
-		if (!announcement.getAnnouncementId().equals(id)) {
-			logger.error("mistmatch id");
-			return null;
-		}
-		if (!isAnnouncementValid(announcement)) {
-			return null;
-		}
-
-		Optional<Announcement> existingAnnouncement = repository.findById(id);
-		if (existingAnnouncement.isPresent()) {
-			Announcement foundAnnouncement = existingAnnouncement.get();
-			foundAnnouncement.setTitle(announcement.getTitle());
-			foundAnnouncement.setDescription(announcement.getDescription());
-			foundAnnouncement.setPrice(announcement.getPrice());
-			return repository.saveAndFlush(foundAnnouncement);
-		} else {
-			logger.error("not found");
-			return null;
-		}
-	}
-
-	@Transactional(propagation = Propagation.SUPPORTS)
-	@Override
 	public Announcement createOrUpdateAnnouncement(Announcement announcement) {
 		if (announcement.getAnnouncementId() == null) {
 			return repository.save(announcement);

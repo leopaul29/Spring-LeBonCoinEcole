@@ -17,12 +17,8 @@ public interface AnnouncementService {
 	List<Announcement> getAnnouncementsByCategory(Long categoryId);
 	List<Announcement> getAnnouncementsByKeywordInput(String keywordsInput);
 
-	Announcement createAnnouncement(Announcement announcement);
-
 	Announcement createOrUpdateAnnouncement(Announcement announcement);
 	Announcement createOrUpdateAnnouncement(AnnounceDto announceDto);
-
-	Announcement updateAnnouncement(Long id, Announcement announcement);
 
 	void deleteAnnouncementById(Long id);
 
