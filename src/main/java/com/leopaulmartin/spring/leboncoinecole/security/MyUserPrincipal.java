@@ -2,6 +2,8 @@ package com.leopaulmartin.spring.leboncoinecole.security;
 
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Role;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MyUserPrincipal implements UserDetails {
+    private static final Logger logger = LoggerFactory.getLogger(MyUserPrincipal.class);
 
     private final User user;
 
@@ -64,17 +67,5 @@ public class MyUserPrincipal implements UserDetails {
 
     public User getUser() {
         return user;
-    }
-
-    public String getFirstName() {
-        return user.getFirstName();
-    }
-
-    public String getLastName() {
-        return user.getLastName();
-    }
-
-    public String getCreated() {
-        return user.getCreated();
     }
 }

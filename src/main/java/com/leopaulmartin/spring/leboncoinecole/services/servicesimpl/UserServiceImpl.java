@@ -5,14 +5,12 @@ import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Role;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.User;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.UserRepository;
 import com.leopaulmartin.spring.leboncoinecole.security.MyUserPrincipal;
-import com.leopaulmartin.spring.leboncoinecole.services.StudentService;
 import com.leopaulmartin.spring.leboncoinecole.services.UserService;
+import com.leopaulmartin.spring.leboncoinecole.web.dto.AccountDto;
 import com.leopaulmartin.spring.leboncoinecole.web.dto.UserRegistrationDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,10 +19,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -32,8 +28,6 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository repository;
-	@Autowired
-	private StudentService studentService;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -56,7 +50,8 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	// Spring security 
+	// Spring security
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		User user = repository.findByEmail(email);
@@ -67,10 +62,14 @@ public class UserServiceImpl implements UserService {
 		return new MyUserPrincipal(user, user.getRoles());
 	}
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	@Override
 	public User findByEmail(String email) {
 		return repository.findByEmail(email);
 	}
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	@Override
 	public User save(UserRegistrationDto registration) {
 		User user = new User();
 		user.setFirstName(registration.getFirstName());
@@ -81,6 +80,8 @@ public class UserServiceImpl implements UserService {
 		return repository.save(user);
 	}
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	@Override
 	public User createOrUpdateUser(User user) {
 		if (user.getUserId() == null) {
 			user.setRoles(Arrays.asList(new Role("ROLE_USER")));
@@ -98,9 +99,22 @@ public class UserServiceImpl implements UserService {
 				newUser.setRoles(Arrays.asList(new Role("ROLE_USER")));
 
 				return repository.save(newUser);
-			} else {
-				return repository.save(user);
 			}
+			return null;
+		}
+	}
+
+
+	@Transactional(propagation = Propagation.SUPPORTS)
+	@Override
+	public User updateAccount(AccountDto accountDto) {
+		User existing = repository.findByEmail(accountDto.getEmail());
+		if (existing != null) {
+			existing.setFirstName(accountDto.getFirstName());
+			existing.setLastName(accountDto.getLastName());
+			return repository.save(existing);
+		} else {
+			return null;
 		}
 	}
 
@@ -112,21 +126,21 @@ public class UserServiceImpl implements UserService {
 		return repository.save(user);
 	}
 
-	public User addRole(User user, Role role) {
-		if (user.getUserId() == null) {
-			return null;
-		}
-		Optional<User> found = repository.findById(user.getUserId());
-
-		if (found.isPresent()) {
-			User newUser = found.get();
-			Collection<Role> roles = user.getRoles();
-			roles.add(role);
-			newUser.setRoles(roles);
-			return repository.save(newUser);
-		}
-		return null;
-	}
+//	public User addRole(User user, Role role) {
+//		if (user.getUserId() == null) {
+//			return null;
+//		}
+//		Optional<User> found = repository.findById(user.getUserId());
+//
+//		if (found.isPresent()) {
+//			User newUser = found.get();
+//			Collection<Role> roles = user.getRoles();
+//			roles.add(role);
+//			newUser.setRoles(roles);
+//			return repository.save(newUser);
+//		}
+//		return null;
+//	}
 
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
@@ -134,7 +148,6 @@ public class UserServiceImpl implements UserService {
 		Optional<User> user = repository.findById(id);
 
 		if (user.isPresent()) {
-			studentService.deleteStudentByUserId(id);
 			repository.deleteById(id);
 		} else {
 			throw new RecordNotFoundException("No user record exist for given id");

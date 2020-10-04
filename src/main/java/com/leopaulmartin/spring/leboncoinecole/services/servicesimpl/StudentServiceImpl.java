@@ -5,6 +5,7 @@ import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Student;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.User;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.StudentRepository;
 import com.leopaulmartin.spring.leboncoinecole.services.StudentService;
+import com.leopaulmartin.spring.leboncoinecole.web.dto.AccountDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,21 @@ public class StudentServiceImpl implements StudentService {
 
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
+	public Student updateAccount(AccountDto accountDto) {
+		Optional<Student> found = repository.findById(accountDto.getStudentId());
+		if (found.isPresent()) {
+			Student updateStudent = found.get();
+			updateStudent.setPhoneNumber(accountDto.getPhoneNumber());
+			updateStudent.setPhoto(accountDto.getPhoto());
+			updateStudent.setSchool(accountDto.getSchool());
+			return repository.save(updateStudent);
+		} else {
+			return null;
+		}
+	}
+
+	@Transactional(propagation = Propagation.SUPPORTS)
+	@Override
 	public void deleteStudentById(Long id) throws RecordNotFoundException {
 		Optional<Student> student = repository.findById(id);
 
@@ -92,31 +108,31 @@ public class StudentServiceImpl implements StudentService {
 		}
 	}
 
-	@Transactional(propagation = Propagation.SUPPORTS)
-	@Override
-	public void deleteStudentByUserId(Long id) throws RecordNotFoundException {
-		Student student = getStudentByUserId(id);
+//	@Transactional(propagation = Propagation.SUPPORTS)
+//	@Override
+//	public void deleteStudentByUserId(Long id) throws RecordNotFoundException {
+//		Student student = getStudentByUserId(id);
+//
+//		if (student != null) {
+//			repository.delete(student);
+//		}
+//	}
 
-		if (student != null) {
-			repository.delete(student);
-		}
-	}
-
-	@Override
-	public boolean isStudentValid(Student student) {
-		Boolean[] isValidTab = new Boolean[2];
-//		isValidTab[0] = student.getUsername() != null;
-//		isValidTab[1] = student.getPassword() != null;
-
-		for (int i = 0; i < isValidTab.length; i++) {
-			boolean isValid = isValidTab[i];
-			if (!isValid) {
-				logger.error("validation failed");
-				return false;
-			}
-		}
-
-		logger.error("validation success");
-		return true;
-	}
+//	@Override
+//	public boolean isStudentValid(Student student) {
+//		Boolean[] isValidTab = new Boolean[2];
+////		isValidTab[0] = student.getUsername() != null;
+////		isValidTab[1] = student.getPassword() != null;
+//
+//		for (int i = 0; i < isValidTab.length; i++) {
+//			boolean isValid = isValidTab[i];
+//			if (!isValid) {
+//				logger.error("validation failed");
+//				return false;
+//			}
+//		}
+//
+//		logger.error("validation success");
+//		return true;
+//	}
 }

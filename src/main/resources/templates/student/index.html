@@ -13,19 +13,19 @@
         <h3>Account informations</h3>
         <div class="row">
             <label class="col-sm-6 col-form-label" for="username">Email</label>
-            <label class="col-sm-6 col-form-label" id="username" th:text="*{currentUser.getUsername()}">Email</label>
+            <label class="col-sm-6 col-form-label" id="username" th:text="*{accountDto.email}">Email</label>
         </div>
         <div class="row">
             <label class="col-sm-6 col-form-label" for="firstname">First name</label>
-            <label class="col-sm-6 col-form-label" id="firstname" th:text="*{currentUser.getFirstName()}">First name</label>
+            <label class="col-sm-6 col-form-label" id="firstname" th:text="*{accountDto.firstName}">First name</label>
         </div>
         <div class="row">
             <label class="col-sm-6 col-form-label" for="lastname">Last name</label>
-            <label class="col-sm-6 col-form-label" id="lastname" th:text="*{currentUser.getLastName()}">Last name</label>
+            <label class="col-sm-6 col-form-label" id="lastname" th:text="*{accountDto.lastName}">Last name</label>
         </div>
         <div class="row">
             <label class="col-sm-6 col-form-label" for="created">Created</label>
-            <label class="col-sm-6 col-form-label" id="created" th:text="*{currentUser.getCreated()}">Created</label>
+            <label class="col-sm-6 col-form-label" id="created" th:text="*{accountDto.created}">Created</label>
         </div>
     </section>
 
@@ -37,12 +37,12 @@
             </div>
         </div>
         <div class="row">
-            <label class="col-sm-6 col-form-label" for="phonenumber">Phonenumber</label>
-            <label class="col-sm-6 col-form-label" id="phonenumber" th:text="*{currentStudent.phoneNumber}">Phonenumber</label>
+            <label class="col-sm-6 col-form-label" for="phoneNumber">Phonenumber</label>
+            <label class="col-sm-6 col-form-label" id="phoneNumber" th:text="*{accountDto.phoneNumber}">phoneNumber</label>
         </div>
         <div class="row">
             <label class="col-sm-6 col-form-label" for="school">School name</label>
-            <label class="col-sm-6 col-form-label" id="school" th:text="*{currentStudent.school.name}">School name</label>
+            <label class="col-sm-6 col-form-label" id="school" th:text="*{accountDto.school.name}">School name</label>
         </div>
     </section>
 
