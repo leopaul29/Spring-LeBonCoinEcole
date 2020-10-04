@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      class="h-100">
 <head>
     <meta charset="utf-8"/>
     <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
@@ -14,12 +15,14 @@
     <!--    replace with title we have specified in the content view-->
     <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Le bon coin ecole</title>
 </head>
-<body>
-<div class="container">
-    <th:block th:replace="fragments/header.html :: header"/>
-    <th:block layout:fragment="content"/>
-    <th:block th:replace="fragments/footer.html :: footer"/>
-</div>
+<body class="d-flex flex-column h-100">
+<th:block th:replace="fragments/header.html :: header"/>
+<main role="main" class="flex-shrink-0">
+    <div class="container">
+        <th:block layout:fragment="content"/>
+    </div>
+</main>
+<th:block th:replace="fragments/footer.html :: footer"/>
 <script th:src="@{/webjars/jquery/3.4.1/jquery.min.js/}" type="text/javascript"></script>
 <script th:src="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}" type="text/javascript"></script>
 <script th:src="@{/webjars/popper.js/1.16.0/popper.min.js}" type="text/javascript"></script>
