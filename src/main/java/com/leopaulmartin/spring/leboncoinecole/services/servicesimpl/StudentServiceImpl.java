@@ -42,17 +42,17 @@ public class StudentServiceImpl implements StudentService {
 		}
 	}
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	@Override
-	public Student getStudentByUserId(Long id) throws RecordNotFoundException {
-		return repository.findByUserId(id);
-	}
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	@Override
-	public Student getStudentByUserProfile(User userProfile) throws RecordNotFoundException {
-		return repository.findByUserProfile(userProfile);
-	}
+//	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+//	@Override
+//	public Student getStudentByUserId(Long id) throws RecordNotFoundException {
+//		return repository.findByUserId(id);
+//	}
+//
+//	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+//	@Override
+//	public Student getStudentByUserProfile(User userProfile) throws RecordNotFoundException {
+//		return repository.findByUserProfile(userProfile);
+//	}
 
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override

@@ -14,9 +14,9 @@ public interface StudentService {
 
 	Student getStudentById(Long id) throws RecordNotFoundException;
 
-	Student getStudentByUserId(Long id) throws RecordNotFoundException;
-
-	Student getStudentByUserProfile(User userProfile)throws RecordNotFoundException;
+//	Student getStudentByUserId(Long id) throws RecordNotFoundException;
+//
+//	Student getStudentByUserProfile(User userProfile)throws RecordNotFoundException;
 
 	Student createOrUpdateStudent(Student student);
 

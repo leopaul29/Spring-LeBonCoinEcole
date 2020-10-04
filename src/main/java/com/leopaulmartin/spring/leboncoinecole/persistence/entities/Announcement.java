@@ -38,7 +38,7 @@ public class Announcement {
 	private byte[] photo;
 
 	@Column(name = "price", length = 10)
-	@Min(value = 0, message = "Cannot be negatif")
+	@Min(value = 0, message = "Cannot be negative")
 	private float price;
 
 	private Instant created;

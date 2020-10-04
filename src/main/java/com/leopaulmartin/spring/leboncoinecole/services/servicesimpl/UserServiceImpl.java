@@ -2,7 +2,9 @@ package com.leopaulmartin.spring.leboncoinecole.services.servicesimpl;
 
 import com.leopaulmartin.spring.leboncoinecole.exceptionhandler.exceptions.RecordNotFoundException;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Role;
+import com.leopaulmartin.spring.leboncoinecole.persistence.entities.Student;
 import com.leopaulmartin.spring.leboncoinecole.persistence.entities.User;
+import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.StudentRepository;
 import com.leopaulmartin.spring.leboncoinecole.persistence.repositories.UserRepository;
 import com.leopaulmartin.spring.leboncoinecole.security.MyUserPrincipal;
 import com.leopaulmartin.spring.leboncoinecole.services.UserService;
@@ -28,6 +30,8 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository repository;
+	@Autowired
+	private StudentRepository studentRepository;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -145,10 +149,11 @@ public class UserServiceImpl implements UserService {
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
 	public void deleteUserById(Long id) throws RecordNotFoundException {
-		Optional<User> user = repository.findById(id);
+		Optional<User> existing = repository.findById(id);
 
-		if (user.isPresent()) {
-			repository.deleteById(id);
+		if (existing.isPresent()) {
+			User found = existing.get();
+			repository.delete(found);
 		} else {
 			throw new RecordNotFoundException("No user record exist for given id");
 		}

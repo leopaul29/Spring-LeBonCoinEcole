@@ -73,20 +73,20 @@ public class DatabaseLoader implements CommandLineRunner {
 		studentService.createOrUpdateStudent(student);
 
 		User u = new User("user", "lastn", "usertest@t", "passtest");
+		u.setStudentProfile(student);
 		userService.createOrUpdateUser(u);
-		student.setUserProfile(u);
-		studentService.createOrUpdateStudent(student);
 
 		userService.createAdmin("admin@t", "passadm");
 	}
 
 	private void createStudentTest(String lastname, String firstname, School school) {
-		User user = userService.createOrUpdateUser(new User(firstname, lastname, firstname + "." + lastname + "@lbce.com", "pass"));
-		Student student = studentService.createOrUpdateStudent(new Student(user));
+		User user = new User(firstname, lastname, firstname + "." + lastname + "@lbce.com", "pass");
+		Student student = new Student();
 		student.setPhoneNumber("0123456789");
 		student.setSchool(school);
-//		student.setUserProfil(user);
 		studentService.createOrUpdateStudent(student);
+		user.setStudentProfile(student);
+		userService.createOrUpdateUser(user);
 	}
 
 	private void createStudentMiageTest() {

@@ -59,7 +59,7 @@ public class AccountController {
 	public Student getCurrentStudent(Authentication authentication) {
 		MyUserPrincipal currentUser = getCurrentUser(authentication);
 		if (currentUser!=null) {
-			return studentService.getStudentByUserProfile(currentUser.getUser());
+			return studentService.getStudentById(currentUser.getUser().getStudentProfile().getStudentId());
 		}
 		return null;
 	}
@@ -77,31 +77,33 @@ public class AccountController {
 	}
 
 	@GetMapping("/edit")
-	public String showEditAccount(Model model, Authentication authentication) {
+	public String showEditAccount() {
 		return "student/edit-account";
 	}
 
-	//TODO: handle edit account request
 	@PostMapping("/edit")
 	public String handleEditAccountRequest(Authentication authentication,
-										   @ModelAttribute("studentDto") @Valid AccountDto accountDto,
+										   @ModelAttribute("accountDto") @Valid AccountDto accountDto,
 										   BindingResult result) {
-		logger.debug("handleEditAccountRequest");
 		User existing = userService.findByEmail(accountDto.getEmail());
-		Student currentStudent = getCurrentStudent(authentication);
-		if (currentStudent.getUserProfile().getUserId() != existing.getUserId()) {
-			result.reject("user logged and user updated are different");
+		MyUserPrincipal currentUser = getCurrentUser(authentication);
+		if (currentUser.getUser().getUserId() != existing.getUserId()) {
+			logger.debug("user logged and user updated are different");
+			result.reject("Alert", "user logged and user updated are different");
 		} else {
-			accountDto.setStudentId(currentStudent.getStudentId());
+			accountDto.setStudentId(currentUser.getUser().getStudentProfile().getStudentId());
 		}
 
 		User updatedUser = userService.updateAccount(accountDto);
 		if (updatedUser==null){
-			result.reject("User not found");
+			logger.debug("User not found");
+			result.reject("Alert", "User not found");
 		}
+
 		Student updatedStudent = studentService.updateAccount(accountDto);
 		if (updatedStudent==null){
-			result.reject("Student not found");
+			logger.debug("Student not found");
+			result.reject("Alert", "Student not found");
 		}
 
 		if (result.hasErrors()) {
@@ -133,21 +135,6 @@ public class AccountController {
 		logger.debug("handleClearHistoryRequest");
 		return "student/history";
 	}
-
-//	private Student convertToEntity(StudentDto studentDto) {
-//		Student student = new Student();
-//		if (studentDto.getStudentId()!=null) {
-//			student = studentService.getStudentById(studentDto.getStudentId());
-//		}
-//		student.getUserProfile().setFirstName(studentDto.getFirstName());
-//		student.getUserProfile().setLastName(studentDto.getLastName());
-//		student.getUserProfile().setPassword(studentDto.getPassword());
-//		student.setPhoneNumber(studentDto.getPhoneNumber());
-//		student.setPhoto(studentDto.getPhoto());
-//		student.setSchool(studentDto.getSchool());
-//
-//		return student;
-//	}
 
 	private AccountDto convertToDto(User user, Student student) {
 		AccountDto accountDto = new AccountDto();

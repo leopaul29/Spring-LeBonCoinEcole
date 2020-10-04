@@ -22,10 +22,6 @@ public class Student {
 	@ManyToOne
 	private School school;
 
-	//set option to remove the user profile when student profile is deleted
-	@OneToOne(cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-	private User userProfile;
-
 	//TODO: set option to remove all announcement when student profil is deleted
 	@OneToMany/*(
 			targetEntity = com.leopaulmartin.spring.leboncoinecole.persistence.entities.Announcement.class,
@@ -45,9 +41,9 @@ public class Student {
 	public Student() {
 	}
 
-	public Student(User user) {
-		this.userProfile = user;
-	}
+//	public Student(User user) {
+//		this.userProfile = user;
+//	}
 
 //	public Student(String firstName, String lastName) {
 //		this();
@@ -114,13 +110,13 @@ public class Student {
 		this.school = school;
 	}
 
-	public User getUserProfile() {
-		return userProfile;
-	}
-
-	public void setUserProfile(User userProfile) {
-		this.userProfile = userProfile;
-	}
+//	public User getUserProfile() {
+//		return userProfile;
+//	}
+//
+//	public void setUserProfile(User userProfile) {
+//		this.userProfile = userProfile;
+//	}
 
 	public List<Announcement> getAnnouncements() {
 		return announcements;
@@ -139,7 +135,7 @@ public class Student {
 				", phoneNumber='" + phoneNumber + '\'' +
 				", photo=" + (photo != null) +
 				", school=" + school +
-				", userProfil=" + userProfile +
+//				", userProfil=" + userProfile +
 				", announcements=" + announcements +
 				'}';
 	}

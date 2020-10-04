@@ -1,6 +1,8 @@
 package com.leopaulmartin.spring.leboncoinecole.persistence.entities;
 
 import com.leopaulmartin.spring.leboncoinecole.utils.Utils;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -29,6 +31,10 @@ public class User {
 			inverseJoinColumns = @JoinColumn(
 					name = "role_id", referencedColumnName = "role_id"))
 	private Collection<Role> roles;
+
+	//set option to remove the student profile when user is deleted
+	@OneToOne(cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+	private Student studentProfile;
 
 	// Constructor
 
@@ -113,18 +119,28 @@ public class User {
 		this.roles = roles;
 	}
 
+	public Student getStudentProfile() {
+		return studentProfile;
+	}
+
+	public void setStudentProfile(Student studentProfile) {
+		this.studentProfile = studentProfile;
+	}
+
 	// Override
+
 
 	@Override
 	public String toString() {
 		return "User{" +
-				"id=" + userId +
+				"userId=" + userId +
 				", firstName='" + firstName + '\'' +
 				", lastName='" + lastName + '\'' +
 				", email='" + email + '\'' +
-				", password='" + "***********" + '\'' +
+				", password='" + password + '\'' +
 				", created=" + created +
 				", roles=" + roles +
+				", studentProfileId=" + studentProfile.getStudentId() +
 				'}';
 	}
 }
